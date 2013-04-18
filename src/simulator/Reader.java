@@ -68,11 +68,21 @@ public class Reader {
     public String getFilePath() {
     	return this.filepath;
     }
+    
+    public Order next() throws IOException {
+    	Order o = createOrder();
+    	while (o != null && (o.recordType.equals("TRADE") ||
+    			o.recordType.equals("OFFTR") ||
+    			o.recordType.equals("CANCEL_TRADE")) ) {
+    		o = createOrder();
+    	}
+    	return o;
+    }
 
     /* Returns the next order from the file
      * Throws an IOException if a line cannot be read
      */
-    public Order next() throws IOException {
+    private Order createOrder() throws IOException {
     	
         String line = reader.readLine();      // Read a single line
         

@@ -12,16 +12,8 @@ public class OrderBooks {
 	/*
 	 * The bidList and askList will both be ordered by price/time
      */
-    private ArrayList<Order> bidList;
-    private ArrayList<Order> askList;
- 
-    
-    public OrderBooks() {
-        bidList         = new ArrayList<Order>();
-        askList         = new ArrayList<Order>();
-    }
-    
-
+    private ArrayList<Order> bidList = new ArrayList<Order>();
+    private ArrayList<Order> askList = new ArrayList<Order>();
     
     /*
      * Inserts/processes a single order

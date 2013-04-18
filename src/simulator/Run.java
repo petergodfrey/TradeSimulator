@@ -1,11 +1,13 @@
 package simulator;
 
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Run {
-
+	
 	public static void main (String[] args) {
+		
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
 		Factory f = new Factory();
 		

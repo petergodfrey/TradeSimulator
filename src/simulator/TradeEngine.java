@@ -21,13 +21,8 @@ public class TradeEngine {
      * Returns the number of trades that were generated
      */
     public int trade() {
-    		
-    	//if (orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0) {
-    	//	System.out.println("Spread = " + orderBooks.spread());
-    	//}
     	
     	int numberOfTrades = 0;
-    	
     	//Generate a trade transaction with the following properties:
 		//    i.  Volume traded is the minimum volume of best bid and best ask orders.
 		//    ii. The trading price is determined as:
