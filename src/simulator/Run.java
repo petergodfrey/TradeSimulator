@@ -9,7 +9,7 @@ public class Run {
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
 		//menu holds CSV file and strategy selected until running time
 		Reader CSV = null;
-		Strategy strat = null;
+		Strategy strat = new NullStrategy();
 		//one scanner that is to be passed throughout the menu when
 		//input is needed, prevents memory leak problems from too many scanners
 		Scanner s = new Scanner(System.in);
@@ -44,11 +44,8 @@ public class Run {
 			}
 			System.out.println();
 			System.out.print("Current selected Strategy:\t");
-			if (strat == null) {
-				System.out.print("None");
-			} else {
-				System.out.print(strat.getStrategyName());
-			}
+
+			System.out.print(strat.getStrategyName());
 			System.out.printf("\n\n");
 		}
 		System.out.println("Please select an option below");
@@ -101,7 +98,7 @@ public class Run {
 			}
 			switch (choice) {
 			case 1:
-				strat = null;
+				strat = new NullStrategy();
 				break;
 			case 2:
 				strat = new DumbStrategy(null);
@@ -112,20 +109,28 @@ public class Run {
 		}
 		return strat;
 	}
-	
+
 	private static void runSimulation(Reader CSV, Strategy strat) {
-        // Create the objects required by the SignalGenerator
-        OrderBooks  orderBooks  = new OrderBooks("MQG");
-        TradeEngine tradeEngine = new TradeEngine(orderBooks);
 
-        SignalGenerator signalGenerator = new SignalGenerator(CSV, strat, orderBooks, tradeEngine);
+		//cannot run simulation if there is no CSV chosen
+		if (CSV == null) {
+			System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			return;//exit function early
+		}
 
-        System.out.print("Running simulation........... ");
 
-        while (signalGenerator.advance() != SignalGenerator.SIMULATION_END){
-            // Do nothing
-        }
-        System.out.println("Finished");
+		// Create the objects required by the SignalGenerator
+		OrderBooks  orderBooks  = new OrderBooks();
+		TradeEngine tradeEngine = new TradeEngine(orderBooks);
+
+		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat, orderBooks, tradeEngine);
+
+		System.out.print("Running simulation........... ");
+
+		while (signalGenerator.advance() != SignalGenerator.SIMULATION_END){
+			// Do nothing
+		}
+		System.out.println("Finished");
 	}
 	private static void exitProgram(Scanner s) {
 		//exits the program in a neat manner

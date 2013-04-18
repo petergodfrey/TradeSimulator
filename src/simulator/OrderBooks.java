@@ -14,13 +14,14 @@ public class OrderBooks {
      */
     private ArrayList<Order> bidList;
     private ArrayList<Order> askList;
-    private String instrument;          /* The instrument which the order books represent */
+ 
     
-    public OrderBooks(String instrument) {
+    public OrderBooks() {
         bidList         = new ArrayList<Order>();
         askList         = new ArrayList<Order>();
-        this.instrument = instrument;
     }
+    
+
     
     /*
      * Inserts/processes a single order
