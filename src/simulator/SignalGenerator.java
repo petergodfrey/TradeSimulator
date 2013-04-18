@@ -7,11 +7,11 @@ public class SignalGenerator {
     public static final int SIMULATION_END  = 1;
 
     private Reader      reader;
-    private Stratergy   stratergy;
+    private Strategy   stratergy;
     private OrderBooks  orderBooks;
     private TradeEngine tradeEngine;
     
-    SignalGenerator(Reader reader, Stratergy stratergy, OrderBooks orderBooks, TradeEngine tradeEngine) {
+    SignalGenerator(Reader reader, Strategy stratergy, OrderBooks orderBooks, TradeEngine tradeEngine) {
         this.reader      = reader;
         this.stratergy   = stratergy;
         this.orderBooks  = orderBooks;

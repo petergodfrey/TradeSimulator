@@ -6,6 +6,8 @@ public class Reader {
     
     private static final double EMPTY_DOUBLE_FIELD = -1;
     private static final long   EMPTY_LONG_FIELD = -1;
+    
+    private final String filepath;
 	
     /* The positions of each data field in the csv file */
     private final int INSTRUMENT;
@@ -25,6 +27,7 @@ public class Reader {
     public Reader(String path) throws IOException, FileNotFoundException {
         
         reader = new BufferedReader( new FileReader(path) );
+        this.filepath = path;
         String line = reader.readLine(); // Read the initial line
         
         List<String> fieldNames = new ArrayList<String>();
@@ -60,6 +63,10 @@ public class Reader {
         	
         	throw new IOException();
         }
+    }
+    
+    public String getFilePath() {
+    	return this.filepath;
     }
 
     /* Returns the next order from the file
