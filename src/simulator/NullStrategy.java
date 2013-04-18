@@ -12,4 +12,10 @@ public class NullStrategy implements Strategy {
 		return "Null Strategy";
 	}
 
+	@Override
+	public Order getOrderedOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

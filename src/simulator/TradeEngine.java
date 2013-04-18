@@ -21,40 +21,6 @@ public class TradeEngine {
      * Returns the number of trades that were generated
      */
     
-    /*public void trade() {
-    	if ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
-    			orderBooks.spread() >= 0 ) {
-    		Order bestBid = orderBooks.bestBidOrder();
-    		Order bestAsk = orderBooks.bestAskOrder();
-    		
-    		//if (bestBid.volume() == bestAsk.volume()) {
-    			addTrade(bestBid, bestAsk);
-    			orderBooks.deleteOrder(bestBid);
-    			orderBooks.deleteOrder(bestAsk);
-    		//}
-    	}
-    }*/
-    
-    /*public void oneTrade(Order bid, Order ask) {
-    	if (bid.volume() == ask.volume()) {
-    		addTrade(bid, ask);
-			orderBooks.deleteOrder(bid);
-			orderBooks.deleteOrder(ask);
-    	} else {
-	    	if ( bid.volume() < ask.volume() ) {
-	    		addTrade(bid, ask);
-	    		ask.updateVolume( ask.volume() - bid.volume() );
-	    		orderBooks.deleteOrder(bid);
-	    	} else if ( ask.volume() < bid.volume() ) {
-	    		addTrade(bid, ask);
-	    		bid.updateVolume( bid.volume() - ask.volume() );
-	    		orderBooks.deleteOrder(ask);
-	    	}
-	    	oneTrade();
-		}
-    	
-    }*/
-    
     public int trade() {
     	
     	int numberOfTrades = 0;
@@ -95,6 +61,10 @@ public class TradeEngine {
     		numberOfTrades++;
     	}
     	return numberOfTrades;		
+    }
+    
+    public ArrayList<Order> getTradeList () {
+    	return tradeList;
     }
     
     /*

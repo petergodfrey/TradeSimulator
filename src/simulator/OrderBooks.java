@@ -106,7 +106,7 @@ public class OrderBooks {
     /*
      * Delete an order from the order books
      * 
-     * Paramaters:
+     * Parameters:
      * o - The DELETE order to be processed
      * 
      * Returns:

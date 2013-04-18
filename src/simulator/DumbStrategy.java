@@ -3,26 +3,43 @@ public class DumbStrategy implements Strategy {
     
     OrderBooks orderBooks;
     
+    boolean ordered  = false;
+    
+    public Order order = null;
+    
     public DumbStrategy(OrderBooks orderBooks) {
         this.orderBooks = orderBooks;
     }
     
     @Override
     public Order generateOrder() {
-    	if (orderBooks != null) {
-    		if (orderBooks.askListSize() != 0) {
-    			return new Order(orderBooks.bestAskOrder().instrument(), orderBooks.bestAskOrder().date(), orderBooks.bestAskOrder().time(), new String("ENTER"), orderBooks.bestAskOrder().price(), orderBooks.bestAskOrder().volume(), orderBooks.bestAskOrder().qualifiers(), new Long("0"), new Long("1234"), new Long("0"), "B");
-    		}
-    		if (orderBooks.bidListSize() != 0) {
-    			return new Order(orderBooks.bestBidOrder().instrument(), orderBooks.bestBidOrder().date(), orderBooks.bestBidOrder().time(), new String("ENTER"), orderBooks.bestBidOrder().price() - 1, orderBooks.bestBidOrder().volume(), orderBooks.bestBidOrder().qualifiers(), new Long("0"), new Long("0"), new Long("3456"), "A");
-    		}
+    	Order o = null;
+    	if (orderBooks.bidListSize() != 0 && !ordered) {
+    		Order bestbid = orderBooks.bestBidOrder();
+    		 o = new Order(
+    				bestbid.instrument(),
+    				bestbid.date(),
+    				bestbid.time(),
+    				"ENTER", bestbid.price()-1, 100, null, 0, -1, 0, "B");
+    		 order = new Order(
+     				bestbid.instrument(),
+     				bestbid.date(),
+     				bestbid.time(),
+     				"ENTER", bestbid.price()-1, 100, null, 0, -1, 0, "B");
+    		 ordered = true;
     	}
-        return Order.NO_ORDER;
+        return o;
+ //Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
     }
 
 	@Override
 	public String getStrategyName() {
 		return "DumbStrategy";
+	}
+
+	@Override
+	public Order getOrderedOrders() {
+		return order;
 	}
     
 }

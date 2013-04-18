@@ -128,8 +128,6 @@ public class Run {
 		TradeEngine tradeEngine = f.makeTradeEngine();
 
 		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat);
-		
-		//System.out.println(CSV.getFileSize());
 
 		System.out.println("Running simulation ");
 		
@@ -142,7 +140,15 @@ public class Run {
 			displayProgress(CSV);
 			
 		}
-		System.out.println("\nFinished");
+		System.out.println("\nFinished Simulation");
+		System.out.println(tradeEngine.getTradeList().size());
+		System.out.print("Profit: ");
+		for (int i = 0; i < tradeEngine.getTradeList().size(); i++) {
+			if (tradeEngine.getTradeList().get(i).bidID() == -1) {
+				System.out.println(tradeEngine.getTradeList().get(i).price() - strat.getOrderedOrders().price());
+			}
+		}
+
 	}
 	private static void exitProgram(Scanner s) {
 		//exits the program in a neat manner

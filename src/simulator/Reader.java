@@ -80,10 +80,6 @@ public class Reader {
     	return progress;
     }
     
-    private void incProgress() {
-    	progress++;
-    }
-    
     public String getFilePath() {
     	return this.filepath;
     }
