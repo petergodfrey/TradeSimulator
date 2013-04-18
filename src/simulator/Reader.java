@@ -22,11 +22,18 @@ public class Reader {
     private final int ASK_ID;
     private final int BID_ASK;
     
-	private BufferedReader reader;
+    private BufferedReader reader;
+    private BufferedReader sizeReader;
+    private int size = -1;//disregard the first line
+    private int progress = 0;
     
     public Reader(String path) throws IOException, FileNotFoundException {
         
         reader = new BufferedReader( new FileReader(path) );
+        sizeReader = new BufferedReader( new FileReader(path) );
+        
+        for (; sizeReader.readLine() != null; size++) {
+        }
         this.filepath = path;
         String line = reader.readLine(); // Read the initial line
         
@@ -65,16 +72,32 @@ public class Reader {
         }
     }
     
+    public int getFileSize() {
+    	return size;
+    }
+    
+    public int getProgress() {
+    	return progress;
+    }
+    
+    private void incProgress() {
+    	progress++;
+    }
+    
     public String getFilePath() {
     	return this.filepath;
     }
     
     public Order next() throws IOException {
     	Order o = createOrder();
+    	progress++;
     	while (o != null && (o.recordType().equals("TRADE") ||
     			o.recordType().equals("OFFTR") ||
-    			o.recordType().equals("CANCEL_TRADE")) ) {
+    			o.recordType().equals("CANCEL_TRADE") ||
+    			o.recordType().equals("DELETE") ||
+    			o.recordType().equals("AMEND"))) {
     		o = createOrder();
+    		progress++;
     	}
     	return o;
     }
