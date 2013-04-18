@@ -71,9 +71,9 @@ public class Reader {
     
     public Order next() throws IOException {
     	Order o = createOrder();
-    	while (o != null && (o.recordType.equals("TRADE") ||
-    			o.recordType.equals("OFFTR") ||
-    			o.recordType.equals("CANCEL_TRADE")) ) {
+    	while (o != null && (o.recordType().equals("TRADE") ||
+    			o.recordType().equals("OFFTR") ||
+    			o.recordType().equals("CANCEL_TRADE")) ) {
     		o = createOrder();
     	}
     	return o;

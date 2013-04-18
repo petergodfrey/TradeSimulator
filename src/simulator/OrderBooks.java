@@ -22,6 +22,7 @@ public class OrderBooks {
      * o - The order which is to be processed
      */
     public void processOrder(Order o) throws UnsupportedOperationException {
+    	
     	if ( o.recordType().equals("ENTER") ) {
         	enterOrder(o);
         } else if ( o.recordType().equals("DELETE") ) {
@@ -29,11 +30,14 @@ public class OrderBooks {
         } else if ( o.recordType().equals("AMEND") ) {
     		amendOrder(o);
         } else if ( o.recordType().equals("TRADE") ) {
+        	//should never reach here delete when done
     		trade(o);
         } else if ( o.recordType().equals("OFFTR") ) {
-    		offTrade(o);
+        	//should never reach here delete when done
+        	offTrade(o);
         } else if ( o.recordType().equals("CANCEL_TRADE") ) {
-    		cancelTrade(o);
+        	//should never reach here delete when done
+        	cancelTrade(o);
     	} else {
     		// Record Type is unsupported, Sirca data should never reach here
     		throw new UnsupportedOperationException();
@@ -59,16 +63,6 @@ public class OrderBooks {
     // Returns the highest bid (buy) price
     public double bestBidPrice() {
         return bidList.get(0).price();
-    }
-    
-    // Returns a COPY of the bid list
-    public List<Order> bidList() {
-        return copyList(bidList);
-    }
-    
-    // Returns a COPY of the ask list
-    public List<Order> askList() {
-        return copyList(askList);
     }
     
     // Returns the size of the bid list
