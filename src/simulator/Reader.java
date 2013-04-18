@@ -81,18 +81,8 @@ public class Reader {
         }
         
         String[] entry = line.split(",", -1); // Break line into individual fields
-        
-
-        // Ignore Trades
-        while ( entry[RECORD_TYPE].equals("TRADE") ) {
-            line = reader.readLine();         // read another
-            if (line == null) {               // Check if end of file is reached
-                return Order.NO_ORDER;
-            }
-            entry = line.split(",", -1);      // Break line into individual fields
-        }
-    	
-       return new Order (entry[INSTRUMENT],
+            	
+        return new Order (entry[INSTRUMENT],
                           entry[DATE],
                           entry[TIME],
                           entry[RECORD_TYPE],
