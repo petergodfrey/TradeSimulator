@@ -27,7 +27,7 @@ public class Order extends Trade {
     // Copy Constructor
     public Order(Order oldOrder) {
         super(oldOrder);
-        this.bidAsk = new String( oldOrder.bidAsk() );
+        this.bidAsk = new String( oldOrder.bidAsk());
     }
     
     public String toString() {
