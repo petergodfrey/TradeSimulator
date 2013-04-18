@@ -26,7 +26,7 @@ public class Tests {
 	@Before
 	public void setUp() throws Exception {
 		factory = new Factory();
-		sampleFilePath = new String("F:/SENG3011/Codes/TradeSimulator/sample1.csv");
+		sampleFilePath = System.getProperty("user.dir") + "/Sample1.csv";
 	}
 		
 	@Test
@@ -117,22 +117,27 @@ public class Tests {
 	@Test
 	public void testOrderBookGetBid() {
 		Order bid1 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
-		Order bid2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.720, 15,0,1015.8,,0,6239925033924850752,,B,,,,203);
+		Order bid2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.720, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
+		Order bid3 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.380,111,new String(),new Long(0), new Long("6239925033923871154"), new Long(0),"B");
 		OrderBooks b = factory.makeOrderBooks(); 
 		b.processOrder(bid1);
-		assertEquals(1, b.bidListSize());
-		
-		assertEquals(bid, b.bestBidOrder());
+		b.processOrder(bid2);
+		b.processOrder(bid3);
+		assertEquals(3, b.bidListSize());
+		assertEquals(bid1, b.bestBidOrder());
 	}
 	
 	@Test
 	public void testOrderBookGetAsk() {		
 		OrderBooks b = factory.makeOrderBooks();
-		Order ask = new Order("CBA", "20130304" ,"00:00:00.000","ENTER", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");
-		b.processOrder(ask);
-		assertEquals(1, b.askListSize());
-		
-		assertEquals(ask, b.bestAskOrder());
+		Order ask1 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.900, 409, new String(), new Long(0), new Long(0), new Long("6238329642550435411"), "A");
+		Order ask2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.900, 200, new String(), new Long(0), new Long(0), new Long("6239528659982899884"), "A");
+		Order ask3 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.940, 300, new String(), new Long(0), new Long(0), new Long("6239925033924584462"), "A");
+		b.processOrder(ask1);
+		b.processOrder(ask2);
+		b.processOrder(ask3);
+		assertEquals(3, b.askListSize());		
+		assertEquals(ask1, b.bestAskOrder());
 	}
 	
 	@Test
