@@ -112,6 +112,18 @@ public class Tests {
 		
 	}
 	*/
+   @Test
+   public void testOrderBookGetBid() {
+	   Order bid1 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.76, 1959.0, new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
+	   Order bid2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.720, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
+	   Order bid3 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.380,111,new String(),new Long(0), new Long("6239925033923871154"), new Long(0),"B");
+	   OrderBooks b = factory.makeOrderBooks(); 
+	   b.processOrder(bid1);
+	   b.processOrder(bid2);
+	   b.processOrder(bid3);
+	   assertEquals(3, b.bidListSize());
+	   assertEquals(bid1, b.bestBidOrder());
+   }
 	
 	@Test
 	public void testOrderBookGetAsk() {		
