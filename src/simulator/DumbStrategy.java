@@ -13,6 +13,7 @@ public class DumbStrategy implements Strategy {
     
     @Override
     public Order generateOrder() {
+
     	Order o = null;
     	if (orderBooks.bidListSize() != 0 && !ordered) {
     		Order bestbid = orderBooks.bestBidOrder();
@@ -27,6 +28,7 @@ public class DumbStrategy implements Strategy {
      				bestbid.time(),
      				"ENTER", bestbid.price()-1, 100, null, 0, -1, 0, "B");
     		 ordered = true;
+
     	}
         return o;
  //Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
