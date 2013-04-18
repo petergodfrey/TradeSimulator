@@ -12,8 +12,8 @@ public class OrderBooks {
 	/*
 	 * The bidList and askList will both be ordered by price/time
      */
-    private ArrayList<Order> bidList = new ArrayList<Order>();
-    private ArrayList<Order> askList = new ArrayList<Order>();
+    LinkedList<Order> bidList = new LinkedList<Order>();
+    LinkedList<Order> askList = new LinkedList<Order>();
     
     /*
      * Inserts/processes a single order
@@ -22,7 +22,12 @@ public class OrderBooks {
      * o - The order which is to be processed
      */
     public void processOrder(Order o) throws UnsupportedOperationException {
-    	
+    	//try {
+    	//	System.out.println(spread());
+    	//} catch (Exception e) {
+    		
+    	//}
+    	//System.out.println(bidList.size() + ", " + askList.size());
     	if ( o.recordType().equals("ENTER") ) {
         	enterOrder(o);
         } else if ( o.recordType().equals("DELETE") ) {
@@ -133,7 +138,7 @@ public class OrderBooks {
 
     /* Massive amount of almost duplicate code
      * Needs to be refactored */
-    private void enterOrder(Order o) {
+    /*private void enterOrder(Order o) {
 		if (o.bidAsk().equals("B")) {
             for (int i = 0; i < bidList.size(); i++) {
         		if ( o.price() < bidList.get(i).price() ) {
@@ -153,7 +158,58 @@ public class OrderBooks {
             askList.add(o); // Insert at end of list
             return;
         }
+    }*/
+    
+    private void enterOrder(Order o) {
+    	if (o.bidAsk().equals("B")) {
+    		insert(o, bidList);
+    	}
+    	else if (o.bidAsk().equals("A")) {
+    		insert(o, askList);
+    	} else {
+    		System.out.println("Error in EnterOrder");
+    		System.exit(0);
+    	}
     }
+    
+	private void insert(Order o, LinkedList<Order> book) {
+		
+		if (o.bidAsk().equals("B")) {
+			for (int i = 0; i < book.size(); i++) {
+				if (o.price() > book.get(i).price()) {
+					book.add(i, o);
+					return;
+					//TODO sort on time when prices are same
+					//TODO insert properly for sell book
+					//TODO handle AMEND orders
+				}
+			}
+			//catches orders that are either meant to be added to the end
+			//of the list, or if the list was empty
+			//and there was nothing to compare to
+			book.addLast(o);
+		}
+		else if (o.bidAsk().equals("A")) {
+			for (int i = 0; i < book.size(); i++) {
+				if (o.price() < book.get(i).price()) {
+					book.add(i, o);
+					return;
+					//TODO sort on time when prices are same
+					//TODO insert properly for sell book
+					//TODO handle AMEND orders
+				}
+			}
+			//catches orders that are either meant to be added to the end
+			//of the list, or if the list was empty
+			//and there was nothing to compare to
+			book.addLast(o);
+		} else {
+			System.out.println("Error in Insert");
+			System.exit(0);
+		}
+		
+		
+	}
 
 	private void amendOrder(Order o) {
 
@@ -191,5 +247,32 @@ public class OrderBooks {
     	}
     	return -1;
     }
+    
+	public void display() {
+		//text display of order books for debugging
+		clearConsole();
+		System.out.println("bid\t\t\t\t\t|Ask");
+		for (int i = 0; i < bidList.size() || i < askList.size(); i++) {
+			if (i < bidList.size()) {
+				System.out.print(bidList.get(i).bidID()+"\t");
+				System.out.print(bidList.get(i).price()+"\t");
+				System.out.print(bidList.get(i).volume() + "\t|");
+			} else {
+				System.out.print("\t\t\t\t\t\t|");
+			}
+			if (i < askList.size()) {
+				System.out.print(askList.get(i).askID()+"\t");
+				System.out.print(askList.get(i).price()+"\t");
+				System.out.print(askList.get(i).volume());
+			}
+			System.out.println();
+		}
+	}
+
+	public static void clearConsole() {
+		//works only in command line
+		String ESC = "\033[";
+		System.out.print(ESC + "2J"); 
+	}
 }
 

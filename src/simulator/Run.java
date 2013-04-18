@@ -79,6 +79,7 @@ public class Run {
 
 	private static Reader selectDataFile(Scanner s, Factory f) {
 		System.out.println("Type the filepath of the selected CSV file");
+		System.out.println("E.g. C:\\Users\\user\\Desktop\\sircaData.csv");
 		Reader CSV = null;
 		String filepath = s.next();
 		try {
@@ -127,22 +128,31 @@ public class Run {
 		TradeEngine tradeEngine = f.makeTradeEngine();
 
 		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat);
+		
+		//System.out.println(CSV.getFileSize());
 
-		System.out.print("Running simulation........... ");
-
+		System.out.println("Running simulation ");
+		
 		Order o;
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
+			//orderBooks.display();
+			displayProgress(CSV);
+			
 		}
-		System.out.println("Finished");
+		System.out.println("\nFinished");
 	}
 	private static void exitProgram(Scanner s) {
 		//exits the program in a neat manner
 		System.out.println("Cya!");
 		s.close();
 		System.exit(0);
+	}
+	
+	private static void displayProgress(Reader CSV) {
+		System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
 

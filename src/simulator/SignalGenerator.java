@@ -7,19 +7,19 @@ public class SignalGenerator {
     public static final int SIMULATION_END  = 1;
 
     private Reader      reader;
-    private Strategy   stratergy;
+    private Strategy   strategy;
 
     
     SignalGenerator(Reader reader, Strategy stratergy) {
         this.reader      = reader;
-        this.stratergy   = stratergy;
+        this.strategy   = stratergy;
     }
     
     /*
      * This method advances the simulator by a single step
      */
     public Order advance() {
-    	Order o = stratergy.generateOrder();
+    	Order o = strategy.generateOrder();
     	if (o == Order.NO_ORDER) {
     		try {
 				o = reader.next();
