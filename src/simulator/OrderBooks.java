@@ -136,7 +136,7 @@ public class OrderBooks {
     private void enterOrder(Order o) {
 		if (o.bidAsk().equals("B")) {
             for (int i = 0; i < bidList.size(); i++) {
-        		if ( o.price() < bidList.get(i).price() ) {
+        		if ( o.price() > bidList.get(i).price() ) {
         			bidList.add(i, o);
         		    return;
                 }
@@ -145,7 +145,7 @@ public class OrderBooks {
                 return;
         } else {
             for (int i = 0; i < askList.size(); i++) {
-            	if ( o.price() > askList.get(i).price() ) {
+            	if ( o.price() < askList.get(i).price() ) {
             		askList.add(i, o);
             	    return;
                 }

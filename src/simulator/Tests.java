@@ -208,7 +208,7 @@ public class Tests {
 		}
 		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(new String("00:00:00"), sg.advance().date());
+		assertEquals(new String("00:00:00.000"), sg.advance().time());
 	}
 
 	@Test
