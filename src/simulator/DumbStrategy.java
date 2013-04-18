@@ -21,12 +21,12 @@ public class DumbStrategy implements Strategy {
     				bestbid.instrument(),
     				bestbid.date(),
     				bestbid.time(),
-    				"ENTER", bestbid.price()-1, 100, null, 0, -1, 0, "B");
+    				"ENTER", bestbid.price()-1, 1000, null, 0, -1, 0, "B");
     		 order = new Order(
      				bestbid.instrument(),
      				bestbid.date(),
      				bestbid.time(),
-     				"ENTER", bestbid.price()-1, 100, null, 0, -1, 0, "B");
+     				"ENTER", bestbid.price()-1, 1000, null, 0, -1, 0, "B");
     		 ordered = true;
 
     	}

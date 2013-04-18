@@ -5,6 +5,13 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Run {
+	//TODO fix tests structure
+	//TODO make an evaluator
+	//TODO only accepts enter right now
+	//TODO hashmap the orderbooks for speed
+	//TODO fix tradeEngine
+	//TODO fatory pattern orders object
+	//TODO internally generate ID for all orders
 	
 	public static void main (String[] args) {
 		
@@ -140,14 +147,10 @@ public class Run {
 			displayProgress(CSV);
 			
 		}
+		Evaluator eval = new Evaluator(strat, tradeEngine);
 		System.out.println("\nFinished Simulation");
-		System.out.println(tradeEngine.getTradeList().size());
-		System.out.print("Profit: ");
-		for (int i = 0; i < tradeEngine.getTradeList().size(); i++) {
-			if (tradeEngine.getTradeList().get(i).bidID() == -1) {
-				System.out.println(tradeEngine.getTradeList().get(i).price() - strat.getOrderedOrders().price());
-			}
-		}
+		eval.evaluate();
+		
 
 	}
 	private static void exitProgram(Scanner s) {
