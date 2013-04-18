@@ -6,11 +6,11 @@ import java.lang.Math;
 public class TradeEngine {
     
 	private OrderBooks       orderBooks;
-	private ArrayList<Trade> tradeList;
+	private ArrayList<Order> tradeList;
 	
     public TradeEngine(OrderBooks orderBooks) {
         this.orderBooks = orderBooks;
-        this.tradeList = new ArrayList<Trade>();
+        this.tradeList = new ArrayList<Order>();
     }
     
     /*
@@ -75,7 +75,7 @@ public class TradeEngine {
     	
     	double volume = Math.min(bid.volume(), ask.volume() );
     	
-    	tradeList.add(new Trade( bid.instrument(),
+    	tradeList.add(new Order( bid.instrument(),
     			                 "",            // TODO Date & Time
     			                 "",
     			                 "TRADE",
@@ -84,6 +84,7 @@ public class TradeEngine {
     					         "",            // TODO Qualifiers
     					         1,             // TODO Transaction ID
     					         bid.bidID(),
-    					         ask.askID() ) );
+    					         ask.askID(),
+    					         "") );
     }
 }
