@@ -64,8 +64,7 @@ public class Tests {
 	
 	@Test
 	public void testOrderAttributeConstraintENTER() {
-		OrderBooks orderbooks = factory.makeOrderBooks();
-		
+		OrderBooks orderbooks = factory.makeOrderBooks();		
 		//bidListArrayList<Order>
 		//assertEquals();
 		//assertEquals();
@@ -197,8 +196,7 @@ public class Tests {
 	public void testOrderBookCancelTrade() {
 		// related functions are implementing
 	}
-
-/*	
+	
 	@Test
 	public void testGeneratorGetTimeStamp() {
 		Reader CSV = null;
@@ -208,9 +206,9 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected date, sg.advance().date());
+		assertEquals(new String("00:00:00"), sg.advance().date());
 	}
 
 	@Test
@@ -222,9 +220,9 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected type, sg.advance().recordType());
+		assertEquals(new String("ENTER"), sg.advance().recordType());
 	}
 
 	@Test
@@ -236,9 +234,9 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected price, sg.advance().price());
+		assertEquals(new Double(67.760), sg.advance().price());
 	}
 
 	@Test
@@ -250,9 +248,9 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected volume, sg.advance().volume());
+		assertEquals(new Double(1959), sg.advance().volume());
 	}
 
 	@Test
@@ -264,9 +262,9 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected bidAsk, sg.advance().bidAsk());
+		assertEquals(new String("A"), sg.advance().bidAsk());
 	}
 	
 	@Test
@@ -278,10 +276,10 @@ public class Tests {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		Strategy strategy= new Strategy(choice);
+		Strategy strategy= factory.makeDumbStrategy();
 		SignalGenerator sg = new SignalGenerator(CSV, strategy);
-		assertEquals(expected qualifiers, sg.advance().qualifiers());
+		assertEquals(new String(), sg.advance().qualifiers());
 	}
-*/
+
 }
 
