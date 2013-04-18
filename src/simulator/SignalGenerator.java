@@ -8,20 +8,31 @@ public class SignalGenerator {
 
     private Reader      reader;
     private Strategy   stratergy;
-    private OrderBooks  orderBooks;
-    private TradeEngine tradeEngine;
+
     
-    SignalGenerator(Reader reader, Strategy stratergy, OrderBooks orderBooks, TradeEngine tradeEngine) {
+    SignalGenerator(Reader reader, Strategy stratergy) {
         this.reader      = reader;
         this.stratergy   = stratergy;
-        this.orderBooks  = orderBooks;
-        this.tradeEngine = tradeEngine;
+    }
+    
+    public Order advance() {
+    	Order o = stratergy.generateOrder();
+    	if (o == Order.NO_ORDER) {
+    		try {
+				o = reader.next();
+			} catch (IOException e) {
+				System.out.println("Error in Reading File. Exiting");
+				System.exit(0);
+			}
+    	}
+    	
+    	return o;
     }
     
     /*
      * This method advances the simulator by a single step
      */
-    public int advance() {
+   /* public Order advance() {
         Order o = stratergy.generateOrder();
         
         if (o == Order.NO_ORDER) {     // Check if an order was generated
@@ -38,7 +49,7 @@ public class SignalGenerator {
         orderBooks.processOrder(o); // Update the order books
         tradeEngine.trade();
         
-        return ADVANCE_SUCCESS;
-    }
+        return o;
+    }*/
     
 }

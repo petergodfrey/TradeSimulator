@@ -1,5 +1,5 @@
 package simulator;
-import java.io.*;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -120,17 +120,19 @@ public class Run {
 			return;//exit function early
 		}
 
-
 		// Create the objects required by the SignalGenerator
 		OrderBooks  orderBooks  = f.makeOrderBooks();
 		TradeEngine tradeEngine = f.makeTradeEngine();
 
-		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat, orderBooks, tradeEngine);
+		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat);
 
 		System.out.print("Running simulation........... ");
 
-		while (signalGenerator.advance() != SignalGenerator.SIMULATION_END){
-			// Do nothing
+		Order o;
+		while ((o = signalGenerator.advance()) != null) {
+			//one iteration equals one order being processed and traded
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
 		}
 		System.out.println("Finished");
 	}
