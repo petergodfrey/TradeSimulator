@@ -7,9 +7,11 @@ public class Run {
 
 	public static void main (String[] args) {
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
+		Factory f = new Factory();
+		
 		//menu holds CSV file and strategy selected until running time
 		Reader CSV = null;
-		Strategy strat = new NullStrategy();
+		Strategy strat = f.makeNullStrategy();
 		//one scanner that is to be passed throughout the menu when
 		//input is needed, prevents memory leak problems from too many scanners
 		Scanner s = new Scanner(System.in);
@@ -19,13 +21,13 @@ public class Run {
 			int choice = menu(CSV, strat, s);
 			switch (choice) {
 			case 1: 
-				CSV = selectDataFile(s);
+				CSV = selectDataFile(s, f);
 				break;
 			case 2: 
-				strat = selectStrategy(s);
+				strat = selectStrategy(s, f);
 				break;
 			case 3: 
-				runSimulation(CSV, strat);
+				runSimulation(CSV, strat, f);
 				break;
 			case 4: 
 				exitProgram(s);
@@ -73,18 +75,18 @@ public class Run {
 		return choice;
 	}
 
-	private static Reader selectDataFile(Scanner s) {
+	private static Reader selectDataFile(Scanner s, Factory f) {
 		System.out.println("Type the filepath of the selected CSV file");
 		Reader CSV = null;
 		String filepath = s.next();
 		try {
-			CSV = new Reader(filepath);
+			CSV = f.makeReader(filepath);
 		} catch (Exception e) {
 			System.out.printf("Invalid filepath, returning to menu\n\n");
 		}
 		return CSV;
 	}
-	private static Strategy selectStrategy(Scanner s) {
+	private static Strategy selectStrategy(Scanner s, Factory f) {
 		//must find a way to automate the list menu, currently must
 		//manually add them in
 		System.out.println("Select a strategy from the list");
@@ -98,10 +100,10 @@ public class Run {
 			}
 			switch (choice) {
 			case 1:
-				strat = new NullStrategy();
+				strat = f.makeNullStrategy();
 				break;
 			case 2:
-				strat = new DumbStrategy(null);
+				strat = f.makeDumbStrategy();
 				break;
 			}
 		} catch (InputMismatchException e) {
@@ -110,7 +112,7 @@ public class Run {
 		return strat;
 	}
 
-	private static void runSimulation(Reader CSV, Strategy strat) {
+	private static void runSimulation(Reader CSV, Strategy strat, Factory f) {
 
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
@@ -120,8 +122,8 @@ public class Run {
 
 
 		// Create the objects required by the SignalGenerator
-		OrderBooks  orderBooks  = new OrderBooks();
-		TradeEngine tradeEngine = new TradeEngine(orderBooks);
+		OrderBooks  orderBooks  = f.makeOrderBooks();
+		TradeEngine tradeEngine = f.makeTradeEngine();
 
 		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat, orderBooks, tradeEngine);
 
