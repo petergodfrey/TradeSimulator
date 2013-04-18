@@ -6,4 +6,6 @@ interface Strategy {
     public String getStrategyName();
     //name is used for display in UI
     
+    
+    
 }
