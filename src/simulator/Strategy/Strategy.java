@@ -1,5 +1,8 @@
-package simulator;
-interface Strategy {
+package simulator.Strategy;
+
+import simulator.Order;
+
+public interface Strategy {
 
     public Order generateOrder();
     

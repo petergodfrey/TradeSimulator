@@ -1,4 +1,8 @@
-package simulator;
+package simulator.Strategy;
+
+import simulator.Order;
+import simulator.OrderBooks;
+
 public class DumbStrategy implements Strategy {
     
     OrderBooks orderBooks;

@@ -1,4 +1,6 @@
-package simulator;
+package simulator.Strategy;
+
+import simulator.Order;
 
 public class NullStrategy implements Strategy {
 

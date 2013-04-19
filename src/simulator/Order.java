@@ -3,19 +3,17 @@ public class Order {
 
     public final static Order NO_ORDER = null;
 	
-    
-        
-    private String instrument;
-    private String date;
+    private final String instrument;
+    private final String date;
     private String time;
-    private String recordType;
+    private final String recordType;
     private Double price;
     private Double volume;
     private String qualifiers;
     private long   transactionID;
-    private long   bidID;
-    private long   askID;
-    private String bidAsk;
+    private final long   bidID;
+    private final long   askID;
+    private final String bidAsk;
         
 	public Order(String instrument,
                  String date,

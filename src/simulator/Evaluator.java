@@ -1,5 +1,7 @@
 package simulator;
 
+import simulator.Strategy.Strategy;
+
 public class Evaluator {
 	
 	private Strategy strat;

@@ -1,4 +1,4 @@
-package simulator;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import simulator.Factory;
+import simulator.Order;
+import simulator.OrderBooks;
+import simulator.Reader;
+import simulator.SignalGenerator;
+import simulator.Strategy.Strategy;
 
 public class Tests {
 	

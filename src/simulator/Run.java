@@ -1,8 +1,9 @@
 package simulator;
 
 import java.util.InputMismatchException;
-import java.util.LinkedList;
 import java.util.Scanner;
+
+import simulator.Strategy.Strategy;
 
 public class Run {
 	//TODO fix tests structure
@@ -145,6 +146,7 @@ public class Run {
 			tradeEngine.trade();
 			//orderBooks.display();
 			displayProgress(CSV);
+			
 			
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine);

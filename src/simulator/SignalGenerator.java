@@ -1,18 +1,17 @@
 package simulator;
 import java.io.*;
 
+import simulator.Strategy.Strategy;
+
 public class SignalGenerator {
-
-    public static final int ADVANCE_SUCCESS = 0;
-    public static final int SIMULATION_END  = 1;
-
+	
     private Reader      reader;
     private Strategy   strategy;
 
     
-    SignalGenerator(Reader reader, Strategy stratergy) {
+    public SignalGenerator(Reader reader, Strategy strategy) {
         this.reader      = reader;
-        this.strategy   = stratergy;
+        this.strategy   = strategy;
     }
     
     /*

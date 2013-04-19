@@ -3,6 +3,10 @@ package simulator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import simulator.Strategy.NullStrategy;
+import simulator.Strategy.Strategy;
+import simulator.Strategy.DumbStrategy;
+
 public class Factory {
 	
 	private OrderBooks books = null;
