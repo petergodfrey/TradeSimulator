@@ -3,6 +3,7 @@ package test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import simulator.Factory;
 import simulator.Order;
 import simulator.Reader;
 
@@ -12,10 +13,12 @@ public class TestReader {
 		
 		System.out.print("Testing Reader class..... ");
 		
+		Factory f = new Factory();
+		
 		Reader r = null;
 		
 		try {
-			r = new Reader("sample1.csv");
+			r = new Reader("sample1.csv", f);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace(System.err);
 			System.exit(1);

@@ -13,6 +13,7 @@ public class Run {
 	//TODO fix tradeEngine
 	//TODO fatory pattern orders object
 	//TODO internally generate ID for all orders
+	//TODO extend Trade from Order, Trade holds the 2 orders that are traded
 	
 	public static void main (String[] args) {
 		
@@ -163,7 +164,8 @@ public class Run {
 	}
 	
 	private static void displayProgress(Reader CSV) {
-		System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+		System.out.printf("\r %.2f percent done",
+				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
 

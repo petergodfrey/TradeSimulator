@@ -7,10 +7,12 @@ public class TradeEngine {
     
 	private OrderBooks       orderBooks;
 	private ArrayList<Order> tradeList;
+	private Factory f;
 	
-    public TradeEngine(OrderBooks orderBooks) {
+    public TradeEngine(OrderBooks orderBooks, Factory f) {
         this.orderBooks = orderBooks;
         this.tradeList = new ArrayList<Order>();
+        this.f = f;
     }
     
     /*
@@ -78,8 +80,6 @@ public class TradeEngine {
      */
     private void addTrade(Order bid, Order ask) {
     	
-    	//System.out.println("Trade!");
-    	
     	double tradePrice = bid.price();
     	if ( ask.isEarlier(bid) ) {
 			tradePrice = ask.price();
@@ -87,7 +87,7 @@ public class TradeEngine {
     	
     	double volume = Math.min(bid.volume(), ask.volume() );
     	
-    	tradeList.add(new Order( bid.instrument(),
+    	tradeList.add(f.makeOrder( bid.instrument(),
     			                 "",            // TODO Date & Time
     			                 "",
     			                 "TRADE",

@@ -9,7 +9,7 @@ public class Reader {
     
     private final String filepath;
 	
-    /* The positions of each data field in the csv file */
+    /* The index positions of each data field in the csv file */
     private final int INSTRUMENT;
     private final int DATE;
     private final int TIME;
@@ -22,13 +22,16 @@ public class Reader {
     private final int ASK_ID;
     private final int BID_ASK;
     
+    private Factory f;
+    
     private BufferedReader reader;
     private BufferedReader sizeReader;
-    private int size = -1;//disregard the first line
+    private int size = -1;//header line is counted, so start with -1
     private int progress = 0;
     
-    public Reader(String path) throws IOException, FileNotFoundException {
+    public Reader(String path, Factory f) throws IOException, FileNotFoundException {
         
+    	this.f = f;
         reader = new BufferedReader( new FileReader(path) );
         sizeReader = new BufferedReader( new FileReader(path) );
         
@@ -111,7 +114,7 @@ public class Reader {
         
         String[] entry = line.split(",", -1); // Break line into individual fields
             	
-        return new Order (entry[INSTRUMENT],
+        return f.makeOrder(entry[INSTRUMENT],
                           entry[DATE],
                           entry[TIME],
                           entry[RECORD_TYPE],

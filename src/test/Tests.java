@@ -19,21 +19,20 @@ import simulator.Strategy.Strategy;
 
 public class Tests {
 	
-	String sampleFilePath;
+	String sampleFilePath = System.getProperty("user.dir") + "/Sample1.csv";
 	OrderBooks TE;
 	Factory factory;
 	
 	/*
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-
 	}
 	*/
 	
 	@Before
 	public void setUp() throws Exception {
 		factory = new Factory();
-		sampleFilePath = System.getProperty("user.dir") + "/Sample1.csv";
+		
 	}
 		
 	@Test
