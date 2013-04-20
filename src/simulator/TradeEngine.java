@@ -87,7 +87,7 @@ public class TradeEngine {
     	
     	double volume = Math.min(bid.volume(), ask.volume() );
     	
-    	tradeList.add(f.makeOrder( bid.instrument(),
+    	tradeList.add(f.makeOrder(
     			                 "",            // TODO Date & Time
     			                 "",
     			                 "TRADE",

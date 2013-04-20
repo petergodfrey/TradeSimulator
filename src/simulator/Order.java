@@ -3,7 +3,7 @@ public class Order {
 
     public final static Order NO_ORDER = null;
 	
-    private final String instrument;
+    private String instrument;
     private final String date;
     private String time;
     private final String recordType;
@@ -15,7 +15,7 @@ public class Order {
     private final long   askID;
     private final String bidAsk;
         
-	public Order(String instrument,
+	public Order(//String instrument,
                  String date,
                  String time,
                  String recordType,
@@ -27,7 +27,7 @@ public class Order {
                  long   askID,
                  String bidAsk) {
 		
-        this.instrument    = instrument;
+        //this.instrument    = instrument;
         this.date          = date;
         this.time          = time;
         this.recordType    = recordType;

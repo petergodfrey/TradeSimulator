@@ -44,13 +44,13 @@ public class Factory {
 		return new Reader(filepath, this);
 	}
 
-	public Order makeOrder(String instrument, String date, String time,
+	public Order makeOrder(String date, String time,
 			String recordType, double price, double volume,
 			String qualifiers, long   transactionID,
 			long   bidID, long   askID,
 			String bidAsk) {
 
-		return new Order(instrument, date, time, recordType, price,
+		return new Order(date, time, recordType, price,
 				volume, qualifiers, transactionID, bidID, askID, bidAsk);
 	}
 

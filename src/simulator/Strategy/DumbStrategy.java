@@ -22,12 +22,10 @@ public class DumbStrategy implements Strategy {
     	if (orderBooks.bidListSize() != 0 && !ordered) {
     		Order bestbid = orderBooks.bestBidOrder();
     		 o = new Order(
-    				bestbid.instrument(),
     				bestbid.date(),
     				bestbid.time(),
     				"ENTER", bestbid.price()-1, 1000, null, 0, -1, 0, "B");
     		 order = new Order(
-     				bestbid.instrument(),
      				bestbid.date(),
      				bestbid.time(),
      				"ENTER", bestbid.price()-1, 1000, null, 0, -1, 0, "B");

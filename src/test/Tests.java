@@ -32,7 +32,7 @@ public class Tests {
 	@Before
 	public void setUp() throws Exception {
 		factory = new Factory();
-		
+		//Order o1 = new Order();
 	}
 		
 	@Test
@@ -54,8 +54,8 @@ public class Tests {
 
 	@Test
 	public void testOrderGeneration() {
-		Order order = new Order("instrument", "date", "time", "recordType", 0.00, 0.00, "qualifiers", 1234, 23445, 123, "bidAsk");
-		assertEquals("instrument", order.instrument());
+		Order order = new Order("date", "time", "recordType", 0.00, 0.00, "qualifiers", 1234, 23445, 123, "bidAsk");
+		//assertEquals("instrument", order.instrument());
 		assertEquals("date", order.date());
 		assertEquals("time", order.time());
 		assertEquals("recordType", order.recordType());
@@ -119,9 +119,9 @@ public class Tests {
 	*/
     @Test
     public void testOrderBookGetBid() {
-	    Order bid1 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.76, 1959.0, new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
-	    Order bid2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
-	    Order bid3 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.380,111,new String(),new Long(0), new Long("6239925033923871154"), new Long(0),"B");
+	    Order bid1 = new Order("20130304", "00:00:00.000", "ENTER", 67.76, 1959.0, new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
+	    Order bid2 = new Order("20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
+	    Order bid3 = new Order("20130304", "00:00:00.000", "ENTER", 67.380,111,new String(),new Long(0), new Long("6239925033923871154"), new Long(0),"B");
 	    OrderBooks b = factory.makeOrderBooks(); 
 	    b.processOrder(bid1);
 	    b.processOrder(bid2);
@@ -133,9 +133,9 @@ public class Tests {
 	@Test
 	public void testOrderBookGetAsk() {		
 		OrderBooks b = factory.makeOrderBooks();
-		Order ask1 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.900, 409, new String(), new Long(0), new Long(0), new Long("6238329642550435411"), "A");
-		Order ask2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.900, 200, new String(), new Long(0), new Long(0), new Long("6239528659982899884"), "A");
-		Order ask3 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.940, 300, new String(), new Long(0), new Long(0), new Long("6239925033924584462"), "A");
+		Order ask1 = new Order("20130304", "00:00:00.000", "ENTER", 67.900, 409, new String(), new Long(0), new Long(0), new Long("6238329642550435411"), "A");
+		Order ask2 = new Order("20130304", "00:00:00.000", "ENTER", 67.900, 200, new String(), new Long(0), new Long(0), new Long("6239528659982899884"), "A");
+		Order ask3 = new Order("20130304", "00:00:00.000", "ENTER", 67.940, 300, new String(), new Long(0), new Long(0), new Long("6239925033924584462"), "A");
 		b.processOrder(ask1);
 		b.processOrder(ask2);
 		b.processOrder(ask3);
@@ -145,17 +145,17 @@ public class Tests {
 	
 	@Test
 	public void testOrderBookAdd() {
-		Order bid = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
+		Order bid = new Order("20130304", "00:00:00.000", "ENTER", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
 		OrderBooks b = factory.makeOrderBooks(); 
 		b.processOrder(bid);
 		assertEquals(1, b.bidListSize());
 		assertEquals(bid, b.bestBidOrder());
-		Order bid2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
+		Order bid2 = new Order("20130304", "00:00:00.000", "ENTER", 67.760, 15,new String(), new Long(0),new Long("6239925033924850752"), new Long(0),"B");
 	    b.processOrder(bid2);
 	    assertEquals(2, b.bidListSize());
 	    
-		Order ask1 = new Order("CBA", "20130304" ,"00:00:00.000","ENTER", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");
-		Order ask2 = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.900, 200, new String(), new Long(0), new Long(0), new Long("6239528659982899884"), "A");
+		Order ask1 = new Order("20130304" ,"00:00:00.000","ENTER", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");
+		Order ask2 = new Order("20130304", "00:00:00.000", "ENTER", 67.900, 200, new String(), new Long(0), new Long(0), new Long("6239528659982899884"), "A");
 		b.processOrder(ask1);
 		assertEquals(1, b.askListSize());
 		assertEquals(ask1, b.bestAskOrder());
@@ -165,20 +165,20 @@ public class Tests {
 	
 	@Test
 	public void testOrderBookDelete() {
-		Order bid = new Order("CBA", "20130304", "00:00:00.000", "ENTER", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
+		Order bid = new Order("20130304", "00:00:00.000", "ENTER", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
 		OrderBooks b = factory.makeOrderBooks(); 
 		b.processOrder(bid);
 		assertEquals(1, b.bidListSize());
 		assertEquals(bid, b.bestBidOrder());
-		Order bidD = new Order("CBA", "20130304", "00:00:00.000", "DELETE", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
+		Order bidD = new Order("20130304", "00:00:00.000", "DELETE", 67.76, 1959.0 , new String(), new Long(0), new Long("6239925033925459786"), new Long(0), "B");
 		b.processOrder(bidD);
 		assertEquals(0, b.bidListSize());
 		
-		Order ask = new Order("CBA", "20130304" ,"00:00:00.000","ENTER", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");
+		Order ask = new Order("20130304" ,"00:00:00.000","ENTER", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");
 		b.processOrder(ask);
 		assertEquals(1, b.askListSize());
 		assertEquals(ask, b.bestAskOrder());
-		Order askD = new Order("CBA", "20130304" ,"00:00:00.000","DELETE", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");	
+		Order askD = new Order("20130304" ,"00:00:00.000","DELETE", 67.900, 409,new String(),new Long(0), new Long(0), new Long("6238329642550435411"), "A");	
 		b.processOrder(askD);
 		assertEquals(0, b.askListSize());
 	}

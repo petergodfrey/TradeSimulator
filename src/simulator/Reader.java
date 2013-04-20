@@ -114,7 +114,7 @@ public class Reader {
         
         String[] entry = line.split(",", -1); // Break line into individual fields
             	
-        return f.makeOrder(entry[INSTRUMENT],
+        return f.makeOrder(
                           entry[DATE],
                           entry[TIME],
                           entry[RECORD_TYPE],
