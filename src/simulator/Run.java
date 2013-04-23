@@ -160,7 +160,7 @@ public class Run {
 		Evaluator eval = new Evaluator(strat, tradeEngine);
 		System.out.println("\nFinished Simulation");
 		eval.evaluate();
-		
+		f.resetCSVColumns();//every CSV file may have different formatting
 
 	}
 	private static void exitProgram(Scanner s) {
