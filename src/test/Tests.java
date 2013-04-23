@@ -213,7 +213,12 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		assertEquals(new String("00:00:00.000"), sg.advance().time());
 	}
 
@@ -227,7 +232,12 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		assertEquals(new String("ENTER"), sg.advance().recordType());
 	}
 
@@ -241,7 +251,12 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		assertEquals(new Double(67.760), sg.advance().price());
 	}
 
@@ -255,7 +270,13 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(new Double(1959), sg.advance().volume());
 	}
 
@@ -269,7 +290,13 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(new String("A"), sg.advance().bidAsk());
 	}
 	
@@ -283,7 +310,13 @@ public class Tests {
 			e.printStackTrace();
 		}
 		Strategy strategy= factory.makeDumbStrategy();
-		SignalGenerator sg = new SignalGenerator(CSV, strategy);
+		SignalGenerator sg = null;
+		try {
+			sg = new SignalGenerator(CSV, strategy, factory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(new String(), sg.advance().qualifiers());
 	}
 

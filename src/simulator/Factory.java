@@ -41,7 +41,7 @@ public class Factory {
 	}
 
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {
-		return new Reader(filepath, this);
+		return new Reader(filepath);
 	}
 
 	public Order makeOrder(String date, String time,

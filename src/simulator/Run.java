@@ -1,5 +1,6 @@
 package simulator;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -136,7 +137,13 @@ public class Run {
 		OrderBooks  orderBooks  = f.makeOrderBooks();
 		TradeEngine tradeEngine = f.makeTradeEngine();
 
-		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat);
+		SignalGenerator signalGenerator = null;
+		try {
+			signalGenerator = new SignalGenerator(CSV, strat, f);
+		} catch (IOException e) {
+			System.out.println("Error in reading CSV file, exiting simulation");
+			return;
+		}
 
 		System.out.println("Running simulation ");
 		
