@@ -82,7 +82,7 @@ public class TradeEngine {
     	
     	double tradePrice = ask.price();//always trades at ask price
     	
-    	double volume = Math.min(bid.volume(), ask.volume() );
+    	int volume = Math.min(bid.volume(), ask.volume() );
     	
     	tradeList.add(f.makeTrade(orderBooks.getSimulatedTime(),
     			                 "TRADE",

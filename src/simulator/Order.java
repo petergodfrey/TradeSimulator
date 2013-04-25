@@ -6,17 +6,17 @@ public class Order {
 	private String 			time;
 	private final String 	recordType;
 	private Double 			price;
-	private Double 			volume;
+	private int 			volume;
 	private String 			qualifiers;
 	private long   			ID;
 
 	private final String bidAsk;
 
-	public Order(//String instrument,
+	public Order(
 			String time,
 			String recordType,
 			double price,
-			double volume,
+			int volume,
 			String qualifiers,
 			long   ID,
 			String bidAsk) {
@@ -61,7 +61,7 @@ public class Order {
 		return this.price;
 	}
 
-	public Double volume() {
+	public int volume() {
 		return this.volume;
 	}
 
@@ -93,7 +93,7 @@ public class Order {
 	}
 
 	// Change the volume field
-	void updateVolume(double newVolume) {
+	void updateVolume(int newVolume) {
 		this.volume = newVolume;
 	}
 

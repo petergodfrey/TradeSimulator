@@ -9,7 +9,7 @@ public class Trade extends Order {
 			String time,
 			String recordType,
 			double price,
-			double volume,
+			int volume,
 			String qualifiers,
 			long ID,
 			String bidAsk,

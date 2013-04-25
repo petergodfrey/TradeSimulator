@@ -16,6 +16,7 @@ public class Run {
 	//internally generate ID for all orders
 	//TODO extend Trade from Order, Trade holds the 2 orders that are traded
 	//TODO add qualifier features
+	//TODO trading time range
 	
 	public static void main (String[] args) {
 		

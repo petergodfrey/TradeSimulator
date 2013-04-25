@@ -17,6 +17,7 @@ public class Factory {
 
 	private static final double EMPTY_DOUBLE_FIELD = -1;
 	private static final long   EMPTY_LONG_FIELD = -1;
+	private static final int   EMPTY_INTEGER_FIELD = -1;
 
 	/* The index positions of each data field in the csv file */
 	private int INSTRUMENT;
@@ -97,7 +98,7 @@ public class Factory {
 
 			throw new IOException();
 		}
-	}
+	} 
 
 	public void resetCSVColumns() {
 		INSTRUMENT     = -1;
@@ -115,7 +116,7 @@ public class Factory {
 
 	//makes actual order object
 	public Order makeOrder(String time,
-			String recordType, double price, double volume,
+			String recordType, double price, int volume,
 			String qualifiers, long   transactionID,
 			String bidAsk) {
 
@@ -153,7 +154,7 @@ public class Factory {
 						entry[TIME],
 						entry[RECORD_TYPE],
 						parseDouble(entry[PRICE]),
-						parseDouble(entry[VOLUME]),
+						parseInteger(entry[VOLUME]),
 						entry[QUALIFIERS],
 						parseLong(entry[ID_index]),
 						entry[BID_ASK]);
@@ -182,9 +183,17 @@ public class Factory {
 			return Long.parseLong(s);    
 		} 
 	}
+	
+	private int parseInteger(String s) {
+		if ( s.equals("") ) {
+			return EMPTY_INTEGER_FIELD;
+		} else {
+			return Integer.parseInt(s);    
+		} 
+	}
 
 	public Trade makeTrade(String simulatedTime, String recordType,
-			double tradePrice, double volume, String qualifier,
+			double tradePrice, int volume, String qualifier,
 			String bidAsk, Order bid, Order ask) {
 
 		return new Trade(simulatedTime, recordType, tradePrice,
