@@ -15,7 +15,7 @@ public class Evaluator {
 	public void evaluate() {
 		System.out.println("printing the profits of the trades");
 		for (int i = 0; i < tradeEngine.getTradeList().size(); i++) {
-			if (tradeEngine.getTradeList().get(i).bidID() == -1) {
+			if (tradeEngine.getTradeList().get(i).ID() == -1) {
 				System.out.println(tradeEngine.getTradeList().get(i).price() - strat.getOrderedOrders().price());
 			}
 		}

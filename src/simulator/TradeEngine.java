@@ -6,12 +6,12 @@ import java.lang.Math;
 public class TradeEngine {
     
 	private OrderBooks       orderBooks;
-	private ArrayList<Order> tradeList;
+	private ArrayList<Trade> tradeList;
 	private Factory f;
 	
     public TradeEngine(OrderBooks orderBooks, Factory f) {
         this.orderBooks = orderBooks;
-        this.tradeList = new ArrayList<Order>();
+        this.tradeList = new ArrayList<Trade>();
         this.f = f;
     }
     
@@ -65,7 +65,7 @@ public class TradeEngine {
     	return numberOfTrades;		
     }
     
-    public ArrayList<Order> getTradeList () {
+    public ArrayList<Trade> getTradeList () {
     	return tradeList;
     }
     
@@ -80,23 +80,17 @@ public class TradeEngine {
      */
     private void addTrade(Order bid, Order ask) {
     	
-    	double tradePrice = bid.price();
-    	if ( ask.isEarlier(bid) ) {
-			tradePrice = ask.price();
-		}
+    	double tradePrice = ask.price();//always trades at ask price
     	
     	double volume = Math.min(bid.volume(), ask.volume() );
     	
-    	tradeList.add(f.makeOrder(
-    			                 "",            // TODO Date & Time
-    			                 "",
+    	tradeList.add(f.makeTrade(orderBooks.getSimulatedTime(),
     			                 "TRADE",
     	           	             tradePrice,
     			                 volume,
     					         "",            // TODO Qualifiers
-    					         1,             // TODO Transaction ID
-    					         bid.bidID(),
-    					         ask.askID(),
-    					         "") );
+    					         "", bid, ask) );
     }
+    
+
 }

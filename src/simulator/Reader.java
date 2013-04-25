@@ -1,6 +1,5 @@
 package simulator;
 import java.io.*;
-import java.util.*;
 
 public class Reader {
     

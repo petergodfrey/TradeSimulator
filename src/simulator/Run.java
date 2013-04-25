@@ -13,8 +13,9 @@ public class Run {
 	//TODO hashmap the orderbooks for speed
 	//TODO fix tradeEngine
 	//TODO fatory pattern orders object
-	//TODO internally generate ID for all orders
+	//internally generate ID for all orders
 	//TODO extend Trade from Order, Trade holds the 2 orders that are traded
+	//TODO add qualifier features
 	
 	public static void main (String[] args) {
 		

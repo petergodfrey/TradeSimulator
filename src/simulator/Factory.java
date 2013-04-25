@@ -30,12 +30,8 @@ public class Factory {
 	private int BID_ID;
 	private int ASK_ID;
 	private int BID_ASK;
-
-	//orders index number
-	private int bidID	= 0;
-	private int askID	= 0;
-	private int tradeID = 0;
-
+	
+	private long tradeID = 0;
 
 	public OrderBooks makeOrderBooks() {
 		if (books == null) {
@@ -116,56 +112,83 @@ public class Factory {
 		ASK_ID         = -1;
 		BID_ASK        = -1; 
 	}
-	
+
 	//makes actual order object
-	public Order makeOrder(String date, String time,
+	public Order makeOrder(String time,
 			String recordType, double price, double volume,
 			String qualifiers, long   transactionID,
-			long   bidID, long   askID,
 			String bidAsk) {
 
-		return new Order(date, time, recordType, price,
-				volume, qualifiers, transactionID, bidID, askID, bidAsk);
+		return new Order(time, recordType, price,
+				volume, qualifiers, transactionID, bidAsk);
 	}
-	
+
 	//converts string to order object, calling makeOrder()
 	public Order makeOrderFromCSV(String line) {
+		Order o = null;
 
-		if (line == null) {                   // Check if end of file was reached
-            return Order.NO_ORDER;
-        }
-        
-        String[] entry = line.split(",", -1); // Break line into individual fields
+		String[] entry = line.split(",", -1); // Break line into individual fields
 
-        return makeOrder(
-                entry[DATE],
-                entry[TIME],
-                entry[RECORD_TYPE],
-                parseDouble(entry[PRICE]),
-                parseDouble(entry[VOLUME]),
-                entry[QUALIFIERS],
-                parseLong(entry[TRANSACTION_ID]),
-                parseLong(entry[BID_ID]),
-                parseLong(entry[ASK_ID]),
-                entry[BID_ASK]);
+		if (entry[RECORD_TYPE].equals("TRADE") ||
+				entry[RECORD_TYPE].equals("OFFTR") ||
+				entry[RECORD_TYPE].equals("CANCEL_TRADE") ||
+				entry[RECORD_TYPE].equals("DELETE") ||
+				entry[RECORD_TYPE].equals("AMEND")) {
+			o = null;
+		} else {
+
+			int ID_index = -1;
+			if (entry[BID_ASK].equals("B")) {
+				ID_index = BID_ID;
+			}
+			else if (entry[BID_ASK].equals("A")) {
+				ID_index = ASK_ID;
+			}
+
+			if (ID_index == -1) {
+				o = null;
+			} else {
+
+				o = makeOrder(
+						entry[TIME],
+						entry[RECORD_TYPE],
+						parseDouble(entry[PRICE]),
+						parseDouble(entry[VOLUME]),
+						entry[QUALIFIERS],
+						parseLong(entry[ID_index]),
+						entry[BID_ASK]);
+			}
+		}
+
+		return o;
 	}
 	
-    // Parser which handles the case of an empty string
-    private double parseDouble(String s) {
-        if ( s.equals("") ) {
-            return EMPTY_DOUBLE_FIELD;
-        } else {
-            return Double.parseDouble(s);    
-        }
-    }
-    
-    // Parser which handles the case of an empty string
-    private long parseLong(String s) {
-        if ( s.equals("") ) {
-            return EMPTY_LONG_FIELD;
-        } else {
-            return Long.parseLong(s);    
-        }
-    }
+
+
+	// Parser which handles the case of an empty string
+	private double parseDouble(String s) {
+		if ( s.equals("") ) {
+			return EMPTY_DOUBLE_FIELD;
+		} else {
+			return Double.parseDouble(s);    
+		}
+	}
+
+	// Parser which handles the case of an empty string
+	private long parseLong(String s) {
+		if ( s.equals("") ) {
+			return EMPTY_LONG_FIELD;
+		} else {
+			return Long.parseLong(s);    
+		} 
+	}
+
+	public Trade makeTrade(String simulatedTime, String recordType,
+			double tradePrice, double volume, String qualifier,
+			String bidAsk, Order bid, Order ask) {
+
+		return new Trade(simulatedTime, recordType, tradePrice,
+				volume, qualifier, tradeID++, bidAsk, bid, ask);
+	}
 
 }

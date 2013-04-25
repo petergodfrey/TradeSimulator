@@ -36,30 +36,29 @@ public class SignalGenerator {
 		}
 		return o;
 	}
-	
+
 	//selectively chooses so that TRADE, OFFTR, CANCEL_TRADE do not go into orderbooks
 	private Order CSVNext() throws IOException {
 		Order o = createOrder();
-		while (o != null && (o.recordType().equals("TRADE") ||
-				o.recordType().equals("OFFTR") ||
-				o.recordType().equals("CANCEL_TRADE") ||
-				o.recordType().equals("DELETE") ||
-				o.recordType().equals("AMEND"))) {
-			o = createOrder();
-		}
 		return o;
 	}
-	
+
 	//creates order from a CSV line
 	private Order createOrder() throws IOException {
-
+		Order o = null;
 		String line = reader.readLine();      // Read a single line
 
 		if (line == null) {                   // Check if end of file was reached
-			return Order.NO_ORDER;
-		}
+			o = Order.NO_ORDER;
+		} else {
 
-		return f.makeOrderFromCSV(line);
+			o = f.makeOrderFromCSV(line);
+
+			if (o == null) {
+				o = createOrder();
+			}
+		}
+		return o;
 	}
 
 

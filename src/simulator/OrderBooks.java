@@ -12,8 +12,14 @@ public class OrderBooks {
 	/*
 	 * The bidList and askList will both be ordered by price/time
      */
-    LinkedList<Order> bidList = new LinkedList<Order>();
-    LinkedList<Order> askList = new LinkedList<Order>();
+    private LinkedList<Order> bidList = new LinkedList<Order>();
+    private LinkedList<Order> askList = new LinkedList<Order>();
+    
+    private String simulatedTime = "";
+    
+    public String getSimulatedTime() {
+    	return this.simulatedTime;
+    }
     
     /*
      * Inserts/processes a single order
@@ -33,6 +39,8 @@ public class OrderBooks {
     		// Record Type is unsupported, Sirca data should never reach here
     		throw new UnsupportedOperationException();
     	}
+    	//update the simulated time at each order given
+    	simulatedTime = o.time();
     }
     
     // Returns the lowest ask (sell) Order
@@ -79,9 +87,9 @@ public class OrderBooks {
      */
     public void deleteOrder(Order o) throws UnsupportedOperationException {
         if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.transactionID() ) );
+        	bidList.remove( findByTransactionID( bidList, o.ID() ) );
         } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.transactionID() ) );
+        	askList.remove( findByTransactionID( askList, o.ID() ) );
         } else {
         	throw new UnsupportedOperationException();
         }
@@ -99,9 +107,9 @@ public class OrderBooks {
      */
     public void updateVolume(Order o, double newVolume) throws UnsupportedOperationException {
         if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.transactionID() ) );
+        	bidList.remove( findByTransactionID( bidList, o.ID() ) );
         } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.transactionID() ) );
+        	askList.remove( findByTransactionID( askList, o.ID() ) );
         } else {
         	throw new UnsupportedOperationException();
         }
@@ -109,14 +117,7 @@ public class OrderBooks {
     
     /* Private Methods */
 
-    // Takes a List of Orders and returns a deep copy
-    private ArrayList<Order> copyList(List<Order> list) {
-        ArrayList<Order> copy = new ArrayList<Order>();
-        for (Order o : list) {
-            copy.add( new Order(o) ); // Add a copy of the order
-        }
-        return copy;
-    }
+
     
     private void enterOrder(Order o) throws UnsupportedOperationException {
     	if (o.bidAsk().equals("B")) {
@@ -186,7 +187,7 @@ public class OrderBooks {
      */
     private int findByTransactionID(List<Order> list, long transactionID) {
     	for (int i = 0; i < list.size(); i++) {
-    		if (list.get(i).transactionID() == transactionID) {
+    		if (list.get(i).ID() == transactionID) {
     			return i;
     		}
     	}
@@ -199,14 +200,14 @@ public class OrderBooks {
 		System.out.println("bid\t\t\t\t\t|Ask");
 		for (int i = 0; i < bidList.size() || i < askList.size(); i++) {
 			if (i < bidList.size()) {
-				System.out.print(bidList.get(i).bidID()+"\t");
+				System.out.print(bidList.get(i).ID()+"\t");
 				System.out.print(bidList.get(i).price()+"\t");
 				System.out.print(bidList.get(i).volume() + "\t|");
 			} else {
 				System.out.print("\t\t\t\t\t\t|");
 			}
 			if (i < askList.size()) {
-				System.out.print(askList.get(i).askID()+"\t");
+				System.out.print(askList.get(i).ID()+"\t");
 				System.out.print(askList.get(i).price()+"\t");
 				System.out.print(askList.get(i).volume());
 			}
