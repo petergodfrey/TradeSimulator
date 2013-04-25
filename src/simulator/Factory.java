@@ -132,9 +132,7 @@ public class Factory {
 
 		if (entry[RECORD_TYPE].equals("TRADE") ||
 				entry[RECORD_TYPE].equals("OFFTR") ||
-				entry[RECORD_TYPE].equals("CANCEL_TRADE") ||
-				entry[RECORD_TYPE].equals("DELETE") ||
-				entry[RECORD_TYPE].equals("AMEND")) {
+				entry[RECORD_TYPE].equals("CANCEL_TRADE")) {
 			o = null;
 		} else {
 

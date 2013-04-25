@@ -21,6 +21,15 @@ public class OrderBooks {
     	return this.simulatedTime;
     }
     
+    public static int convertTimeToMilliseconds(String time) {
+    	String[] timeSplit = time.split(":");
+    	int milliseconds = 0;
+    	milliseconds = (int) (Float.parseFloat(timeSplit[2])*1000);
+    	milliseconds += Integer.parseInt(timeSplit[1]) * 1000 * 60;
+    	milliseconds += Integer.parseInt(timeSplit[0]) * 1000 * 60 * 60;
+    	return milliseconds;
+    }
+    
     /*
      * Inserts/processes a single order
      * 
@@ -87,33 +96,14 @@ public class OrderBooks {
      */
     public void deleteOrder(Order o) throws UnsupportedOperationException {
         if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.ID() ) );
+        	bidList.remove( findByTransactionID(bidList, o.ID() ));
         } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.ID() ) );
+        	askList.remove( findByTransactionID(askList, o.ID() ));
         } else {
         	throw new UnsupportedOperationException();
         }
     }
     
-    /*
-     * Delete an order from the order books
-     * 
-     * Parameters:
-     * o - The DELETE order to be processed
-     * 
-     * Returns:
-     * true if a matching order was found and deleted from the order book
-     * false otherwise
-     */
-    public void updateVolume(Order o, double newVolume) throws UnsupportedOperationException {
-        if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.ID() ) );
-        } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.ID() ) );
-        } else {
-        	throw new UnsupportedOperationException();
-        }
-    }
     
     /* Private Methods */
 
@@ -165,12 +155,17 @@ public class OrderBooks {
 		} else {
 			throw new UnsupportedOperationException();
 		}
-		
-		
 	}
 
 	private void amendOrder(Order o) {
-
+		deleteOrder(o);
+        if ( o.bidAsk().equals("B") ) {
+        	insert(o, bidList);
+        } else if ( o.bidAsk().equals("A") ) {
+        	insert(o, askList);
+        } else {
+        	throw new UnsupportedOperationException();
+        }
 	}
  
     /*
@@ -185,13 +180,14 @@ public class OrderBooks {
      * The index of the first occurrence of the element with a matching transaction ID
      * OR -1 if no matching order was found
      */
-    private int findByTransactionID(List<Order> list, long transactionID) {
+    private Order findByTransactionID(List<Order> list, long transactionID) {
+    	Order o = null;
     	for (int i = 0; i < list.size(); i++) {
     		if (list.get(i).ID() == transactionID) {
-    			return i;
+    			o = list.get(i);
     		}
     	}
-    	return -1;
+    	return o;
     }
     
 	public void display() {

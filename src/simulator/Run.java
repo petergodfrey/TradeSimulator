@@ -7,16 +7,17 @@ import java.util.Scanner;
 import simulator.Strategy.Strategy;
 
 public class Run {
-	//TODO fix tests structure
+	//fix tests structure
 	//TODO make an evaluator
-	//TODO only accepts enter right now
+	//only accepts enter right now
 	//TODO hashmap the orderbooks for speed
 	//TODO fix tradeEngine
-	//TODO fatory pattern orders object
-	//internally generate ID for all orders
-	//TODO extend Trade from Order, Trade holds the 2 orders that are traded
+	//factory pattern orders object
+	//internally generate ID for trade orders
+	//extend Trade from Order, Trade holds the 2 orders that are traded
 	//TODO add qualifier features
-	//TODO trading time range
+	//trading time range
+	//TODO insert on price works, need to insert on time
 	
 	public static void main (String[] args) {
 		

@@ -125,6 +125,13 @@ public class TestOrderBook {
 		assertEquals(orderBooks.askListSize(), 3);
 		assertEquals(orderBooks.bidListSize(), 3);
 	}
+	
+	@Test
+	public void testTimeCompare() {
+		//if possible, make more tests to check all the times.
+		//if possible, make some sort of loop to check all the times
+		assertTrue(OrderBooks.convertTimeToMilliseconds("00:00:00.000") < OrderBooks.convertTimeToMilliseconds("00:00:00.001"));
+	}
 
 	@Test
 	public void testOrderBookDelete() {

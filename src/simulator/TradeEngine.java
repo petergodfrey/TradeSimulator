@@ -8,11 +8,17 @@ public class TradeEngine {
 	private OrderBooks       orderBooks;
 	private ArrayList<Trade> tradeList;
 	private Factory f;
+	private String openTrading = "10:00:00.000";
 	
     public TradeEngine(OrderBooks orderBooks, Factory f) {
         this.orderBooks = orderBooks;
         this.tradeList = new ArrayList<Trade>();
         this.f = f;
+    }
+    
+    private boolean timeToTrade(String currentTime, String openingTime) {
+    	return (OrderBooks.convertTimeToMilliseconds(currentTime) >= 
+    			OrderBooks.convertTimeToMilliseconds(openingTime));
     }
     
     /*
@@ -23,9 +29,12 @@ public class TradeEngine {
      * Returns the number of trades that were generated
      */
     
-    public int trade() {
+    public void trade() {
     	
-    	int numberOfTrades = 0;
+    	if (!timeToTrade(orderBooks.getSimulatedTime(), openTrading)) {
+    		return;
+    	}
+    	
     	//Generate a trade transaction with the following properties:
 		//    i.  Volume traded is the minimum volume of best bid and best ask orders.
 		//    ii. The trading price is determined as:
@@ -36,7 +45,7 @@ public class TradeEngine {
     		if (counter > 20) {
     			//hack to break loop
     			//fix later
-    			break;
+    			//break;
     		}
     		Order bestBid = orderBooks.bestBidOrder();
     		Order bestAsk = orderBooks.bestAskOrder();
@@ -60,9 +69,8 @@ public class TradeEngine {
     	    		orderBooks.deleteOrder(bestAsk);
     	    	}
     		}
-    		numberOfTrades++;
     	}
-    	return numberOfTrades;		
+    	return;		
     }
     
     public ArrayList<Trade> getTradeList () {
