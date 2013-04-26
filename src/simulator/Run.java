@@ -108,6 +108,7 @@ public class Run {
 		System.out.println("Select a strategy from the list");
 		System.out.println("1 - No Strategy");
 		System.out.println("2 - Dumb Strategy");
+		System.out.println("3 - New Strategy");
 		Strategy strat = null;
 		try {
 			int choice = s.nextInt();
@@ -120,6 +121,9 @@ public class Run {
 				break;
 			case 2:
 				strat = f.makeDumbStrategy();
+				break;
+			case 3:
+				strat = f.makeNewStrategy();
 				break;
 			}
 		} catch (InputMismatchException e) {

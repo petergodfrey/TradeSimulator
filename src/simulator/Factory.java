@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import simulator.Strategy.NullStrategy;
-import simulator.Strategy.Strategy;
-import simulator.Strategy.DumbStrategy;
+import simulator.Strategy.*;
 
 public class Factory {
 
@@ -54,6 +52,10 @@ public class Factory {
 
 	public Strategy makeDumbStrategy() {
 		return new DumbStrategy(makeOrderBooks());
+	}
+	
+	public Strategy makeNewStrategy() {
+		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
 	}
 
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {
@@ -132,7 +134,9 @@ public class Factory {
 
 		if (entry[RECORD_TYPE].equals("TRADE") ||
 				entry[RECORD_TYPE].equals("OFFTR") ||
-				entry[RECORD_TYPE].equals("CANCEL_TRADE")) {
+				entry[RECORD_TYPE].equals("CANCEL_TRADE")
+				
+				) {
 			o = null;
 		} else {
 

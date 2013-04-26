@@ -2,12 +2,7 @@ package simulator.Strategy;
 
 import simulator.Order;
 
-public class NullStrategy implements Strategy {
-
-	@Override
-	public Order generateOrder() {
-		return null;
-	}
+public class NullStrategy extends AbstractStrategy implements Strategy {
 
 	@Override
 	public String getStrategyName() {
@@ -15,9 +10,11 @@ public class NullStrategy implements Strategy {
 	}
 
 	@Override
-	public Order getOrderedOrders() {
+	public Order strategise() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }

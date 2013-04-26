@@ -13,7 +13,9 @@ public class OrderBooks {
 	 * The bidList and askList will both be ordered by price/time
      */
     private LinkedList<Order> bidList = new LinkedList<Order>();
+    private Map<Long, Order> bidMap = new HashMap<Long, Order>();
     private LinkedList<Order> askList = new LinkedList<Order>();
+    private Map<Long, Order> askMap = new HashMap<Long, Order>();
     
     private String simulatedTime = "";
     

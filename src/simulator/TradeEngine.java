@@ -45,7 +45,7 @@ public class TradeEngine {
     		if (counter > 20) {
     			//hack to break loop
     			//fix later
-    			//break;
+    			break;
     		}
     		Order bestBid = orderBooks.bestBidOrder();
     		Order bestAsk = orderBooks.bestAskOrder();

@@ -25,7 +25,7 @@ public class SignalGenerator {
 	 * This method advances the simulator by a single step
 	 */
 	public Order advance() {
-		Order o = strategy.generateOrder();
+		Order o = strategy.submitOrder();
 		if (o == Order.NO_ORDER) {
 			try {
 				o = CSVNext();

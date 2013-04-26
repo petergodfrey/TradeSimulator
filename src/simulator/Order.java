@@ -9,7 +9,6 @@ public class Order {
 	private int 			volume;
 	private String 			qualifiers;
 	private long   			ID;
-
 	private final String bidAsk;
 
 	public Order(
