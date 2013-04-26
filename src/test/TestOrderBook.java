@@ -130,6 +130,7 @@ public class TestOrderBook {
 	public void testTimeCompare() {
 		//if possible, make more tests to check all the times.
 		//if possible, make some sort of loop to check all the times
+		fail("Not enough tests here");
 		assertTrue(OrderBooks.convertTimeToMilliseconds("00:00:00.000") < OrderBooks.convertTimeToMilliseconds("00:00:00.001"));
 	}
 
