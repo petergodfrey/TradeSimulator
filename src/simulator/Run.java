@@ -161,7 +161,7 @@ public class Run {
 	}
 	
 	private static void displayProgress(Reader CSV) {
-		System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+		//System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
 
