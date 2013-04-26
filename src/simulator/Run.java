@@ -1,10 +1,9 @@
 package simulator;
+import simulator.strategy.*;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import simulator.Strategy.Strategy;
 
 public class Run {
 	//fix tests structure
@@ -178,12 +177,10 @@ public class Run {
 	}
 	
 	private static void displayProgress(Reader CSV) {
-<<<<<<< HEAD
+
 		//System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
-=======
 		System.out.printf("\r %.2f percent done",
 				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
->>>>>>> 89d574136cf92d1873597ca2c0a29e9d812a4473
 	}
 
 

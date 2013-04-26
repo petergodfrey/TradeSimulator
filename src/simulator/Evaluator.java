@@ -1,6 +1,6 @@
 package simulator;
 
-import simulator.Strategy.Strategy;
+import simulator.strategy.Strategy;
 
 public class Evaluator {
 	
