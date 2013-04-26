@@ -1,38 +1,65 @@
 package simulator;
 import java.io.*;
 
+import simulator.Strategy.Strategy;
+
 public class SignalGenerator {
 
-    public static final int ADVANCE_SUCCESS = 0;
-    public static final int SIMULATION_END  = 1;
+	private Reader      reader;
+	private Strategy   strategy;
 
-    private Reader      reader;
-    private Strategy   strategy;
+	private Factory f;
 
-    
-    SignalGenerator(Reader reader, Strategy stratergy) {
-        this.reader      = reader;
-        this.strategy   = stratergy;
-    }
-    
-    /*
-     * This method advances the simulator by a single step
-     */
-    public Order advance() {
-    	Order o = strategy.generateOrder();
-    	if (o == Order.NO_ORDER) {
-    		try {
-				o = reader.next();
+
+	public SignalGenerator(Reader reader, Strategy strategy, Factory f) throws IOException {
+		this.reader      = reader;
+		this.strategy   = strategy;
+		this.f = f;
+
+		//read first line and determine the index positions of columns
+		f.setCSVColumns(reader.readLine()); // Read the initial line
+
+	}
+
+	/*
+	 * This method advances the simulator by a single step
+	 */
+	public Order advance() {
+		Order o = strategy.submitOrder();
+		if (o == Order.NO_ORDER) {
+			try {
+				o = CSVNext();
 			} catch (IOException e) {
 				System.out.println("Error in Reading File. Exiting");
 				System.exit(0);
 			}
-    	}
-    	
-    	return o;
-    }
-    
+		}
+		return o;
+	}
+
+	//selectively chooses so that TRADE, OFFTR, CANCEL_TRADE do not go into orderbooks
+	private Order CSVNext() throws IOException {
+		Order o = createOrder();
+		return o;
+	}
+
+	//creates order from a CSV line
+	private Order createOrder() throws IOException {
+		Order o = null;
+		String line = reader.readLine();      // Read a single line
+
+		if (line == null) {                   // Check if end of file was reached
+			o = Order.NO_ORDER;
+		} else {
+
+			o = f.makeOrderFromCSV(line);
+
+			if (o == null) {
+				o = createOrder();
+			}
+		}
+		return o;
+	}
 
 
-    
 }

@@ -1,17 +1,23 @@
 package simulator;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
 import java.util.Scanner;
 
+import simulator.Strategy.Strategy;
+
 public class Run {
-	//TODO fix tests structure
+	//fix tests structure
 	//TODO make an evaluator
-	//TODO only accepts enter right now
+	//only accepts enter right now
 	//TODO hashmap the orderbooks for speed
 	//TODO fix tradeEngine
-	//TODO fatory pattern orders object
-	//TODO internally generate ID for all orders
+	//factory pattern orders object
+	//internally generate ID for trade orders
+	//extend Trade from Order, Trade holds the 2 orders that are traded
+	//TODO add qualifier features
+	//trading time range
+	//TODO insert on price works, need to insert on time
 	
 	public static void main (String[] args) {
 		
@@ -102,6 +108,7 @@ public class Run {
 		System.out.println("Select a strategy from the list");
 		System.out.println("1 - No Strategy");
 		System.out.println("2 - Dumb Strategy");
+		System.out.println("3 - New Strategy");
 		Strategy strat = null;
 		try {
 			int choice = s.nextInt();
@@ -114,6 +121,9 @@ public class Run {
 				break;
 			case 2:
 				strat = f.makeDumbStrategy();
+				break;
+			case 3:
+				strat = f.makeNewStrategy();
 				break;
 			}
 		} catch (InputMismatchException e) {
@@ -134,7 +144,13 @@ public class Run {
 		OrderBooks  orderBooks  = f.makeOrderBooks();
 		TradeEngine tradeEngine = f.makeTradeEngine();
 
-		SignalGenerator signalGenerator = new SignalGenerator(CSV, strat);
+		SignalGenerator signalGenerator = null;
+		try {
+			signalGenerator = new SignalGenerator(CSV, strat, f);
+		} catch (IOException e) {
+			System.out.println("Error in reading CSV file, exiting simulation");
+			return;
+		}
 
 		System.out.println("Running simulation ");
 		
@@ -146,11 +162,12 @@ public class Run {
 			//orderBooks.display();
 			displayProgress(CSV);
 			
+			
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine);
 		System.out.println("\nFinished Simulation");
 		eval.evaluate();
-		
+		f.resetCSVColumns();//every CSV file may have different formatting
 
 	}
 	private static void exitProgram(Scanner s) {
@@ -161,7 +178,12 @@ public class Run {
 	}
 	
 	private static void displayProgress(Reader CSV) {
+<<<<<<< HEAD
 		//System.out.printf("\r %.2f percent done", 100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+=======
+		System.out.printf("\r %.2f percent done",
+				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+>>>>>>> 89d574136cf92d1873597ca2c0a29e9d812a4473
 	}
 
 

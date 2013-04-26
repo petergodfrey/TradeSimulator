@@ -12,8 +12,25 @@ public class OrderBooks {
 	/*
 	 * The bidList and askList will both be ordered by price/time
      */
-    LinkedList<Order> bidList = new LinkedList<Order>();
-    LinkedList<Order> askList = new LinkedList<Order>();
+    private LinkedList<Order> bidList = new LinkedList<Order>();
+    private Map<Long, Order> bidMap = new HashMap<Long, Order>();
+    private LinkedList<Order> askList = new LinkedList<Order>();
+    private Map<Long, Order> askMap = new HashMap<Long, Order>();
+    
+    private String simulatedTime = "";
+    
+    public String getSimulatedTime() {
+    	return this.simulatedTime;
+    }
+    
+    public static int convertTimeToMilliseconds(String time) {
+    	String[] timeSplit = time.split(":");
+    	int milliseconds = 0;
+    	milliseconds = (int) (Float.parseFloat(timeSplit[2])*1000);
+    	milliseconds += Integer.parseInt(timeSplit[1]) * 1000 * 60;
+    	milliseconds += Integer.parseInt(timeSplit[0]) * 1000 * 60 * 60;
+    	return milliseconds;
+    }
     
     /*
      * Inserts/processes a single order
@@ -22,40 +39,28 @@ public class OrderBooks {
      * o - The order which is to be processed
      */
     public void processOrder(Order o) throws UnsupportedOperationException {
-    	//try {
-    	//	System.out.println(spread());
-    	//} catch (Exception e) {
-    		
-    	//}
-    	//System.out.println(bidList.size() + ", " + askList.size());
+    	
     	if ( o.recordType().equals("ENTER") ) {
         	enterOrder(o);
         } else if ( o.recordType().equals("DELETE") ) {
     		deleteOrder(o);
         } else if ( o.recordType().equals("AMEND") ) {
     		amendOrder(o);
-        } else if ( o.recordType().equals("TRADE") ) {
-        	//should never reach here delete when done
-    		trade(o);
-        } else if ( o.recordType().equals("OFFTR") ) {
-        	//should never reach here delete when done
-        	offTrade(o);
-        } else if ( o.recordType().equals("CANCEL_TRADE") ) {
-        	//should never reach here delete when done
-        	cancelTrade(o);
-    	} else {
+        } else {
     		// Record Type is unsupported, Sirca data should never reach here
     		throw new UnsupportedOperationException();
     	}
+    	//update the simulated time at each order given
+    	simulatedTime = o.time();
     }
     
     // Returns the lowest ask (sell) Order
     public Order bestAskOrder() {
-        return askList.get(0);
+        return askList.getFirst();
     }
     // Returns the highest bid (buy) Order
     public Order bestBidOrder() {
-        return bidList.get(0);
+        return bidList.getFirst();
     }
     // Returns the current spread
     public double spread() {
@@ -63,11 +68,11 @@ public class OrderBooks {
     }
     // Returns the lowest ask (sell) price
     public double bestAskPrice() {
-        return askList.get(0).price();
+        return askList.getFirst().price();
     }
     // Returns the highest bid (buy) price
     public double bestBidPrice() {
-        return bidList.get(0).price();
+        return bidList.getFirst().price();
     }
     
     // Returns the size of the bid list
@@ -91,88 +96,34 @@ public class OrderBooks {
      * true if a matching order was found and deleted from the order book
      * false otherwise
      */
-    boolean deleteOrder(Order o) {
+    public void deleteOrder(Order o) throws UnsupportedOperationException {
         if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.transactionID() ) );
-        	return true;
+        	bidList.remove( findByTransactionID(bidList, o.ID() ));
         } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.transactionID() ) );
-        	return true;
+        	askList.remove( findByTransactionID(askList, o.ID() ));
         } else {
-            return false;
+        	throw new UnsupportedOperationException();
         }
     }
     
-    /*
-     * Delete an order from the order books
-     * 
-     * Parameters:
-     * o - The DELETE order to be processed
-     * 
-     * Returns:
-     * true if a matching order was found and deleted from the order book
-     * false otherwise
-     */
-    boolean updateVolume(Order o, double newVolume) {
-        if ( o.bidAsk().equals("B") ) {
-        	bidList.remove( findByTransactionID( bidList, o.transactionID() ) );
-        	return true;
-        } else if ( o.bidAsk().equals("A") ) {
-        	askList.remove( findByTransactionID( askList, o.transactionID() ) );
-        	return true;
-        } else {
-            return false;
-        }
-    }
     
     /* Private Methods */
 
-    // Takes a List of Orders and returns a deep copy
-    private ArrayList<Order> copyList(List<Order> list) {
-        ArrayList<Order> copy = new ArrayList<Order>();
-        for (Order o : list) {
-            copy.add( new Order(o) ); // Add a copy of the order
-        }
-        return copy;
-    }
 
-    /* Massive amount of almost duplicate code
-     * Needs to be refactored */
-    /*private void enterOrder(Order o) {
-		if (o.bidAsk().equals("B")) {
-            for (int i = 0; i < bidList.size(); i++) {
-        		if ( o.price() > bidList.get(i).price() ) {
-        			bidList.add(i, o);
-        		    return;
-                }
-            }
-                bidList.add(o); // Insert at end of list
-                return;
-        } else {
-            for (int i = 0; i < askList.size(); i++) {
-            	if ( o.price() < askList.get(i).price() ) {
-            		askList.add(i, o);
-            	    return;
-                }
-            }
-            askList.add(o); // Insert at end of list
-            return;
-        }
-    }*/
     
-    private void enterOrder(Order o) {
+    private void enterOrder(Order o) throws UnsupportedOperationException {
     	if (o.bidAsk().equals("B")) {
     		insert(o, bidList);
     	}
     	else if (o.bidAsk().equals("A")) {
     		insert(o, askList);
     	} else {
-    		System.out.println("Error in EnterOrder");
-    		System.exit(0);
+    		throw new UnsupportedOperationException();
     	}
     }
     
-	private void insert(Order o, LinkedList<Order> book) {
+	private void insert(Order o, LinkedList<Order> book) 
+			throws UnsupportedOperationException {
 		
 		if (o.bidAsk().equals("B")) {
 			for (int i = 0; i < book.size(); i++) {
@@ -189,7 +140,7 @@ public class OrderBooks {
 			//and there was nothing to compare to
 			book.addLast(o);
 		}
-		else if (o.bidAsk().equals("A")) {
+		else if (o.bidAsk().equals("A"))  {
 			for (int i = 0; i < book.size(); i++) {
 				if (o.price() < book.get(i).price()) {
 					book.add(i, o);
@@ -204,28 +155,20 @@ public class OrderBooks {
 			//and there was nothing to compare to
 			book.addLast(o);
 		} else {
-			System.out.println("Error in Insert");
-			System.exit(0);
+			throw new UnsupportedOperationException();
 		}
-		
-		
 	}
 
 	private void amendOrder(Order o) {
-
+		deleteOrder(o);
+        if ( o.bidAsk().equals("B") ) {
+        	insert(o, bidList);
+        } else if ( o.bidAsk().equals("A") ) {
+        	insert(o, askList);
+        } else {
+        	throw new UnsupportedOperationException();
+        }
 	}
-
-    private void trade(Order o) {
-        
-    }
-    
-    private void offTrade(Order o) {
-        
-    }
-    
-    private void cancelTrade(Order o) {
-        
-    }
  
     /*
      * Returns the index of the first occurrence of the element in the list which has
@@ -239,13 +182,14 @@ public class OrderBooks {
      * The index of the first occurrence of the element with a matching transaction ID
      * OR -1 if no matching order was found
      */
-    private int findByTransactionID(List<Order> list, long transactionID) {
+    private Order findByTransactionID(List<Order> list, long transactionID) {
+    	Order o = null;
     	for (int i = 0; i < list.size(); i++) {
-    		if (list.get(i).transactionID() == transactionID) {
-    			return i;
+    		if (list.get(i).ID() == transactionID) {
+    			o = list.get(i);
     		}
     	}
-    	return -1;
+    	return o;
     }
     
 	public void display() {
@@ -254,14 +198,14 @@ public class OrderBooks {
 		System.out.println("bid\t\t\t\t\t|Ask");
 		for (int i = 0; i < bidList.size() || i < askList.size(); i++) {
 			if (i < bidList.size()) {
-				System.out.print(bidList.get(i).bidID()+"\t");
+				System.out.print(bidList.get(i).ID()+"\t");
 				System.out.print(bidList.get(i).price()+"\t");
 				System.out.print(bidList.get(i).volume() + "\t|");
 			} else {
 				System.out.print("\t\t\t\t\t\t|");
 			}
 			if (i < askList.size()) {
-				System.out.print(askList.get(i).askID()+"\t");
+				System.out.print(askList.get(i).ID()+"\t");
 				System.out.print(askList.get(i).price()+"\t");
 				System.out.print(askList.get(i).volume());
 			}

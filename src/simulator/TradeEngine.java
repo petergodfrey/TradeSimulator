@@ -6,11 +6,19 @@ import java.lang.Math;
 public class TradeEngine {
     
 	private OrderBooks       orderBooks;
-	private ArrayList<Order> tradeList;
+	private ArrayList<Trade> tradeList;
+	private Factory f;
+	private String openTrading = "10:00:00.000";
 	
-    public TradeEngine(OrderBooks orderBooks) {
+    public TradeEngine(OrderBooks orderBooks, Factory f) {
         this.orderBooks = orderBooks;
-        this.tradeList = new ArrayList<Order>();
+        this.tradeList = new ArrayList<Trade>();
+        this.f = f;
+    }
+    
+    private boolean timeToTrade(String currentTime, String openingTime) {
+    	return (OrderBooks.convertTimeToMilliseconds(currentTime) >= 
+    			OrderBooks.convertTimeToMilliseconds(openingTime));
     }
     
     /*
@@ -21,9 +29,12 @@ public class TradeEngine {
      * Returns the number of trades that were generated
      */
     
-    public int trade() {
+    public void trade() {
     	
-    	int numberOfTrades = 0;
+    	if (!timeToTrade(orderBooks.getSimulatedTime(), openTrading)) {
+    		return;
+    	}
+    	
     	//Generate a trade transaction with the following properties:
 		//    i.  Volume traded is the minimum volume of best bid and best ask orders.
 		//    ii. The trading price is determined as:
@@ -58,12 +69,11 @@ public class TradeEngine {
     	    		orderBooks.deleteOrder(bestAsk);
     	    	}
     		}
-    		numberOfTrades++;
     	}
-    	return numberOfTrades;		
+    	return;		
     }
     
-    public ArrayList<Order> getTradeList () {
+    public ArrayList<Trade> getTradeList () {
     	return tradeList;
     }
     
@@ -78,25 +88,17 @@ public class TradeEngine {
      */
     private void addTrade(Order bid, Order ask) {
     	
-    	//System.out.println("Trade!");
+    	double tradePrice = ask.price();//always trades at ask price
     	
-    	double tradePrice = bid.price();
-    	if ( ask.isEarlier(bid) ) {
-			tradePrice = ask.price();
-		}
+    	int volume = Math.min(bid.volume(), ask.volume() );
     	
-    	double volume = Math.min(bid.volume(), ask.volume() );
-    	
-    	tradeList.add(new Order( bid.instrument(),
-    			                 "",            // TODO Date & Time
-    			                 "",
+    	tradeList.add(f.makeTrade(orderBooks.getSimulatedTime(),
     			                 "TRADE",
     	           	             tradePrice,
     			                 volume,
     					         "",            // TODO Qualifiers
-    					         1,             // TODO Transaction ID
-    					         bid.bidID(),
-    					         ask.askID(),
-    					         "") );
+    					         "", bid, ask) );
     }
+    
+
 }
