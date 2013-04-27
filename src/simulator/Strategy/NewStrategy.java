@@ -6,11 +6,10 @@ import simulator.TradeEngine;
 
 public class NewStrategy extends AbstractStrategy implements Strategy {
 	
-	private final OrderBooks books;
 	private final TradeEngine TE;
 
 	public NewStrategy(OrderBooks books, TradeEngine TE) {
-		this.books = books;
+		super(books);
 		this.TE = TE;
 	}
 

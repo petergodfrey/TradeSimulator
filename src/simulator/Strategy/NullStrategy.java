@@ -1,8 +1,13 @@
 package simulator.strategy;
 
 import simulator.Order;
+import simulator.OrderBooks;
 
 public class NullStrategy extends AbstractStrategy implements Strategy {
+
+	public NullStrategy(OrderBooks books) {
+		super(books);
+	}
 
 	@Override
 	public String getStrategyName() {
@@ -11,7 +16,6 @@ public class NullStrategy extends AbstractStrategy implements Strategy {
 
 	@Override
 	public Order strategise() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

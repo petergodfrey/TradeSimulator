@@ -9,7 +9,7 @@ public class Order {
 	private int 			volume;
 	private String 			qualifiers;
 	private long   			ID;
-	private final String bidAsk;
+	private final String 	bidAsk;
 
 	public Order(
 			String time,
@@ -29,22 +29,6 @@ public class Order {
 		this.ID     	   = ID;
 		this.bidAsk        = bidAsk;
 	}
-
-	/*
-	 * Compares the timestamp with another trade and determines the earliest
-	 * 
-	 * Parameters:
-	 * t - The trade to compare with
-	 * 
-	 * Returns:
-	 * true if the trade has an earlier timestamp than the one given in t
-	 * false otherwise
-	 */
-	public boolean isEarlier(Order bid) {
-		// TODO
-		return true;
-	}
-
 
 	/* Getter Methods */
 
@@ -87,7 +71,7 @@ public class Order {
 				this.recordType.equals(t.recordType)  &&
 				this.price == t.price                 &&
 				this.volume == t.volume               &&
-				this.ID == t.ID &&
+				this.ID == t.ID 					  &&
 				this.bidAsk == t.bidAsk);
 	}
 

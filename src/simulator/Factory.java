@@ -47,7 +47,8 @@ public class Factory {
 	}
 
 	public Strategy makeNullStrategy() {
-		return new NullStrategy();
+		return new NullStrategy(null);
+		//giving null won't make a difference since this won't ever use orderBooks 
 	}
 
 	public Strategy makeDumbStrategy() {

@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import simulator.Order;
+import simulator.OrderBooks;
 
 
 public abstract class AbstractStrategy implements Strategy {
+	
+	protected OrderBooks books;
 
 	private long IDCounter = -1;
 	
 	private List<Order> stratOrders = new ArrayList<Order>();
+	
+	public AbstractStrategy(OrderBooks books) {
+		this.books = books;
+	}
 	
 	private Long generateStrategyID() {
 		return IDCounter--;
@@ -23,7 +30,7 @@ public abstract class AbstractStrategy implements Strategy {
 		return o;
 	}
 	
-	protected void addOrderToList(Order o) {
+	private void addOrderToList(Order o) {
 		stratOrders.add(o);
 	}
 	
@@ -33,13 +40,13 @@ public abstract class AbstractStrategy implements Strategy {
 	}
 	
 
-	public Order createOrder(String time,
+	protected Order createOrder(
 							String recordType,
 							Double price,
 							int volume,
 							String qualifer,
 							String bidAsk) {
-		return new Order(time,recordType, price, volume, qualifer,
+		return new Order(books.getSimulatedTime(),recordType, price, volume, qualifer,
 				generateStrategyID(), bidAsk);
 	}
 

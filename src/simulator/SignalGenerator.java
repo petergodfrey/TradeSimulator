@@ -15,7 +15,8 @@ public class SignalGenerator {
 		this.reader      = reader;
 		this.strategy   = strategy;
 		this.f = f;
-
+		
+		f.resetCSVColumns();//every CSV file may have different formatting
 		//read first line and determine the index positions of columns
 		f.setCSVColumns(reader.readLine()); // Read the initial line
 
