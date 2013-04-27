@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +28,7 @@ public class TestOrderBook {
 
 	@Before
 	public void setUp() throws Exception {
-		
+
 
 		f = new Factory();
 		orderBooks = f.makeOrderBooks();
@@ -36,13 +38,13 @@ public class TestOrderBook {
 		order3 = new Order("00:00:03.000", "ENTER", 8.34, 100, "", 4, "A");
 		order4 = new Order("00:00:04.000", "ENTER", 8.31, 40,  "", 5, "A");
 		order5 = new Order("00:00:05.000", "ENTER", 8.31, 50,  "", 6, "B");
-		
-	
+
+
 	}
 
 
 
-	
+
 
 	@Test
 	public void testOrderBookOrderedInvariant() {
@@ -85,7 +87,7 @@ public class TestOrderBook {
 		assertEquals(3, orderBooks.askListSize());		
 		assertEquals(order1, orderBooks.bestAskOrder());
 	}
-	
+
 	@Test
 	public void testSpread() {
 		orderBooks.processOrder(order0);
@@ -98,7 +100,7 @@ public class TestOrderBook {
 		assertTrue(orderBooks.spread() >= -0.01);
 		orderBooks.processOrder(order5);
 		assertTrue(orderBooks.spread() >= 0);
-		
+
 	}
 
 	@Test
@@ -125,13 +127,23 @@ public class TestOrderBook {
 		assertEquals(orderBooks.askListSize(), 3);
 		assertEquals(orderBooks.bidListSize(), 3);
 	}
-	
+
 	@Test
-	public void testTimeCompare() {
-		//if possible, make more tests to check all the times.
-		//if possible, make some sort of loop to check all the times
-		fail("Not enough tests here");
-		assertTrue(OrderBooks.convertTimeToMilliseconds("00:00:00.000") < OrderBooks.convertTimeToMilliseconds("00:00:00.001"));
+	public void testTimeConversion() {
+		//generates every millisecond of the day and checks correct conversion
+		int milliTime = 0;
+		String time = "00:00:00.000";
+		for (int l = 0; l < 24; l++) {
+			System.out.println(time);
+			for (int k = 0; k < 60; k++) {
+				for (int j = 0; j < 60; j++) {
+					for (int i = 0; i < 1000; i++, milliTime++) {
+						time = l + ":" + k + ":" + j + "." + String.format("%03d", i);
+						assertEquals(OrderBooks.convertTimeToMilliseconds(time), milliTime);
+					}
+				}
+			}
+		}
 	}
 
 	@Test
@@ -139,7 +151,7 @@ public class TestOrderBook {
 		testOrderBookAdd();
 		assertEquals(orderBooks.askListSize(), 3);
 		assertEquals(orderBooks.bidListSize(), 3);
-		
+
 		/*Order bid = new Order("00:00:00.000", "ENTER", 67.76, 1959 , new String(), new Long("6239925033925459786"), "B");
 		OrderBooks b = f.makeOrderBooks(); 
 		b.processOrder(bid);

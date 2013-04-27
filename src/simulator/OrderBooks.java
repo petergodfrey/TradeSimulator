@@ -1,4 +1,5 @@
 package simulator;
+import java.math.BigDecimal;
 import java.util.*;
 
 /* This class manages the order books for the simulator.
@@ -25,11 +26,13 @@ public class OrderBooks {
     
     public static int convertTimeToMilliseconds(String time) {
     	String[] timeSplit = time.split(":");
-    	int milliseconds = 0;
-    	milliseconds = (int) (Float.parseFloat(timeSplit[2])*1000);
-    	milliseconds += Integer.parseInt(timeSplit[1]) * 1000 * 60;
-    	milliseconds += Integer.parseInt(timeSplit[0]) * 1000 * 60 * 60;
-    	return milliseconds;
+    	BigDecimal milliseconds;
+    	milliseconds =  new BigDecimal(timeSplit[2]).multiply(new BigDecimal("1000"));
+    	milliseconds = milliseconds.add(new BigDecimal(timeSplit[1]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")));
+    	milliseconds = milliseconds.add(new BigDecimal(timeSplit[0]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")).multiply(new BigDecimal("60")));
+    	//milliseconds += Integer.parseInt(timeSplit[1]) * 1000 * 60;
+    	//milliseconds += Integer.parseInt(timeSplit[0]) * 1000 * 60 * 60;
+    	return milliseconds.intValue();
     }
     
     /*
