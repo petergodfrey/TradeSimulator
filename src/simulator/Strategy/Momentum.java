@@ -29,14 +29,12 @@ public class Momentum extends AbstractStrategy implements Strategy {
 			    "",
 			    "B" );
 		} else if (averageReturn < 0) {
-			if (averageReturn > 0) {
-				return createOrder(
-				    "ENTER",
-				    books.bestAskPrice(),
-				    books.bestBidOrder().volume(),
-				    "",
-				    "A" );
-			}
+			return createOrder(
+			    "ENTER",
+			    books.bestAskPrice(),
+			    books.bestBidOrder().volume(),
+			    "",
+			    "A" );
 		}
 		
 		return null;
