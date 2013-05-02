@@ -57,28 +57,33 @@ public class TradeEngine {
     		//if it is open trading session, but spread is < 0, can't trade
     		return;
     	}
-
+    	//there is a trade available now, falls into 2 categories
+    	//equal volume or not
+    	//if equal volume, make trade and both bid and ask from orderbook
+    	//if not, update volume of one and remove the other
+    	//then recurse to see if there is another trade available
 		Order bestBid = orderBooks.bestBidOrder();
 		Order bestAsk = orderBooks.bestAskOrder();
-		
 		
 		if (bestBid.volume() > bestAsk.volume()) {
 			bestBid.updateVolume(bestBid.volume() - bestAsk.volume());
 			orderBooks.deleteOrder(bestAsk);
-			
+			addTrade(bestBid, bestAsk);
+			trade();
+
 		}
 		else if (bestBid.volume() < bestAsk.volume()) {
 			bestAsk.updateVolume(bestAsk.volume() - bestBid.volume());
 			orderBooks.deleteOrder(bestBid);
+			addTrade(bestBid, bestAsk);
+			trade();
 
 		} else {
 			orderBooks.deleteOrder(bestBid);
 			orderBooks.deleteOrder(bestAsk);
+			addTrade(bestBid, bestAsk);
 		}
-		addTrade(bestBid, bestAsk);
-		trade();
-		
-		
+
     	
     	/*while ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
     			orderBooks.spread() >= 0 ) {

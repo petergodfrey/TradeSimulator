@@ -128,7 +128,7 @@ public class TestOrderBook {
 		assertEquals(orderBooks.bidListSize(), 3);
 	}
 
-	@Test
+	//@Test
 	public void testTimeConversion() {
 		//generates every millisecond of the day and checks correct conversion
 		int milliTime = 0;

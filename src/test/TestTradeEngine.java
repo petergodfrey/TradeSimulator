@@ -13,7 +13,7 @@ import simulator.Reader;
 import simulator.SignalGenerator;
 import simulator.Trade;
 import simulator.TradeEngine;
-import simulator.Strategy.Strategy;
+import simulator.strategy.Strategy;
 
 public class TestTradeEngine {
 	
@@ -44,6 +44,7 @@ public class TestTradeEngine {
 		assertEquals(books.askListSize(), 0);
 		assertEquals(books.bidListSize(), 0);
 		assertEquals(TE.getTradeList().size(), 0);
+		TE.setOpenTradingTime("00:00:00.000");
 	}
 	
 

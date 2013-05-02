@@ -3,7 +3,7 @@ package simulator;
 import java.util.ArrayList;
 import java.util.List;
 
-import simulator.Strategy.Strategy;
+import simulator.strategy.*;
 
 public class Evaluator {
 
