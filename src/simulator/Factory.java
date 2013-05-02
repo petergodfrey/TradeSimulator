@@ -59,8 +59,8 @@ public class Factory {
 		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
 	}
 
-	public Strategy makeMeanReversionStrategy() {
-		return new MeanReversion(makeOrderBooks());
+	public Strategy makeMeanReversionStrategy(Double mean) {
+		return new MeanReversion(makeOrderBooks(), mean);
 	}
 	
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {

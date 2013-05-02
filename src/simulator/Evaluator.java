@@ -29,17 +29,16 @@ public class Evaluator {
 		
 		return strategyTrades;
 	}
-
-
+	
 	public int calculateProfit(List<Trade> strategyTrades) {
 		int profit = 0;
 
 		for (Trade t:strategyTrades) {
 			if (t.getAsk().ID() < 0) {
-				profit += t.getAsk().volume() * t.getAsk().price();
+				profit += t.volume() * t.price();
 			}
 			if (t.getBid().ID() < 0) {
-				profit -= t.getBid().volume() * t.getBid().price();
+				profit -= t.volume() * t.price();
 			}
 		}
 		return profit;

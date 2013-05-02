@@ -113,6 +113,7 @@ public class Run {
 		Strategy strat = null;
 		try {
 			int choice = s.nextInt();
+			Double mean = new Double(0);
 			if (choice < 1 || choice > 4) {
 				throw new InputMismatchException();
 			}
@@ -127,7 +128,13 @@ public class Run {
 				strat = f.makeNewStrategy();
 				break;
 			case 4:
-				strat = f.makeMeanReversionStrategy();
+				try {
+					System.out.println("Enter the mean value");
+					mean = new Double(s.nextDouble());
+				} catch (Exception e) {
+					System.out.println("Wrong input, returing to menu");
+				}
+				strat = f.makeMeanReversionStrategy(mean);
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");

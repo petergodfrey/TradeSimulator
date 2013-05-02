@@ -9,10 +9,11 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 
 	private Double mean; 
 	// if there's no my bid order, assigns false. otherwise, assigns true
-	private boolean myBidOrder = false;
+	private boolean myBidOrder = true; //false;
 	
-	public MeanReversion(OrderBooks books) {
+	public MeanReversion(OrderBooks books, Double mean) {
 		super(books);
+		this.mean = mean;
 	}
 
 	public void calculateMean() {
@@ -27,7 +28,7 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	public Order strategise() {
 
 		Order order = null;
-		calculateMean();
+		//calculateMean();
 		// if the price is greater than mean, sell order
 		if (books.bidListSize() != 0 && myBidOrder == true) {
 			if (books.bestBidPrice() > this.mean ) { 
