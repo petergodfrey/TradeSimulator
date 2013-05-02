@@ -12,7 +12,7 @@ import simulator.OrderBooks;
 import simulator.Reader;
 import simulator.SignalGenerator;
 import simulator.TradeEngine;
-import simulator.Strategy.Strategy;
+import simulator.strategy.Strategy;
 
 public class TestSimulation {
 
