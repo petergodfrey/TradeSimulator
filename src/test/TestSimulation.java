@@ -56,7 +56,7 @@ public class TestSimulation {
 		while ((o = SG.advance()) != null) {
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-			System.out.printf("\r %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d",
+			System.out.printf("\r %s %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d", orderBooks.getSimulatedTime(),
 					100*((float)CSV.getProgress()/(float)CSV.getFileSize()), orderBooks.bidListSize(), orderBooks.askListSize(), tradeEngine.getTradeList().size());
 
 		}
@@ -80,9 +80,9 @@ public class TestSimulation {
 		while ((o = SG.advance()) != null) {
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-			System.out.printf("\r %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d",
+			System.out.printf("\r %s %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d", orderBooks.getSimulatedTime(),
 					100*((float)CSV.getProgress()/(float)CSV.getFileSize()), orderBooks.bidListSize(), orderBooks.askListSize(), tradeEngine.getTradeList().size());
-		}
+			}
 
 		f.resetCSVColumns();//every CSV file may have different formatting
 

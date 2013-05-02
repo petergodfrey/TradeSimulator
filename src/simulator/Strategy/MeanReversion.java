@@ -1,32 +1,47 @@
 package simulator.strategy;
 
 
+import java.util.List;
+
 import simulator.Order;
 import simulator.OrderBooks;
 import simulator.Reader;
+import simulator.Trade;
+import simulator.TradeEngine;
 
 public class MeanReversion extends AbstractStrategy implements Strategy {
-
+	
+	TradeEngine TE;
+	
 	private Double mean; 
 	// if there's no my bid order, assigns false. otherwise, assigns true
 	private boolean myBidOrder = true; //false;
 	
-	public MeanReversion(OrderBooks books, Double mean) {
+	public MeanReversion(OrderBooks books, TradeEngine TE) {
 		super(books);
-		this.mean = mean;
+		this.TE = TE;
 	}
 
 	public void calculateMean() {
 		// pass the file path as a parameter to makeMeanReversion() in Factoroy
 		// and modify the filePath for previous days 
 		//this.mean = (highest + lowest) / 2;
+		long sum = 0;
+		List<Trade> tradeList = TE.getTradeList();
+		for (Trade t:tradeList) {
+			sum += t.price();
+		}
+		this.mean = (double) (sum / tradeList.size());
 		
-		this.mean = 67.46331; // random mean value from sample1.csv 
+		//this.mean = 67.46331; // random mean value from sample1.csv 
 	}	
 	
 	@Override
 	public Order strategise() {
-
+		if (TE.getTradeList().size() > 0) {
+			calculateMean();
+		}
+		
 		Order order = null;
 		//calculateMean();
 		// if the price is greater than mean, sell order

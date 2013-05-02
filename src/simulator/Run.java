@@ -108,14 +108,16 @@ public class Run {
 		System.out.println("Select a strategy from the list");
 		System.out.println("1 - No Strategy");
 		System.out.println("2 - Dumb Strategy");
-		System.out.println("3 - New Strategy");
-		System.out.println("4 - Mean Reversion Strategy");
-		System.out.println("5 - Momentum Strategy");
+		System.out.println("3 - Mean Reversion Strategy");
+		System.out.println("4 - Momentum Strategy");
+
 		Strategy newStrat = null;
+
 		try {
 			int choice = s.nextInt();
 
-			if (choice < 1 || choice > 5) {
+
+			if (choice < 1 || choice > 4) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -126,12 +128,9 @@ public class Run {
 				newStrat = f.makeDumbStrategy();
 				break;
 			case 3:
-				newStrat = f.makeNewStrategy();
+				newStrat = f.makeMeanReversionStrategy();
 				break;
 			case 4:
-				newStrat = f.makeMeanReversionStrategy(getMeanReversionArgs(s));
-				break;
-			case 5:
 				newStrat = f.makeMomentumStrategy();
 				break;
 			}
@@ -182,7 +181,7 @@ public class Run {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-			displayProgress(CSV);
+			displayProgress(CSV, orderBooks);
 
 
 		}
@@ -190,7 +189,7 @@ public class Run {
 		System.out.println("\nFinished Simulation, now evaluating...\n");
 		List<Trade> strategyTrades = eval.evaluate();
 		if (strategyTrades.size() == 0) {
-			System.out.println("STRAEGY CREATED NO TRADES");
+			System.out.println("STRATEGY CREATED NO TRADES");
 			//return;
 		} else {
 			displayEvaluation(strategyTrades);
@@ -206,9 +205,10 @@ public class Run {
 		System.exit(0);
 	}
 
-	private static void displayProgress(Reader CSV) {
-		System.out.printf("\r %.2f percent done",
-				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+	private static void displayProgress(Reader CSV, OrderBooks books) {
+		System.out.printf("\rsimulated time: %s | %.2f percent done",
+				100*((float)CSV.getProgress()/(float)CSV.getFileSize()),
+				books.getSimulatedTime());
 	}
 
 

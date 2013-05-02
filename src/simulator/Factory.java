@@ -46,6 +46,10 @@ public class Factory {
 		return te;
 	}
 	
+	public Strategy makeMomentumStrategy() {
+		return new Momentum( makeOrderBooks(), makeTradeEngine() );
+	}
+	
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {
 		return new Reader(filepath);
 	}
@@ -195,12 +199,9 @@ public class Factory {
 		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
 	}
 
-	public Strategy makeMeanReversionStrategy(Double mean) {
-		return new MeanReversion(makeOrderBooks(), mean);
+	public Strategy makeMeanReversionStrategy() {
+		return new MeanReversion(makeOrderBooks(), makeTradeEngine());
 	}
 	
-	public Strategy makeMomentumStrategy() {
-		return new Momentum(makeOrderBooks());
-	}
 
 }
