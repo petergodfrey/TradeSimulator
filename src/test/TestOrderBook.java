@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.junit.Before;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import simulator.Factory;
 import simulator.Order;
 import simulator.OrderBooks;
+import simulator.Reader;
 
 public class TestOrderBook {
 
@@ -43,25 +46,6 @@ public class TestOrderBook {
 	}
 
 
-
-
-
-	@Test
-	public void testOrderBookOrderedInvariant() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testOrderBookEntryUniquenessInvariant() {
-		fail("Not yet implemented");
-	}
-
-	/* this is done with other functions
-	@Test
-	public void testOrderBookProcess() {
-
-	}
-	 */
 	@Test
 	public void testOrderBookGetBid() {
 		orderBooks.processOrder(order0);
@@ -96,11 +80,9 @@ public class TestOrderBook {
 		orderBooks.processOrder(order3);
 		orderBooks.processOrder(order4);
 		//double comparison errors
-		assertTrue(orderBooks.spread() < 0);
-		assertTrue(orderBooks.spread() >= -0.01);
+		assertTrue(OrderBooks.compareDoubleEquals(orderBooks.spread(), 0.0));
 		orderBooks.processOrder(order5);
 		assertTrue(orderBooks.spread() >= 0);
-
 	}
 
 	@Test
@@ -151,6 +133,23 @@ public class TestOrderBook {
 		testOrderBookAdd();
 		assertEquals(orderBooks.askListSize(), 3);
 		assertEquals(orderBooks.bidListSize(), 3);
+		assertSame(orderBooks.bestBidOrder(), order5);
+		Order del0 = new Order("00:00:06.000", "DELETE", -1, -1, "", 6, "B");
+		orderBooks.processOrder(del0);
+		assertSame(orderBooks.bestBidOrder(), order0);
+		assertEquals(orderBooks.askListSize(), 3);
+		assertEquals(orderBooks.bidListSize(), 2);
+		Order del1 = new Order("00:00:07.000", "DELETE", -1, -1, "", 4, "A");
+		orderBooks.processOrder(del1);
+		assertSame(orderBooks.bestAskOrder(), order1);
+		assertEquals(orderBooks.askListSize(), 2);
+		assertEquals(orderBooks.bidListSize(), 2);
+		Order del2 = new Order("00:00:08.000", "DELETE", -1, -1, "", 1, "B");
+		orderBooks.processOrder(del2);
+		//assertSame(orderBooks.bestBidOrder(), order0);
+		//assertEquals(orderBooks.askListSize(), 2);
+		//assertEquals(orderBooks.bidListSize(), 1);
+		
 
 		/*Order bid = new Order("00:00:00.000", "ENTER", 67.76, 1959 , new String(), new Long("6239925033925459786"), "B");
 		OrderBooks b = f.makeOrderBooks(); 
