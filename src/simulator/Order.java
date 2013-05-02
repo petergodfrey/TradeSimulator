@@ -29,6 +29,18 @@ public class Order {
 		this.ID     	   = ID;
 		this.bidAsk        = bidAsk;
 	}
+	
+	// Copy constructor
+	public Order(Order o) {
+		this.time          = o.time;
+		this.recordType    = o.recordType;
+		this.price         = o.price;
+		this.volume        = o.volume;
+		this.qualifiers    = o.qualifiers;
+		this.ID     	   = o.ID;
+		this.bidAsk        = o.bidAsk;
+	}
+	    
 
 	/* Getter Methods */
 

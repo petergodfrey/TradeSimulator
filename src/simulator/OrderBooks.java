@@ -101,6 +101,23 @@ public class OrderBooks {
         return askList.size();
     }
     
+    // Returns a deep copy of the askList
+    public LinkedList<Order> askList() {
+        LinkedList<Order> clone = new LinkedList<Order>();
+        for (Order order: askList) { 
+        	clone.add( new Order(order) );
+        }
+        return clone;
+    }
+    
+    // Returns a deep copy of the bidList
+    public LinkedList<Order> bidList() {
+        LinkedList<Order> clone = new LinkedList<Order>();
+        for (Order order: bidList) { 
+        	clone.add( new Order(order) );
+        }
+        return clone;
+    }
     
     /*
      * Delete an order from the order books

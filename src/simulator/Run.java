@@ -110,11 +110,12 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - New Strategy");
 		System.out.println("4 - Mean Reversion Strategy");
+		System.out.println("5 - Momentum Strategy");
 		Strategy strat = null;
 		try {
 			int choice = s.nextInt();
 			Double mean = new Double(0);
-			if (choice < 1 || choice > 4) {
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -135,6 +136,10 @@ public class Run {
 					System.out.println("Wrong input, returing to menu");
 				}
 				strat = f.makeMeanReversionStrategy(mean);
+				break;
+			case 5:
+				strat = f.makeMomentumStrategy();
+				break;
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");

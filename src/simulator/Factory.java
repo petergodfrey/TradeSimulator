@@ -63,6 +63,10 @@ public class Factory {
 		return new MeanReversion(makeOrderBooks(), mean);
 	}
 	
+	public Strategy makeMomentumStrategy() {
+		return new Momentum( makeOrderBooks(), makeTradeEngine() );
+	}
+	
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {
 		return new Reader(filepath);
 	}
