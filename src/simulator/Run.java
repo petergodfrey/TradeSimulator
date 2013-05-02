@@ -18,12 +18,12 @@ public class Run {
 	//TODO add qualifier features
 	//trading time range
 	//TODO insert on price works, need to insert on time
-	
+
 	public static void main (String[] args) {
-		
+
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
 		Factory f = new Factory();
-		
+
 		//menu holds CSV file and strategy selected until running time
 		Reader CSV = null;
 		Strategy strat = f.makeNullStrategy();
@@ -39,7 +39,7 @@ public class Run {
 				CSV = selectDataFile(s, f);
 				break;
 			case 2: 
-				strat = selectStrategy(s, f);
+				strat = selectStrategy(s, f, strat);
 				break;
 			case 3: 
 				runSimulation(CSV, strat, f);
@@ -102,7 +102,7 @@ public class Run {
 		}
 		return CSV;
 	}
-	private static Strategy selectStrategy(Scanner s, Factory f) {
+	private static Strategy selectStrategy(Scanner s, Factory f, Strategy oldStrat) {
 		//must find a way to automate the list menu, currently must
 		//manually add them in
 		System.out.println("Select a strategy from the list");
@@ -110,36 +110,44 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - New Strategy");
 		System.out.println("4 - Mean Reversion Strategy");
-		Strategy strat = null;
+		System.out.println("5 - Momentum Strategy");
+		Strategy newStrat = null;
 		try {
 			int choice = s.nextInt();
-			Double mean = new Double(0);
-			if (choice < 1 || choice > 4) {
+
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
 			case 1:
-				strat = f.makeNullStrategy();
+				newStrat = f.makeNullStrategy();
 				break;
 			case 2:
-				strat = f.makeDumbStrategy();
+				newStrat = f.makeDumbStrategy();
 				break;
 			case 3:
-				strat = f.makeNewStrategy();
+				newStrat = f.makeNewStrategy();
 				break;
 			case 4:
-				try {
-					System.out.println("Enter the mean value");
-					mean = new Double(s.nextDouble());
-				} catch (Exception e) {
-					System.out.println("Wrong input, returing to menu");
-				}
-				strat = f.makeMeanReversionStrategy(mean);
+				newStrat = f.makeMeanReversionStrategy(getMeanReversionArgs(s));
+				break;
+			case 5:
+				newStrat = f.makeMomentumStrategy();
+				break;
 			}
+
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");
+			newStrat = oldStrat;
 		}
-		return strat;
+		return newStrat;
+	}
+
+	private static Double getMeanReversionArgs(Scanner s) {
+
+		System.out.println("Enter the mean value");
+		Double mean = (s.nextDouble());
+		return mean;
 	}
 
 	private static void runSimulation(Reader CSV, Strategy strat, Factory f) {
@@ -149,7 +157,7 @@ public class Run {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
 			return;//exit function early
 		}
-		
+
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = f.makeReader(CSV.getFilePath());
@@ -159,24 +167,24 @@ public class Run {
 			System.out.println("Error in reading CSV file, exiting simulation");
 			return;
 		}
-		
+
 		OrderBooks  orderBooks  = f.makeOrderBooks();
 		TradeEngine tradeEngine = f.makeTradeEngine();
 		//ensure each simulation run begins with empty orderbooks and trade lists
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeList();
-		
+
 		System.out.println("Running simulation ");
-		
+
 		Order o;
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
 			displayProgress(CSV);
-			
-			
+
+
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
@@ -191,21 +199,18 @@ public class Run {
 			System.out.println("Profit: $("+profit+")!");
 		}
 		System.out.println("\n###########################################");
-		
-
-
 	}
 	private static void exitProgram(Scanner s) {
 		System.out.println("Cya!");
 		s.close();
 		System.exit(0);
 	}
-	
+
 	private static void displayProgress(Reader CSV) {
 		System.out.printf("\r %.2f percent done",
 				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
-	
+
 
 	private static void displayEvaluation(List<Trade> strategyTrades) {
 

@@ -45,29 +45,10 @@ public class Factory {
 		}
 		return te;
 	}
-
-	public Strategy makeNullStrategy() {
-		return new NullStrategy(null);
-		//giving null won't make a difference since this won't ever use orderBooks 
-	}
-
-	public Strategy makeDumbStrategy() {
-		return new DumbStrategy(makeOrderBooks());
-	}
-	
-	public Strategy makeNewStrategy() {
-		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
-	}
-
-	public Strategy makeMeanReversionStrategy(Double mean) {
-		return new MeanReversion(makeOrderBooks(), mean);
-	}
 	
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {
 		return new Reader(filepath);
 	}
-
-
 
 	public void setCSVColumns(String line) throws IOException {
 		//read first line and determine the index positions of columns
@@ -102,7 +83,6 @@ public class Factory {
 				BID_ID         == -1 ||
 				ASK_ID         == -1 ||
 				BID_ASK        == -1 ) {
-
 			throw new IOException();
 		}
 	} 
@@ -144,7 +124,6 @@ public class Factory {
 				) {
 			o = null;
 		} else {
-
 			int ID_index = -1;
 			if (entry[BID_ASK].equals("B")) {
 				ID_index = BID_ID;
@@ -152,11 +131,9 @@ public class Factory {
 			else if (entry[BID_ASK].equals("A")) {
 				ID_index = ASK_ID;
 			}
-
 			if (ID_index == -1) {
 				o = null;
 			} else {
-
 				o = makeOrder(
 						entry[TIME],
 						entry[RECORD_TYPE],
@@ -170,8 +147,6 @@ public class Factory {
 
 		return o;
 	}
-	
-
 
 	// Parser which handles the case of an empty string
 	private double parseDouble(String s) {
@@ -205,6 +180,27 @@ public class Factory {
 
 		return new Trade(simulatedTime, recordType, tradePrice,
 				volume, qualifier, tradeID++, bidAsk, bid, ask);
+	}
+	
+	public Strategy makeNullStrategy() {
+		return new NullStrategy(null);
+		//giving null won't make a difference since this won't ever use orderBooks 
+	}
+
+	public Strategy makeDumbStrategy() {
+		return new DumbStrategy(makeOrderBooks());
+	}
+	
+	public Strategy makeNewStrategy() {
+		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
+	}
+
+	public Strategy makeMeanReversionStrategy(Double mean) {
+		return new MeanReversion(makeOrderBooks(), mean);
+	}
+	
+	public Strategy makeMomentumStrategy() {
+		return new Momentum(makeOrderBooks());
 	}
 
 }
