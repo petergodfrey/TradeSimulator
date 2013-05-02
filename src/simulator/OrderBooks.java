@@ -24,15 +24,22 @@ public class OrderBooks {
     	return this.simulatedTime;
     }
     
+    public static boolean compareDoubleEquals(Double d1, Double d2) {
+    	return ((d2 - d1) > -0.0001 && (d1 - d2) < 0.0001);
+    }
+    
     public static int convertTimeToMilliseconds(String time) {
     	String[] timeSplit = time.split(":");
     	BigDecimal milliseconds;
     	milliseconds =  new BigDecimal(timeSplit[2]).multiply(new BigDecimal("1000"));
     	milliseconds = milliseconds.add(new BigDecimal(timeSplit[1]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")));
     	milliseconds = milliseconds.add(new BigDecimal(timeSplit[0]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")).multiply(new BigDecimal("60")));
-    	//milliseconds += Integer.parseInt(timeSplit[1]) * 1000 * 60;
-    	//milliseconds += Integer.parseInt(timeSplit[0]) * 1000 * 60 * 60;
     	return milliseconds.intValue();
+    }
+    
+    public void resetOrderBooks() {
+    	bidList = new LinkedList<Order>();
+    	askList = new LinkedList<Order>();
     }
     
     /*
@@ -67,7 +74,13 @@ public class OrderBooks {
     }
     // Returns the current spread
     public double spread() {
+    	try {
         return bestBidPrice() - bestAskPrice();
+    	} catch (Exception e) {
+    		//if any sort of error in retrieving spread,
+    		//make it negative and unable to trade
+    		return Integer.MIN_VALUE;
+    	}
     }
     // Returns the lowest ask (sell) price
     public double bestAskPrice() {

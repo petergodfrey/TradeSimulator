@@ -146,6 +146,7 @@ public class Run {
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = f.makeReader(CSV.getFilePath());
+			System.out.println("Loading " + CSV.getFilePath());
 			signalGenerator = new SignalGenerator(CSV, strat, f);
 		} catch (IOException e) {
 			System.out.println("Error in reading CSV file, exiting simulation");
@@ -154,6 +155,10 @@ public class Run {
 		
 		OrderBooks  orderBooks  = f.makeOrderBooks();
 		TradeEngine tradeEngine = f.makeTradeEngine();
+		//ensure each simulation run begins with empty orderbooks and trade lists
+		//ensures successive simulations are unaffected
+		orderBooks.resetOrderBooks();
+		tradeEngine.resetTradeList();
 		
 		System.out.println("Running simulation ");
 		

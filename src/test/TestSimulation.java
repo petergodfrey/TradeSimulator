@@ -56,13 +56,9 @@ public class TestSimulation {
 					100*((float)CSV.getProgress()/(float)CSV.getFileSize()), orderBooks.bidListSize(), orderBooks.askListSize(), tradeEngine.getTradeList().size());
 
 		}
-		//Evaluator eval = new Evaluator(strat, tradeEngine);
-		//eval.evaluate();
+
 		f.resetCSVColumns();//every CSV file may have different formatting
-		//List<Trade> tradeList = tradeEngine.getTradeList();
-		//for (Trade t :tradeList) {
-		//System.out.println(t.toString());
-		//}
+
 	}
 
 	@Test
@@ -83,12 +79,8 @@ public class TestSimulation {
 			System.out.printf("\r %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d",
 					100*((float)CSV.getProgress()/(float)CSV.getFileSize()), orderBooks.bidListSize(), orderBooks.askListSize(), tradeEngine.getTradeList().size());
 		}
-		//Evaluator eval = new Evaluator(strat, tradeEngine);
-		//eval.evaluate();
+
 		f.resetCSVColumns();//every CSV file may have different formatting
-		//List<Trade> tradeList = tradeEngine.getTradeList();
-		//for (Trade t :tradeList) {
-		//System.out.println(t.toString());
-		//}
+
 	}
 }

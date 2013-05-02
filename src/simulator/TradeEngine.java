@@ -21,6 +21,20 @@ public class TradeEngine {
     			OrderBooks.convertTimeToMilliseconds(openingTime));
     }
     
+    public boolean setOpenTradingTime(String newOpening) {
+    	try {
+    		OrderBooks.convertTimeToMilliseconds(newOpening);
+    	} catch (Exception e) {
+    		return false;
+    	}
+    	this.openTrading = newOpening;
+    	return true;
+    }
+    
+    public void resetTradeList() {
+    	tradeList = new ArrayList<Trade>();
+    }
+    
     /*
      * Matches orders and removes them from the order books.
      * When a match is found, a Trade is generated and added to the trade list.
@@ -30,23 +44,45 @@ public class TradeEngine {
      */
     
     public void trade() {
-    	
     	if (!timeToTrade(orderBooks.getSimulatedTime(), openTrading)) {
+    		//if not open trading time, don't trade
     		return;
     	}
     	
     	//Generate a trade transaction with the following properties:
 		//    i.  Volume traded is the minimum volume of best bid and best ask orders.
 		//    ii. The trading price is determined as:
-    	int counter = 0;
-    	while ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
+
+    	if (orderBooks.spread() < 0) {
+    		//if it is open trading session, but spread is < 0, can't trade
+    		return;
+    	}
+
+		Order bestBid = orderBooks.bestBidOrder();
+		Order bestAsk = orderBooks.bestAskOrder();
+		
+		
+		if (bestBid.volume() > bestAsk.volume()) {
+			bestBid.updateVolume(bestBid.volume() - bestAsk.volume());
+			orderBooks.deleteOrder(bestAsk);
+			
+		}
+		else if (bestBid.volume() < bestAsk.volume()) {
+			bestAsk.updateVolume(bestAsk.volume() - bestBid.volume());
+			orderBooks.deleteOrder(bestBid);
+
+		} else {
+			orderBooks.deleteOrder(bestBid);
+			orderBooks.deleteOrder(bestAsk);
+		}
+		addTrade(bestBid, bestAsk);
+		trade();
+		
+		
+    	
+    	/*while ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
     			orderBooks.spread() >= 0 ) {
-    		counter++;
-    		if (counter > 20) {
-    			//hack to break loop
-    			//fix later
-    			break;
-    		}
+
     		Order bestBid = orderBooks.bestBidOrder();
     		Order bestAsk = orderBooks.bestAskOrder();
 
@@ -70,7 +106,7 @@ public class TradeEngine {
     	    	}
     		}
     	}
-    	return;		
+    	return;	*/	
     }
     
     public ArrayList<Trade> getTradeList () {
