@@ -15,6 +15,8 @@ public interface Strategy {
     //name is used for display in UI
     
     public List<Order> getOrderList();
+    
+    public void reset();
 
 	//public Order createOrder(String time, String recordType, Double price,
 		//	int volume,	String qualifer, String bidAsk);

@@ -49,5 +49,10 @@ public abstract class AbstractStrategy implements Strategy {
 		return new Order(books.getSimulatedTime(),recordType, price, volume, qualifer,
 				generateStrategyID(), bidAsk);
 	}
+	
+	@Override
+	public void reset() {
+		
+	}
 
 }

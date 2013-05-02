@@ -173,6 +173,9 @@ public class Run {
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeList();
+		
+		//reset any strategy attributes after each simulation
+		strat.reset();
 
 		System.out.println("Running simulation ");
 
@@ -207,8 +210,8 @@ public class Run {
 
 	private static void displayProgress(Reader CSV, OrderBooks books) {
 		System.out.printf("\rsimulated time: %s | %.2f percent done",
-				100*((float)CSV.getProgress()/(float)CSV.getFileSize()),
-				books.getSimulatedTime());
+				books.getSimulatedTime(),
+				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
 

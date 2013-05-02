@@ -21,4 +21,5 @@ public class NullStrategy extends AbstractStrategy implements Strategy {
 
 
 
+
 }
