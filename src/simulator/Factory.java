@@ -62,7 +62,7 @@ public class Factory {
 	public Strategy makeMeanReversionStrategy(Double mean) {
 		return new MeanReversion(makeOrderBooks(), mean);
 	}
-	
+
 	public Strategy makeMomentumStrategy() {
 		return new Momentum( makeOrderBooks(), makeTradeEngine() );
 	}

@@ -20,7 +20,7 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	public Order strategise() {
 		
 		double averageReturn = calculateAverageReturn();
-		
+/*		
 		if (averageReturn > 0) {
 			return createOrder(
 			    "ENTER",
@@ -35,6 +35,12 @@ public class Momentum extends AbstractStrategy implements Strategy {
 			    books.bestBidOrder().volume(),
 			    "",
 			    "A" );
+		}
+*/
+		if (averageReturn > 0) {
+			return createOrder("ENTER", books.bestBidPrice() + 0.001, books.bestAskOrder().volume(), null, "B");
+		} else if (averageReturn < 0) {
+			return createOrder("ENTER", books.bestAskPrice() - 0.001, books.bestBidOrder().volume(), null, "A");
 		}
 		
 		return null;
