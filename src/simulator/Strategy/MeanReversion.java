@@ -20,7 +20,6 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	public MeanReversion(OrderBooks books, TradeEngine TE) {
 		super(books);
 		this.TE = TE;
-		//this.mean = 0.0;
 	}
 	
 	public void calculateMean() {

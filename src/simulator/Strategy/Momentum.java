@@ -10,6 +10,7 @@ import simulator.TradeEngine;
 public class Momentum extends AbstractStrategy implements Strategy {
 
 	TradeEngine tradeEngine;
+	private boolean myBidOrder = false;
 	
 	public Momentum(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
@@ -36,10 +37,12 @@ public class Momentum extends AbstractStrategy implements Strategy {
 			    "",
 			    "A" );
 		}
-*/
-		if (averageReturn > 0) {
+*/	
+		if (averageReturn > 0 && myBidOrder == false) {
+			myBidOrder = true;
 			return createOrder("ENTER", books.bestBidPrice() + 0.001, books.bestAskOrder().volume(), null, "B");
-		} else if (averageReturn < 0) {
+		} else if (averageReturn < 0 && myBidOrder == true) {
+			myBidOrder = false;
 			return createOrder("ENTER", books.bestAskPrice() - 0.001, books.bestBidOrder().volume(), null, "A");
 		}
 		
