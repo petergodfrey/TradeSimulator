@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import simulator.strategy.*;
+import simulator.Strategy.*;
 
 public class Factory {
 

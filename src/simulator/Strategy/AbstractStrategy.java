@@ -1,4 +1,4 @@
-package simulator.strategy;
+package simulator.Strategy;
 
 import java.util.ArrayList;
 import java.util.List;

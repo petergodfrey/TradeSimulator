@@ -1,5 +1,5 @@
 package simulator;
-import simulator.strategy.*;
+import simulator.Strategy.*;
 
 import java.io.IOException;
 import java.util.InputMismatchException;

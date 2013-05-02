@@ -1,4 +1,4 @@
-package simulator.strategy;
+package simulator.Strategy;
 
 import simulator.Order;
 import simulator.OrderBooks;

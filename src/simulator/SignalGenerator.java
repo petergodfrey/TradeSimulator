@@ -1,7 +1,7 @@
 package simulator;
 import java.io.*;
 
-import simulator.strategy.Strategy;
+import simulator.Strategy.Strategy;
 
 public class SignalGenerator {
 
