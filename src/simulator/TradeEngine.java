@@ -52,7 +52,7 @@ public class TradeEngine {
     	//Generate a trade transaction with the following properties:
 		//    i.  Volume traded is the minimum volume of best bid and best ask orders.
 		//    ii. The trading price is determined as:
-/*
+
     	if (orderBooks.spread() < 0) {
     		//if it is open trading session, but spread is < 0, can't trade
     		return;
@@ -83,9 +83,9 @@ public class TradeEngine {
 			orderBooks.deleteOrder(bestAsk);
 			addTrade(bestBid, bestAsk);
 		}
-*/
+
     	
-    	while ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
+ /*   	while ( orderBooks.askListSize() > 0 && orderBooks.bidListSize() > 0 &&
     			orderBooks.spread() >= 0 ) {
 
     		Order bestBid = orderBooks.bestBidOrder();
@@ -111,7 +111,7 @@ public class TradeEngine {
     	    	}
     		}
     	}
-    	return;		
+    	return;		*/
     }
     
     public ArrayList<Trade> getTradeList () {

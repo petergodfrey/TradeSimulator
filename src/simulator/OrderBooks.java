@@ -165,7 +165,6 @@ public class OrderBooks {
 					return;
 					//TODO sort on time when prices are same
 					//TODO insert properly for sell book
-					//TODO handle AMEND orders
 				}
 			}
 			//catches orders that are either meant to be added to the end
@@ -180,7 +179,6 @@ public class OrderBooks {
 					return;
 					//TODO sort on time when prices are same
 					//TODO insert properly for sell book
-					//TODO handle AMEND orders
 				}
 			}
 			//catches orders that are either meant to be added to the end
@@ -251,5 +249,6 @@ public class OrderBooks {
 		String ESC = "\033[";
 		System.out.print(ESC + "2J"); 
 	}
+
 }
 
