@@ -8,6 +8,7 @@ import simulator.Reader;
 public class MeanReversion extends AbstractStrategy implements Strategy {
 
 	private Double mean; 
+	// if there's no my bid order, assigns false. otherwise, assigns true
 	private boolean myBidOrder = false;
 	
 	public MeanReversion(OrderBooks books) {
@@ -19,7 +20,7 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 		// and modify the filePath for previous days 
 		//this.mean = (highest + lowest) / 2;
 		
-		this.mean = 67.46331; // mean value from sample1.csv 
+		this.mean = 67.46331; // random mean value from sample1.csv 
 	}	
 	
 	@Override
@@ -54,7 +55,7 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 		}
 		
 		// if the price is lower than mean, buy order
-		if (books.askListSize() != 0 && myBidOrder == false) {			
+		if (books.askListSize() != 0 && myBidOrder == false && order == null) {			
 			Order bestAsk = books.bestAskOrder();
 			if (bestAsk.price() < this.mean) { // check whether the price is lower than mean
 				if (books.bidListSize() != 0) {
