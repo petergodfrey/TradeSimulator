@@ -172,7 +172,7 @@ public class Run {
 		//ensure each simulation run begins with empty orderbooks and trade lists
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
-		tradeEngine.resetTradeList();
+		tradeEngine.resetTradeEngine();
 		
 		//reset any strategy attributes after each simulation
 		strat.reset();

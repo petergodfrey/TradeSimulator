@@ -10,6 +10,8 @@ public class TradeEngine {
 	private Factory f;
 	private String openTrading = "10:00:00.000";
 	
+	private long sum;
+	
     public TradeEngine(OrderBooks orderBooks, Factory f) {
         this.orderBooks = orderBooks;
         this.tradeList = new ArrayList<Trade>();
@@ -31,8 +33,9 @@ public class TradeEngine {
     	return true;
     }
     
-    public void resetTradeList() {
+    public void resetTradeEngine() {
     	tradeList = new ArrayList<Trade>();
+    	sum = 0;
     }
     
     /*
@@ -133,6 +136,8 @@ public class TradeEngine {
     	
     	int volume = Math.min(bid.volume(), ask.volume());
     	
+    	sum += tradePrice;
+    	
     	tradeList.add(f.makeTrade(orderBooks.getSimulatedTime(),
     			                 "TRADE",
     	           	             tradePrice,
@@ -141,5 +146,8 @@ public class TradeEngine {
     					         "", bid, ask) );
     }
     
+    public double avg() {
+    	return (double)(sum/tradeList.size());
+    }
 
 }

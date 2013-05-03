@@ -17,18 +17,28 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	private boolean myBidOrder = true; //false;
 	private TradeEngine tradeEngine;
 	
+	private int tradeSize = 0;
+	private double sum = 0;
+	
 	public MeanReversion(OrderBooks books, TradeEngine TE) {
 		super(books);
 		this.TE = TE;
 	}
 	
 	public void calculateMean() {
-		long sum = 0;
+			for (int i = 0; i < (TE.getTradeList().size()-tradeSize); i++) {
+				sum += TE.getTradeList().get(i).price();
+			}
+		
+		tradeSize = TE.getTradeList().size();
+		this.mean = sum/TE.getTradeList().size();
+		/*long sum = 0;
 		List<Trade> tradeList = TE.getTradeList();
 		for (Trade t:tradeList) {
 			sum += t.price();
 		}
 		this.mean = (double) (sum / tradeList.size());
+		//this.mean = TE.avg();*/
 	}	
 	
 	@Override
