@@ -150,7 +150,7 @@ public class Run {
 	}
 
 	private static void runSimulation(Reader CSV, Strategy strat, Factory f) {
-
+		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
@@ -180,6 +180,7 @@ public class Run {
 		System.out.println("Running simulation ");
 
 		Order o;
+		
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
@@ -200,6 +201,10 @@ public class Run {
 			int profit = eval.calculateProfit(strategyTrades);
 			System.out.println("Profit: $("+profit+")!");
 		}
+		long finalTime = System.currentTimeMillis();
+		double millisTaken = (double)finalTime-(double)initTime;
+		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
+		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
 		System.out.println("\n###########################################");
 	}
 	private static void exitProgram(Scanner s) {
