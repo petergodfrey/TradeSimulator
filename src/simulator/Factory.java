@@ -183,7 +183,12 @@ public class Factory {
 		if ( s.equals("") ) {
 			return EMPTY_LONG_FIELD;
 		} else {
+			try {
 			return Long.parseLong(s);    
+			} catch (Exception e) {
+				//TODO current error, 2^63 < ID < 2^64
+				return Long.MAX_VALUE;
+			}
 		} 
 	}
 	
