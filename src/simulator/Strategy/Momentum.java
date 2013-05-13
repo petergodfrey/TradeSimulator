@@ -10,43 +10,28 @@ import simulator.TradeEngine;
 public class Momentum extends AbstractStrategy implements Strategy {
 
 	TradeEngine tradeEngine;
-	private boolean myBidOrder = false;
+	private Order previousOrder;
 	
 	public Momentum(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
-		this.tradeEngine = tradeEngine;
+		this.tradeEngine   = tradeEngine;
+		this.previousOrder = Order.NO_ORDER;
 	}
 
 	@Override
 	public Order strategise() {
 		
 		double averageReturn = calculateAverageReturn();
-/*		
-		if (averageReturn > 0) {
-			return createOrder(
-			    "ENTER",
-			    books.bestAskPrice(),
-			    books.bestBidOrder().volume(),
-			    "",
-			    "B" );
-		} else if (averageReturn < 0) {
-			return createOrder(
-			    "ENTER",
-			    books.bestAskPrice(),
-			    books.bestBidOrder().volume(),
-			    "",
-			    "A" );
-		}
-*/	
-		if (averageReturn > 0 && myBidOrder == false) {
-			myBidOrder = true;
-			return createOrder("ENTER", books.bestBidPrice() + 0.001, books.bestAskOrder().volume(), null, "B");
-		} else if (averageReturn < 0 && myBidOrder == true) {
-			myBidOrder = false;
-			return createOrder("ENTER", books.bestAskPrice() - 0.001, books.bestBidOrder().volume(), null, "A");
+
+		if (averageReturn > 0 && !previousOrder.bidAsk().equals("B")) {
+			previousOrder = createOrder("ENTER", books.bestBidPrice() + 0.001, books.bestAskOrder().volume(), null, "B");
+			return previousOrder;
+		} else if (averageReturn < 0 && !previousOrder.bidAsk().equals("A")) {
+			previousOrder = createOrder("ENTER", books.bestAskPrice() - 0.001, books.bestBidOrder().volume(), null, "A");
+			return previousOrder;
 		}
 		
-		return null;
+		return Order.NO_ORDER;
 	}
 
 	@Override
