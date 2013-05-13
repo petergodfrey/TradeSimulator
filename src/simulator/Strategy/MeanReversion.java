@@ -105,7 +105,7 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 
 	@Override
 	public String getStrategyName() {
-		return "MeanReversion";
+		return "Mean Reversion";
 	}
 	
 	@Override

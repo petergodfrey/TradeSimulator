@@ -47,12 +47,30 @@ public class Start {
 		return strat;
 	}
 
-	public static void runSimulation(Reader CSV, Strategy strat, Factory factory) {
+	public static Strategy selectComparison(String straCompare, Factory factory) {
+		
+		Strategy compare = null;
+		
+		if (straCompare == "Mean Reversion") {
+			compare =  factory.makeMeanReversionStrategy();
+		} else if (straCompare == "Momentum"){
+			compare = factory.makeMomentumStrategy();
+		} else if (straCompare == "Dumb") {
+			compare = factory.makeDumbStrategy();
+		} else if (straCompare == "Random") {
+			compare = factory.makeNewStrategy();
+		}
+		return compare;
+	}
+	
+	
+	public static int runSimulation(Reader CSV, Strategy strat, Factory factory) {
+		Integer profit = 0;
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
-			return;//exit function early
+			return profit;//exit function early
 		}
 
 		SignalGenerator signalGenerator = null;
@@ -62,7 +80,7 @@ public class Start {
 			signalGenerator = new SignalGenerator(CSV, strat, factory);
 		} catch (IOException e) {
 			System.out.println("Error in reading CSV file, exiting simulation");
-			return;
+			return profit;
 		}
 
 		OrderBooks  orderBooks  = factory.makeOrderBooks();
@@ -97,7 +115,7 @@ public class Start {
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
-			Integer profit = new Integer (eval.calculateProfit(strategyTrades));
+			profit = new Integer (eval.calculateProfit(strategyTrades));
 			System.out.println("Profit: $("+profit+")!");
 			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
@@ -108,6 +126,88 @@ public class Start {
 		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
 		
 		System.out.println("\n###########################################");
+		return profit;
+	}
+	
+	static public void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory factory, int result) {
+		int profit = 0;
+		//cannot run simulation if there is no CSV chosen
+		if (CSV == null) {
+			System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			return;//exit function early
+		}
+		
+		SignalGenerator signalGenerator = null;
+		try {
+			CSV = factory.makeReader(CSV.getFilePath());
+			System.out.println("Loading " + CSV.getFilePath());
+			signalGenerator = new SignalGenerator(CSV, compare, factory);
+		} catch (IOException e) {
+			System.out.println("Error in reading CSV file, exiting simulation");
+			return;
+		}
+
+		OrderBooks  orderBooks  = factory.makeOrderBooks();
+		TradeEngine tradeEngine = factory.makeTradeEngine();
+		//ensure each simulation run begins with empty orderbooks and trade lists
+		//ensures successive simulations are unaffected
+		orderBooks.resetOrderBooks();
+		tradeEngine.resetTradeEngine();
+		
+		//reset any strategy attributes after each simulation
+		compare.reset();
+
+		System.out.println("Running simulation ");
+
+		Order o;
+		while ((o = signalGenerator.advance()) != null) {
+			//one iteration equals one order being processed and traded
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
+			displayProgress(CSV, orderBooks);
+
+
+		}
+		
+		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
+		System.out.println("\nFinished Simulation, now evaluating...\n");
+		List<Trade> strategyTrades = eval.evaluate();
+		if (strategyTrades.size() == 0) {
+			System.out.println("STRATEGY CREATED NO TRADES");
+			//return;
+		} else {
+			//displayEvaluation(strategyTrades);
+			//System.out.println("\nSumming up the buys and sells\n");
+			profit = eval.calculateProfit(strategyTrades);
+			Main.lblCompareResult.setText("$ " + new Integer(profit).toString());
+			Main.lblCompareResult.update(Main.lblCompareResult.getGraphics());
+			System.out.print(compare.getStrategyName());
+			System.out.println(" Strategy's Profit: $("+profit+")!");
+		}
+		int comparedProfit = 0;
+		String interpret;
+		
+		if (profit > result) {
+			comparedProfit = profit - result;			
+			System.out.print (compare.getStrategyName() );
+			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
+			interpret = compare.getStrategyName() + " resulted in more profit by $ " + new Integer(comparedProfit).toString();
+		} else if (result > profit){
+			comparedProfit = result - profit;
+			System.out.print (strat.getStrategyName());
+			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
+			interpret = strat.getStrategyName() + " resulted in more profit by $ " + new Integer(comparedProfit).toString();
+		} else {
+			System.out.print("Both ");
+			System.out.print(compare.getStrategyName());
+			System.out.print(" and");
+			System.out.print(strat.getStrategyName());
+			System.out.println(" are equal in profit");
+			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
+		}
+		Main.lblDisplayResult.setText(interpret);
+		System.out.println("\n###########################################");
+	
 	}
 	
 	public static void updateProgressBar(Reader CSV) {
