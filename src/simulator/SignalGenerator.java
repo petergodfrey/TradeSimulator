@@ -28,18 +28,6 @@ public class SignalGenerator {
 	 */
 	public Order advance() {
 		Order o = strategy.submitOrder();
-		
-		if (o != Order.NO_ORDER) {
-		    if (previousOrder != Order.NO_ORDER)
-			    // Only generate orders in Bid-Ask pairs
-		    	if ( o.bidAsk().equals( previousOrder.bidAsk() ) ) {
-		    		o = Order.NO_ORDER;
-		    	} else {
-		    		previousOrder = o;
-		    	}
-		    } else {
-		    	previousOrder = o;
-		    }
 		    
 		if (o == Order.NO_ORDER) {
 			try {
