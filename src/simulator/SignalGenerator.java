@@ -7,7 +7,6 @@ public class SignalGenerator {
 
 	private Reader      reader;
 	private Strategy   strategy;
-
 	private Factory f;
 
 
@@ -26,6 +25,7 @@ public class SignalGenerator {
 	 * This method advances the simulator by a single step
 	 */
 	public Order advance() {
+
 		Order o = strategy.submitOrder();
 		if (o == Order.NO_ORDER) {
 			try {
