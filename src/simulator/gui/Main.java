@@ -57,7 +57,7 @@ public class Main extends JFrame {
 	JLabel lblProgress;
 	JLabel displayData;
 	JLabel displayStrategy;
-	JComboBox<String> selectedStrategy;
+	JComboBox selectedStrategy;
 	JButton runSimulation;
 	JButton cancelSimulation;
 	static JProgressBar progressPercent;
@@ -124,7 +124,7 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum"};
+		String[] strategyOptions = {"Select a Strategy", "Mean Reversion", "Momentum"};
 		
 		panelSimulation = new JPanel();
 		panelSimulation.setBounds(0, 0, 825, 556);
@@ -132,15 +132,15 @@ public class Main extends JFrame {
 		panelSimulation.setLayout(null);
 		
 		lblSelectedDateFile = new JLabel("Selected Date File :");
-		lblSelectedDateFile.setBounds(10, 119, 104, 20);
+		lblSelectedDateFile.setBounds(10, 119, 120, 20);
 		panelSimulation.add(lblSelectedDateFile);
 		
 		lblSelectedStrategy = new JLabel("Selected Strategy :");
-		lblSelectedStrategy.setBounds(10, 151, 104, 20);
+		lblSelectedStrategy.setBounds(10, 151, 1120, 20);
 		panelSimulation.add(lblSelectedStrategy);
 		
 		lblProgress = new JLabel("Progress :");
-		lblProgress.setBounds(10, 182, 104, 20);
+		lblProgress.setBounds(10, 182, 120, 20);
 		panelSimulation.add(lblProgress);
 		
 		displayData = new JLabel("");
@@ -152,19 +152,19 @@ public class Main extends JFrame {
 		panelSimulation.add(displayStrategy);
 		
 		lblDataFile = new JLabel("Data File Path :");
-		lblDataFile.setBounds(10, 11, 74, 14);
+		lblDataFile.setBounds(10, 11, 120, 14);
 		panelSimulation.add(lblDataFile);
 		
 		
 		filePath = new JTextField();
 		filePath.setBounds(124, 11, 683, 20);
 		panelSimulation.add(filePath);
-		filePath.setText("Enter the data file path");
+		filePath.setText("Type the filepath of the selected CSV file");
 		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
 		filePath.setColumns(10);
 		
 		lblStrategy = new JLabel("Strategy :");
-		lblStrategy.setBounds(10, 38, 49, 14);
+		lblStrategy.setBounds(10, 38, 120, 14);
 		panelSimulation.add(lblStrategy);
 		selectedStrategy = new JComboBox (strategyOptions);
 		selectedStrategy.setBounds(124, 39, 176, 20);
@@ -179,8 +179,8 @@ public class Main extends JFrame {
 		panelSimulation.add(progressPercent);
 		progressPercent.setStringPainted(true);
 				
-				runSimulation = new JButton("Run Simulation");
-				runSimulation.setBounds(590, 92, 103, 23);
+				runSimulation = new JButton("Run Evaluation");
+				runSimulation.setBounds(500, 92, 130, 23);
 				panelSimulation.add(runSimulation);
 				
 				runSimulation.addMouseListener(new MouseAdapter() {
@@ -200,8 +200,8 @@ public class Main extends JFrame {
 					}
 				});
 		
-				cancelSimulation = new JButton(" Cancel Simulation");
-				cancelSimulation.setBounds(696, 92, 119, 23);
+				cancelSimulation = new JButton("Clear Simulation");
+				cancelSimulation.setBounds(650, 92, 150, 23);
 				panelSimulation.add(cancelSimulation);
 				cancelSimulation.addMouseListener(new MouseAdapter() {
 					@Override
