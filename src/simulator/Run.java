@@ -50,7 +50,8 @@ public class Run {
 				compare = selectComparison(s,f);
 				break;
 			case 5:
-				runComparison(CSV, compare, f, result);
+				runComparison(CSV, compare, strat, f, result);
+				break;
 			case 6: 
 				exitProgram(s);
 				break;
@@ -260,7 +261,7 @@ public class Run {
 		return profit;
 	}
 	
-	private static void runComparison(Reader CSV, Strategy compare, Factory f, int result) {
+	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, int result) {
 		int profit = 0;
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
@@ -310,17 +311,27 @@ public class Run {
 			//displayEvaluation(strategyTrades);
 			//System.out.println("\nSumming up the buys and sells\n");
 			profit = eval.calculateProfit(strategyTrades);
-			System.out.println("Comparison's Strategy's Profit: $("+profit+")!");
+			System.out.print(compare.getStrategyName());
+			System.out.println(" Strategy's Profit: $("+profit+")!");
 		}
+		int comparedProfit = 0;
 		if (profit > result) {
-			System.out.println ("The Comparison Strategy resulted in more profit");
+			comparedProfit = profit - result;			
+			System.out.print (compare.getStrategyName() );
+			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
 		} else if (result > profit){
-			System.out.println ("The original Strategy resulted in more profit");
+			comparedProfit = result - profit;
+			System.out.print (strat.getStrategyName());
+			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
 		} else {
-			System.out.println("Both strategies resulted in the same profit");
+			System.out.print("Both ");
+			System.out.print(compare.getStrategyName());
+			System.out.print(" and");
+			System.out.print(strat.getStrategyName());
+			System.out.println(" are equal in profit");
 		}
 		System.out.println("\n###########################################");
-		
+	
 	}
 	
 	

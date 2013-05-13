@@ -8,14 +8,12 @@ public class SignalGenerator {
 	private Reader      reader;
 	private Strategy   strategy;
 	private Factory f;
-	private Order previousOrder;
 
 
 	public SignalGenerator(Reader reader, Strategy strategy, Factory f) throws IOException {
 		this.reader      = reader;
 		this.strategy   = strategy;
 		this.f = f;
-		this.previousOrder = Order.NO_ORDER;
 		
 		f.resetCSVColumns();//every CSV file may have different formatting
 		//read first line and determine the index positions of columns
@@ -27,8 +25,8 @@ public class SignalGenerator {
 	 * This method advances the simulator by a single step
 	 */
 	public Order advance() {
+
 		Order o = strategy.submitOrder();
-		    
 		if (o == Order.NO_ORDER) {
 			try {
 				o = CSVNext();

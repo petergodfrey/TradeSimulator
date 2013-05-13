@@ -10,43 +10,28 @@ import simulator.TradeEngine;
 public class Momentum extends AbstractStrategy implements Strategy {
 
 	TradeEngine tradeEngine;
-	private boolean myBidOrder = false;
+	private String previousOrderType;
 	
 	public Momentum(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
-		this.tradeEngine = tradeEngine;
+		this.tradeEngine   = tradeEngine;
+		this.previousOrderType = "NO_ORDER";
 	}
 
 	@Override
 	public Order strategise() {
 		
 		double averageReturn = calculateAverageReturn();
-/*		
-		if (averageReturn > 0) {
-			return createOrder(
-			    "ENTER",
-			    books.bestAskPrice(),
-			    books.bestBidOrder().volume(),
-			    "",
-			    "B" );
-		} else if (averageReturn < 0) {
-			return createOrder(
-			    "ENTER",
-			    books.bestAskPrice(),
-			    books.bestBidOrder().volume(),
-			    "",
-			    "A" );
-		}
-*/	
-		if (averageReturn > 0 && myBidOrder == false) {
-			myBidOrder = true;
+
+		if (averageReturn > 0 && !previousOrderType.equals("B")) {
+			previousOrderType = "B";
 			return createOrder("ENTER", books.bestBidPrice() + 0.001, books.bestAskOrder().volume(), null, "B");
-		} else if (averageReturn < 0 && myBidOrder == true) {
-			myBidOrder = false;
+		} else if (averageReturn < 0 && !previousOrderType.equals("A")) {
+			previousOrderType = "A";
 			return createOrder("ENTER", books.bestAskPrice() - 0.001, books.bestBidOrder().volume(), null, "A");
 		}
 		
-		return null;
+		return Order.NO_ORDER;
 	}
 
 	@Override
