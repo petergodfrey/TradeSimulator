@@ -37,6 +37,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.SystemColor;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import javax.swing.SwingConstants;
 
 public class Main extends JFrame {
 
@@ -55,8 +58,15 @@ public class Main extends JFrame {
 	JLabel lblSelectedDateFile;
 	JLabel lblSelectedStrategy;
 	JLabel lblProgress;
-	JLabel displayData;
+	static JLabel displayData;
 	JLabel displayStrategy;
+	JLabel lblProfit;
+	static JLabel lbProfitResult;
+	JLabel lblTrades;
+	static JLabel lblBidID;
+	static JLabel lblAskID;
+	static JLabel lblPrice;
+	static JLabel lblVolume;
 	JComboBox<String> selectedStrategy;
 	JButton runSimulation;
 	JButton cancelSimulation;
@@ -64,6 +74,7 @@ public class Main extends JFrame {
 	Factory factory;
 	Reader CSV;
 	Strategy selected;
+
 	
 	
 	/**
@@ -124,8 +135,6 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum"};
-		
 		panelSimulation = new JPanel();
 		panelSimulation.setBounds(0, 0, 825, 556);
 		contentPane.add(panelSimulation);
@@ -152,7 +161,7 @@ public class Main extends JFrame {
 		panelSimulation.add(displayStrategy);
 		
 		lblDataFile = new JLabel("Data File Path :");
-		lblDataFile.setBounds(10, 11, 74, 14);
+		lblDataFile.setBounds(10, 11, 74, 20);
 		panelSimulation.add(lblDataFile);
 		
 		
@@ -164,14 +173,16 @@ public class Main extends JFrame {
 		filePath.setColumns(10);
 		
 		lblStrategy = new JLabel("Strategy :");
-		lblStrategy.setBounds(10, 38, 49, 14);
+		lblStrategy.setBounds(10, 38, 61, 20);
 		panelSimulation.add(lblStrategy);
+		
+		String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random"};
 		selectedStrategy = new JComboBox (strategyOptions);
-		selectedStrategy.setBounds(124, 39, 176, 20);
+		selectedStrategy.setBounds(124, 38, 176, 20);
 		panelSimulation.add(selectedStrategy);
 		selectedStrategy.setSelectedIndex(0);
 		selectedStrategy.setToolTipText("Click the arrow and select one of strategies");
-		selectedStrategy.setMaximumRowCount(3);
+		selectedStrategy.setMaximumRowCount(5);
 		
 		progressPercent = new JProgressBar();
 		progressPercent.setForeground(SystemColor.textHighlight);
@@ -179,38 +190,73 @@ public class Main extends JFrame {
 		panelSimulation.add(progressPercent);
 		progressPercent.setStringPainted(true);
 				
-				runSimulation = new JButton("Run Simulation");
-				runSimulation.setBounds(590, 92, 103, 23);
-				panelSimulation.add(runSimulation);
-				
-				runSimulation.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						factory = new Factory();
-						CSV = Start.getFilePath(filePath.getText(), factory);
-						String strat = (String) selectedStrategy.getSelectedItem();
-						if (strat == "Mean Reversion" || strat == "Momentum") {
-							selected = Start.selectStrategy(strat, factory);
-						} else {
-							System.err.println("Strategy is not selected");
-							//update later to clear filepath and strategy option
-							Start.exitProgram();
-						}
-						Start.runSimulation(CSV, selected, factory);
-					}
-				});
+		runSimulation = new JButton("Run Simulation");
+		runSimulation.setBounds(590, 92, 103, 23);
+		panelSimulation.add(runSimulation);
 		
-				cancelSimulation = new JButton(" Cancel Simulation");
-				cancelSimulation.setBounds(696, 92, 119, 23);
-				panelSimulation.add(cancelSimulation);
-				cancelSimulation.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						// cancel the simulation (exit or remove entered input)
-										
-					}
-				});
-
+		cancelSimulation = new JButton(" Cancel Simulation");
+		cancelSimulation.setBounds(696, 92, 119, 23);
+		panelSimulation.add(cancelSimulation);
+		
+		lblProfit = new JLabel("Profit :");
+		lblProfit.setBounds(10, 213, 61, 20);
+		panelSimulation.add(lblProfit);
+		
+		lbProfitResult = new JLabel("");
+		lbProfitResult.setBounds(124, 213, 222, 20);
+		panelSimulation.add(lbProfitResult);
+		
+		lblTrades = new JLabel("Trade list :");
+		lblTrades.setBounds(10, 244, 61, 20);
+		panelSimulation.add(lblTrades);
+		
+		lblBidID = new JLabel("Bid ID");
+		lblBidID.setVerticalAlignment(SwingConstants.TOP);
+		lblBidID.setBounds(124, 244, 222, 301);
+		panelSimulation.add(lblBidID);
+		
+		lblAskID = new JLabel("Ask ID");
+		lblAskID.setVerticalAlignment(SwingConstants.TOP);
+		lblAskID.setBounds(370, 244, 222, 301);
+		panelSimulation.add(lblAskID);
+		
+		lblPrice = new JLabel("Price");
+		lblPrice.setVerticalAlignment(SwingConstants.TOP);
+		lblPrice.setBounds(607, 244, 74, 298);
+		panelSimulation.add(lblPrice);
+		
+		lblVolume = new JLabel("Volume");
+		lblVolume.setVerticalAlignment(SwingConstants.TOP);
+		lblVolume.setBounds(706, 244, 74, 298);
+		panelSimulation.add(lblVolume);
+		cancelSimulation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// cancel the simulation (exit or remove entered input)
+								
+			}
+		});
+		
+		runSimulation.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				factory = new Factory();
+				CSV = Start.getFilePath(filePath.getText(), factory);
+				String strat = (String) selectedStrategy.getSelectedItem();
+				if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
+					selected = Start.selectStrategy(strat, factory);
+				} else {
+					System.err.println("Strategy is not selected");
+					//update later to clear filepath and strategy option
+					Start.exitProgram();
+				}
+				displayData.setText(filePath.getText());
+				displayData.update(displayData.getGraphics());
+				displayStrategy.setText(strat);
+				displayStrategy.update(displayStrategy.getGraphics());
+				Start.runSimulation(CSV, selected, factory);
+			}
+		});
 		
 	}
 }

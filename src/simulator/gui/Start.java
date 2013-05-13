@@ -39,6 +39,10 @@ public class Start {
 			strat =  factory.makeMeanReversionStrategy();
 		} else if (straInput == "Momentum"){
 			strat = factory.makeMomentumStrategy();
+		} else if (straInput == "Dumb") {
+			strat = factory.makeDumbStrategy();
+		} else if (straInput == "Random") {
+			strat = factory.makeNewStrategy();
 		}
 		return strat;
 	}
@@ -93,21 +97,23 @@ public class Start {
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
-			int profit = eval.calculateProfit(strategyTrades);
+			Integer profit = new Integer (eval.calculateProfit(strategyTrades));
 			System.out.println("Profit: $("+profit+")!");
+			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
+		//Chart.drawChart(tradeEngine.getTradeList());
 		long finalTime = System.currentTimeMillis();
 		double millisTaken = (double)finalTime-(double)initTime;
 		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
 		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
+		
 		System.out.println("\n###########################################");
 	}
 	
 	public static void updateProgressBar(Reader CSV) {
-    	//Main.progressPercent.setString(getProgress(CSV));
+    	Main.progressPercent.setString(getProgress(CSV) + " %");
 		Main.progressPercent.setValue(getProgressPercent(CSV));
 		Main.progressPercent.update(Main.progressPercent.getGraphics());
-		//Main.progressPercent.repaint();
 	}
 	
 	public static void exitProgram() {
@@ -133,7 +139,7 @@ public class Start {
 	public static String getProgress(Reader CSV) {
 		if (CSV != null) {
 			Float percentage = new Float(100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
-			return String.format("%.2f", percentage);
+			return String.format("%.2f ", percentage);
 		}
 		return new String(); 
 	}
@@ -146,11 +152,34 @@ public class Start {
 		//	displayBidAskofTrade(t);
 		//}
 		displayTradeHeader();
+		
+		String bidLine = "<html>Bid ID<br>";
+		String askLine = "<html>Ask ID<br>";
+		String priceLine = "<html>price<br>";
+		String volumeLine = "<html>Volume<br>";
+
 		for (Trade t:strategyTrades) {
 			displayTrade(t);
+			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
+			askLine += String.format("%019d", t.getAsk().ID())  + "<br>";
+			priceLine += t.price().toString()  + "<br>";
+			volumeLine += new Integer(t.volume()).toString() + "<br>";
 		}
+		bidLine += "</html>";
+		askLine += "</html>";
+		priceLine += "</html>";
+		volumeLine += "</html>";
+		Main.lblBidID.setText(bidLine);
+		Main.lblAskID.setText(askLine);
+		Main.lblPrice.setText(priceLine);
+		Main.lblVolume.setText(volumeLine);
 	}
 
+	public static void showTrade(Trade t) {
+		
+		Main.lblBidID.revalidate();
+	}
+	
 	public static void displayTradeHeader() {
 		System.out.print("Bid ID\t\t\t");
 		System.out.print("Ask ID\t\t\t");
