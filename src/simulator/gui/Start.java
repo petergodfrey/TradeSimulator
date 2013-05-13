@@ -78,7 +78,7 @@ public class Start {
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
 			displayProgress(CSV, orderBooks);
-
+			Main.progressPercent.setString(Start.getProgress(CSV));
 
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
@@ -112,8 +112,11 @@ public class Start {
 	}
 
 	public static String getProgress(Reader CSV) {
-		Float percentage = new Float(100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
-		return String.format("%.2f", percentage);
+		if (CSV != null) {
+			Float percentage = new Float(100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+			return String.format("%.2f", percentage);
+		}
+		return new String(); 
 	}
 	
 	public static void displayEvaluation(List<Trade> strategyTrades) {

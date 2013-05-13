@@ -40,9 +40,8 @@ import javax.swing.event.ChangeEvent;
 public class Main extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField filePath;
-	private JPanel panelInput;
-	private JPanel panelSimulation;
+	private static JTextField filePath;
+	private static JPanel panelSimulation;
 	JMenuBar menuBar;
 	JMenu mnFile;
 	JMenu mnEdit;
@@ -60,7 +59,7 @@ public class Main extends JFrame {
 	JComboBox<String> selectedStrategy;
 	JButton runSimulation;
 	JButton cancelSimulation;
-	JProgressBar progressPercent;
+	static JProgressBar progressPercent;
 	Factory factory;
 	Reader CSV;
 	Strategy selected;
@@ -84,7 +83,7 @@ public class Main extends JFrame {
 					e.printStackTrace();
 				}
 			}
-		});
+		});	
 	}
 
 	/**
@@ -92,47 +91,6 @@ public class Main extends JFrame {
 	 */
 	public Main() {
 		initMain();
-		runSimulation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// run the simulation (pass the info to Run class)
-/*
-				Factory factory = new Factory();
-				Reader CSV = Start.getFilePath(filePath.getText(), factory);
-				Strategy selected = null;
-*/				
-				factory = new Factory();
-				CSV = Start.getFilePath(filePath.getText(), factory);
-				String strat = (String) selectedStrategy.getSelectedItem();
-				if (strat == "Mean Reversion" || strat == "Momentum") {
-					selected = Start.selectStrategy(strat, factory);
-				} else {
-					System.err.println("Strategy is not selected");
-					//update later to clear filepath and strategy option
-					Start.exitProgram();
-				}
-				panelInput.setOpaque(false);
-				lblDataFile.setOpaque(false);
-				lblStrategy.setOpaque(false);
-				selectedStrategy.setOpaque(false);
-				filePath.setOpaque(false);
-				cancelSimulation.setOpaque(false);
-				runSimulation.setOpaque(false);
-							
-				panelSimulation.setOpaque(true);
-				progressPercent.setOpaque(true);
-				lblSelectedDateFile.setOpaque(true);
-				lblSelectedStrategy.setOpaque(true);
-				lblProgress.setOpaque(true);
-				displayData.setOpaque(true);
-				displayStrategy.setOpaque(true);
-			}
-		});
-		System.out.print("Check Check Check!!!");
-		System.out.println(Start.getProgress(CSV));
-		progressPercent.setString(Start.getProgress(CSV));
-		Start.runSimulation(CSV, selected, factory);
-		//System.out.println("I'm end of mouseClicked()");
 	}
 	
 	private void initMain() {
@@ -165,86 +123,101 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		panelInput = new JPanel();
-		panelInput.setBounds(0, 0, 825, 110);
-		contentPane.add(panelInput);
-		panelInput.setLayout(null);
-		
-		lblStrategy = new JLabel("Strategy :");
-		lblStrategy.setBounds(10, 34, 49, 14);
-		panelInput.add(lblStrategy);
-		
-		lblDataFile = new JLabel("Data File Path :");
-		lblDataFile.setBounds(10, 9, 74, 14);
-		panelInput.add(lblDataFile);
-		
 		String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum"};
-		selectedStrategy = new JComboBox<String>(strategyOptions);
-		selectedStrategy.setSelectedIndex(0);
-		selectedStrategy.setBounds(104, 31, 176, 20);
-		panelInput.add(selectedStrategy);
-		selectedStrategy.setToolTipText("Click the arrow and select one of strategies");
-		selectedStrategy.setMaximumRowCount(3);
-		
-		
-		filePath = new JTextField();
-		filePath.setBounds(104, 6, 683, 20);
-		panelInput.add(filePath);
-		filePath.setText("Enter the data file path");
-		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
-		filePath.setColumns(10);
-
-		cancelSimulation = new JButton(" Cancel Simulation");
-		cancelSimulation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// cancel the simulation (exit or remove entered input)
-								
-			}
-		});		
-
-		cancelSimulation.setBounds(668, 78, 119, 23);
-		panelInput.add(cancelSimulation);	
 		
 		panelSimulation = new JPanel();
 		panelSimulation.setBounds(0, 0, 825, 556);
 		contentPane.add(panelSimulation);
 		panelSimulation.setLayout(null);
-		panelSimulation.setOpaque(false);
-		
-		progressPercent = new JProgressBar();
-		progressPercent.setStringPainted(true);
-		progressPercent.setBounds(124, 67, 691, 20);
-		progressPercent.setOpaque(false);
-		panelSimulation.add(progressPercent);
 		
 		lblSelectedDateFile = new JLabel("Selected Date File :");
-		lblSelectedDateFile.setBounds(10, 11, 104, 20);
-		lblSelectedDateFile.setOpaque(false);
+		lblSelectedDateFile.setBounds(10, 119, 104, 20);
 		panelSimulation.add(lblSelectedDateFile);
 		
 		lblSelectedStrategy = new JLabel("Selected Strategy :");
-		lblSelectedStrategy.setBounds(10, 38, 104, 20);
-		lblSelectedStrategy.setOpaque(false);
+		lblSelectedStrategy.setBounds(10, 151, 104, 20);
 		panelSimulation.add(lblSelectedStrategy);
 		
 		lblProgress = new JLabel("Progress :");
-		lblProgress.setBounds(10, 67, 104, 20);
-		lblProgress.setOpaque(false);
+		lblProgress.setBounds(10, 182, 104, 20);
 		panelSimulation.add(lblProgress);
 		
 		displayData = new JLabel("");
-		displayData.setBounds(124, 11, 691, 20);
-		displayData.setOpaque(false);
+		displayData.setBounds(124, 119, 691, 20);
 		panelSimulation.add(displayData);
 		
 		displayStrategy = new JLabel("");
-		displayStrategy.setBounds(124, 38, 691, 20);
-		displayStrategy.setOpaque(false);
-		panelSimulation.add(displayStrategy);		
+		displayStrategy.setBounds(124, 151, 691, 20);
+		panelSimulation.add(displayStrategy);
 		
-		runSimulation = new JButton("Run Simulation");
-		runSimulation.setBounds(555, 78, 103, 23);
-		panelInput.add(runSimulation);
+		lblDataFile = new JLabel("Data File Path :");
+		lblDataFile.setBounds(10, 11, 74, 14);
+		panelSimulation.add(lblDataFile);
+		
+		
+		filePath = new JTextField();
+		filePath.setBounds(124, 11, 683, 20);
+		panelSimulation.add(filePath);
+		filePath.setText("Enter the data file path");
+		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
+		filePath.setColumns(10);
+		
+		lblStrategy = new JLabel("Strategy :");
+		lblStrategy.setBounds(10, 38, 49, 14);
+		panelSimulation.add(lblStrategy);
+		selectedStrategy = new JComboBox (strategyOptions);
+		selectedStrategy.setBounds(124, 39, 176, 20);
+		panelSimulation.add(selectedStrategy);
+		selectedStrategy.setSelectedIndex(0);
+		selectedStrategy.setToolTipText("Click the arrow and select one of strategies");
+		selectedStrategy.setMaximumRowCount(3);
+		
+		progressPercent = new JProgressBar();
+		progressPercent.setIndeterminate(true);
+		progressPercent.setBounds(124, 184, 691, 20);
+		panelSimulation.add(progressPercent);
+		progressPercent.setStringPainted(true);
+				
+				runSimulation = new JButton("Run Simulation");
+				runSimulation.setBounds(590, 92, 103, 23);
+				panelSimulation.add(runSimulation);
+				
+				runSimulation.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						// run the simulation (pass the info to Run class)
+/*
+						Factory factory = new Factory();
+						Reader CSV = Start.getFilePath(filePath.getText(), factory);
+						Strategy selected = null;
+*/				
+						factory = new Factory();
+						CSV = Start.getFilePath(filePath.getText(), factory);
+						String strat = (String) selectedStrategy.getSelectedItem();
+						if (strat == "Mean Reversion" || strat == "Momentum") {
+							selected = Start.selectStrategy(strat, factory);
+						} else {
+							System.err.println("Strategy is not selected");
+							//update later to clear filepath and strategy option
+							Start.exitProgram();
+						}
+
+						Start.runSimulation(CSV, selected, factory);
+						System.out.println("I'm end of mouseClicked()");
+					}
+				});
+		
+				cancelSimulation = new JButton(" Cancel Simulation");
+				cancelSimulation.setBounds(696, 92, 119, 23);
+				panelSimulation.add(cancelSimulation);
+				cancelSimulation.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// cancel the simulation (exit or remove entered input)
+										
+					}
+				});
+
+		
 	}
 }
