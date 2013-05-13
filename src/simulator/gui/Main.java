@@ -134,22 +134,22 @@ public class Main extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		panelSimulation = new JPanel();
 		panelSimulation.setBounds(0, 0, 825, 556);
 		contentPane.add(panelSimulation);
 		panelSimulation.setLayout(null);
 		
 		lblSelectedDateFile = new JLabel("Selected Date File :");
-		lblSelectedDateFile.setBounds(10, 119, 104, 20);
+		lblSelectedDateFile.setBounds(10, 119, 120, 20);
 		panelSimulation.add(lblSelectedDateFile);
 		
 		lblSelectedStrategy = new JLabel("Selected Strategy :");
-		lblSelectedStrategy.setBounds(10, 151, 104, 20);
+		lblSelectedStrategy.setBounds(10, 151, 1120, 20);
 		panelSimulation.add(lblSelectedStrategy);
 		
 		lblProgress = new JLabel("Progress :");
-		lblProgress.setBounds(10, 182, 104, 20);
+		lblProgress.setBounds(10, 182, 120, 20);
 		panelSimulation.add(lblProgress);
 		
 		displayData = new JLabel("");
@@ -168,7 +168,7 @@ public class Main extends JFrame {
 		filePath = new JTextField();
 		filePath.setBounds(124, 11, 683, 20);
 		panelSimulation.add(filePath);
-		filePath.setText("Enter the data file path");
+		filePath.setText("Type the filepath of the selected CSV file");
 		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
 		filePath.setColumns(10);
 		
