@@ -27,13 +27,15 @@ public class Run {
 		//menu holds CSV file and strategy selected until running time
 		Reader CSV = null;
 		Strategy strat = f.makeNullStrategy();
+		Strategy compare = f.makeNullStrategy();
+		int result = 0;
 		//one scanner that is to be passed throughout the menu when
 		//input is needed, prevents memory leak problems from too many scanners
 		Scanner s = new Scanner(System.in);
 		boolean infLoop = true;
 		//loops indefinitely until exitProgram function is run
 		while (infLoop) {
-			int choice = menu(CSV, strat, s);
+			int choice = menu(CSV, strat, compare, s);
 			switch (choice) {
 			case 1: 
 				CSV = selectDataFile(s, f);
@@ -42,16 +44,22 @@ public class Run {
 				strat = selectStrategy(s, f, strat);
 				break;
 			case 3: 
-				runSimulation(CSV, strat, f);
+				result = runSimulation(CSV, strat, f);
 				break;
-			case 4: 
+			case 4:
+				compare = selectComparison(s,f);
+				break;
+			case 5:
+				runComparison(CSV, compare, f, result);
+			case 6: 
 				exitProgram(s);
 				break;
 			}
 		}
 	}
 
-	private static int menu (Reader CSV, Strategy strat, Scanner s) {
+
+	private static int menu (Reader CSV, Strategy strat, Strategy compare, Scanner s) {
 		{//displays currently selected options in menu
 			System.out.print("\nCurrent selected CSV:\t\t");
 			if (CSV == null) {
@@ -63,21 +71,28 @@ public class Run {
 			System.out.print("Current selected Strategy:\t");
 
 			System.out.print(strat.getStrategyName());
+
+			System.out.println();
+			System.out.print("Current selected Comparison Strategy:\t");
+
+			System.out.print(compare.getStrategyName());
 			System.out.printf("\n\n");
 		}
 		System.out.println("Please select an option below");
 		System.out.println("1 - Select Data File");
 		System.out.println("2 - Select Strategy");
 		System.out.println("3 - Run Simulation");
-		System.out.println("4 - Exit Program");
-		System.out.println("Please select a number (1 - 4)");
+		System.out.println("4 - Select Comparison Strategy");
+		System.out.println("5 - Run Comparison");
+		System.out.println("6 - Exit Program");
+		System.out.println("Please select a number (1 - 6)");
 
 		int choice = 0;
 		boolean validInput = false;
 		while (validInput == false) {// loop to repeat until there is a valid input
 			try {
 				choice = s.nextInt();
-				if (choice < 1 || choice > 4) {
+				if (choice < 1 || choice > 6) {
 					throw new InputMismatchException();
 				}
 				validInput = true;
@@ -149,12 +164,47 @@ public class Run {
 		return mean;
 	}
 
-	private static void runSimulation(Reader CSV, Strategy strat, Factory f) {
+	private static Strategy selectComparison(Scanner s, Factory f) {
+		System.out.println("Select a strategy to compare from the list");
+		System.out.println("1 - No Strategy");
+		System.out.println("2 - Dumb Strategy");
+		System.out.println("3 - Mean Reversion");
+		System.out.println("4 - Momentum Strategy");
+		Strategy compare = null;
+		try {
+			int choice = s.nextInt();
+			if (choice < 1 || choice > 4) {
+				throw new InputMismatchException();
+			}
+			switch (choice) {
+			case 1:
+				compare = f.makeNullStrategy();
+				break;
+			case 2:
+				compare = f.makeDumbStrategy();
+				break;
+			case 3:
+				compare = f.makeMeanReversionStrategy();
+				break;
+			case 4:
+				compare = f.makeMomentumStrategy();
+				break;
+			}
+		} catch (InputMismatchException e) {
+			System.out.println("Wrong input, returning to menu\n\n");
+		}
+		return compare;
+	}
+
+
+	private static int runSimulation(Reader CSV, Strategy strat, Factory f) {
+		
+		int profit = 0;
 
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
-			return;//exit function early
+			return profit;//exit function early
 		}
 
 		SignalGenerator signalGenerator = null;
@@ -164,7 +214,7 @@ public class Run {
 			signalGenerator = new SignalGenerator(CSV, strat, f);
 		} catch (IOException e) {
 			System.out.println("Error in reading CSV file, exiting simulation");
-			return;
+			return profit;
 		}
 
 		OrderBooks  orderBooks  = f.makeOrderBooks();
@@ -197,11 +247,77 @@ public class Run {
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
-			int profit = eval.calculateProfit(strategyTrades);
+			profit = eval.calculateProfit(strategyTrades);
 			System.out.println("Profit: $("+profit+")!");
 		}
 		System.out.println("\n###########################################");
+		return profit;
 	}
+	
+	private static void runComparison(Reader CSV, Strategy compare, Factory f, int result) {
+		int profit = 0;
+		//cannot run simulation if there is no CSV chosen
+		if (CSV == null) {
+			System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			return;//exit function early
+		}
+		
+		SignalGenerator signalGenerator = null;
+		try {
+			CSV = f.makeReader(CSV.getFilePath());
+			System.out.println("Loading " + CSV.getFilePath());
+			signalGenerator = new SignalGenerator(CSV, compare, f);
+		} catch (IOException e) {
+			System.out.println("Error in reading CSV file, exiting simulation");
+			return;
+		}
+
+		OrderBooks  orderBooks  = f.makeOrderBooks();
+		TradeEngine tradeEngine = f.makeTradeEngine();
+		//ensure each simulation run begins with empty orderbooks and trade lists
+		//ensures successive simulations are unaffected
+		orderBooks.resetOrderBooks();
+		tradeEngine.resetTradeEngine();
+		
+		//reset any strategy attributes after each simulation
+		compare.reset();
+
+		System.out.println("Running simulation ");
+
+		Order o;
+		while ((o = signalGenerator.advance()) != null) {
+			//one iteration equals one order being processed and traded
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
+			displayProgress(CSV, orderBooks);
+
+
+		}
+		
+		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
+		System.out.println("\nFinished Simulation, now evaluating...\n");
+		List<Trade> strategyTrades = eval.evaluate();
+		if (strategyTrades.size() == 0) {
+			System.out.println("STRATEGY CREATED NO TRADES");
+			//return;
+		} else {
+			//displayEvaluation(strategyTrades);
+			//System.out.println("\nSumming up the buys and sells\n");
+			profit = eval.calculateProfit(strategyTrades);
+			System.out.println("Comparison's Strategy's Profit: $("+profit+")!");
+		}
+		if (profit > result) {
+			System.out.println ("The Comparison Strategy resulted in more profit");
+		} else if (result > profit){
+			System.out.println ("The original Strategy resulted in more profit");
+		} else {
+			System.out.println("Both strategies resulted in the same profit");
+		}
+		System.out.println("\n###########################################");
+		
+	}
+	
+	
 	private static void exitProgram(Scanner s) {
 		System.out.println("Cya!");
 		s.close();
