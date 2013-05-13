@@ -1,44 +1,27 @@
 package simulator.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.UIManager;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JLabel;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.JTree;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
 
 import simulator.Factory;
 import simulator.Reader;
 import simulator.strategy.Strategy;
 
+import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import java.awt.SystemColor;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.UIManager;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
 public class Main extends JFrame {
@@ -58,19 +41,20 @@ public class Main extends JFrame {
 	JLabel lblSelectedDateFile;
 	JLabel lblSelectedStrategy;
 	JLabel lblProgress;
-	static JLabel displayData;
 	JLabel displayStrategy;
 	JLabel lblProfit;
-	static JLabel lbProfitResult;
 	JLabel lblTrades;
+	static JLabel displayData;
+	static JLabel lbProfitResult;
 	static JLabel lblBidID;
 	static JLabel lblAskID;
 	static JLabel lblPrice;
 	static JLabel lblVolume;
+	static JProgressBar progressPercent;
 	JComboBox<String> selectedStrategy;
 	JButton runSimulation;
-	JButton cancelSimulation;
-	static JProgressBar progressPercent;
+	JButton resetSimulation;
+	
 	Factory factory;
 	Reader CSV;
 	Strategy selected;
@@ -168,7 +152,7 @@ public class Main extends JFrame {
 		filePath = new JTextField();
 		filePath.setBounds(124, 11, 683, 20);
 		panelSimulation.add(filePath);
-		filePath.setText("Type the filepath of the selected CSV file");
+		filePath.setText("Enter the filepath of the selected CSV file");
 		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
 		filePath.setColumns(10);
 		
@@ -194,15 +178,15 @@ public class Main extends JFrame {
 		runSimulation.setBounds(590, 92, 103, 23);
 		panelSimulation.add(runSimulation);
 		
-		cancelSimulation = new JButton(" Cancel Simulation");
-		cancelSimulation.setBounds(696, 92, 119, 23);
-		panelSimulation.add(cancelSimulation);
+		resetSimulation = new JButton("Reset Simulation");
+		resetSimulation.setBounds(696, 92, 119, 23);
+		panelSimulation.add(resetSimulation);
 		
 		lblProfit = new JLabel("Profit :");
 		lblProfit.setBounds(10, 213, 61, 20);
 		panelSimulation.add(lblProfit);
 		
-		lbProfitResult = new JLabel("");
+		lbProfitResult = new JLabel("$");
 		lbProfitResult.setBounds(124, 213, 222, 20);
 		panelSimulation.add(lbProfitResult);
 		
@@ -229,11 +213,23 @@ public class Main extends JFrame {
 		lblVolume.setVerticalAlignment(SwingConstants.TOP);
 		lblVolume.setBounds(706, 244, 74, 298);
 		panelSimulation.add(lblVolume);
-		cancelSimulation.addMouseListener(new MouseAdapter() {
+		resetSimulation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				filePath.setText("Enter the filepath of the selected CSV file");
+				selectedStrategy.setSelectedIndex(0);
+				displayData.setText("");
+				displayData.update(displayData.getGraphics());
+				displayStrategy.setText("");
+				displayStrategy.update(displayStrategy.getGraphics());
 				// cancel the simulation (exit or remove entered input)
-								
+				progressPercent.setString("0 %");
+				progressPercent.setValue(0);
+				Main.lblBidID.setText("");
+				Main.lblAskID.setText("");
+				Main.lblPrice.setText("");
+				Main.lblVolume.setText("");
+				Main.lbProfitResult.setText("$ ");
 			}
 		});
 		
