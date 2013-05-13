@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import java.awt.SystemColor;
 
 public class Main extends JFrame {
 
@@ -173,7 +174,7 @@ public class Main extends JFrame {
 		selectedStrategy.setMaximumRowCount(3);
 		
 		progressPercent = new JProgressBar();
-		progressPercent.setIndeterminate(true);
+		progressPercent.setForeground(SystemColor.textHighlight);
 		progressPercent.setBounds(124, 184, 691, 20);
 		panelSimulation.add(progressPercent);
 		progressPercent.setStringPainted(true);
@@ -185,12 +186,6 @@ public class Main extends JFrame {
 				runSimulation.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						// run the simulation (pass the info to Run class)
-/*
-						Factory factory = new Factory();
-						Reader CSV = Start.getFilePath(filePath.getText(), factory);
-						Strategy selected = null;
-*/				
 						factory = new Factory();
 						CSV = Start.getFilePath(filePath.getText(), factory);
 						String strat = (String) selectedStrategy.getSelectedItem();
@@ -201,9 +196,7 @@ public class Main extends JFrame {
 							//update later to clear filepath and strategy option
 							Start.exitProgram();
 						}
-
 						Start.runSimulation(CSV, selected, factory);
-						System.out.println("I'm end of mouseClicked()");
 					}
 				});
 		

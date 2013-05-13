@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+
 import simulator.Evaluator;
 import simulator.Factory;
 import simulator.Order;
@@ -78,9 +80,10 @@ public class Start {
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
 			displayProgress(CSV, orderBooks);
-			Main.progressPercent.setString(Start.getProgress(CSV));
 
+			updateProgressBar(CSV);
 		}
+		
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
 		List<Trade> strategyTrades = eval.evaluate();
@@ -100,6 +103,13 @@ public class Start {
 		System.out.println("\n###########################################");
 	}
 	
+	public static void updateProgressBar(Reader CSV) {
+    	//Main.progressPercent.setString(getProgress(CSV));
+		Main.progressPercent.setValue(getProgressPercent(CSV));
+		Main.progressPercent.update(Main.progressPercent.getGraphics());
+		//Main.progressPercent.repaint();
+	}
+	
 	public static void exitProgram() {
 		System.out.println("Cya!");
 		System.exit(0);
@@ -111,6 +121,15 @@ public class Start {
 				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
+	public static Integer getProgressPercent (Reader CSV) {
+		if (CSV != null) {
+			float f = 100*((float)CSV.getProgress()/(float)CSV.getFileSize());
+			Integer percentage = new Integer((int)f);
+			return percentage;
+		}
+		return new Integer(0);
+	}
+	
 	public static String getProgress(Reader CSV) {
 		if (CSV != null) {
 			Float percentage = new Float(100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
