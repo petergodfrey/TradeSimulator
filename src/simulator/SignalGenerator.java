@@ -7,14 +7,15 @@ public class SignalGenerator {
 
 	private Reader      reader;
 	private Strategy   strategy;
-
 	private Factory f;
+	private Order previousOrder;
 
 
 	public SignalGenerator(Reader reader, Strategy strategy, Factory f) throws IOException {
 		this.reader      = reader;
 		this.strategy   = strategy;
 		this.f = f;
+		this.previousOrder = Order.NO_ORDER;
 		
 		f.resetCSVColumns();//every CSV file may have different formatting
 		//read first line and determine the index positions of columns
@@ -27,6 +28,12 @@ public class SignalGenerator {
 	 */
 	public Order advance() {
 		Order o = strategy.submitOrder();
+		// Only generate orders in Bid-Ask pairs
+		if ( o.bidAsk().equals( previousOrder.bidAsk() ) ) {
+			o = Order.NO_ORDER;
+		} else if (o != Order.NO_ORDER) { // Only update for Bid/Ask orders
+			previousOrder = o;
+		}
 		if (o == Order.NO_ORDER) {
 			try {
 				o = CSVNext();
