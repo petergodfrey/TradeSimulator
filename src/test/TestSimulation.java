@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -71,11 +72,35 @@ public class TestSimulation {
 
 	}
 
-	//@Test
+	@Test
 	public void testSample1Simulation() {
 
 		try {
 			CSV = f.makeReader(sample1FilePath);
+			strat = f.makeNullStrategy();
+			SG = new SignalGenerator(CSV, strat, f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Order o;
+
+		while ((o = SG.advance()) != null) {
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
+			//System.out.printf("\r %s %.2f percent done, bidSize: %d. askSize: %d, tradeSize: %d", orderBooks.getSimulatedTime(),
+			//		100*((float)CSV.getProgress()/(float)CSV.getFileSize()), orderBooks.bidListSize(), orderBooks.askListSize(), tradeEngine.getTradeList().size());
+		}
+
+		f.resetCSVColumns();//every CSV file may have different formatting
+
+	}
+	
+	@Test
+	public void testSample2Simulation() {
+
+		try {
+			CSV = f.makeReader(sample2FilePath);
 			strat = f.makeNullStrategy();
 			SG = new SignalGenerator(CSV, strat, f);
 		} catch (Exception e) {
@@ -165,6 +190,44 @@ public class TestSimulation {
 		for (int i = 0; i < ask.size(); i++) {
 			assertFalse(askSet.contains(ask.get(i).ID()));
 			askSet.add(ask.get(i).ID());
+		}
+	}
+	
+	@Test
+	public void testMapListCorrespondence() {
+		try {
+			CSV = f.makeReader(sample1FilePath);
+			strat = f.makeNullStrategy();
+			SG = new SignalGenerator(CSV, strat, f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Order o;
+		while ((o = SG.advance()) != null) {
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
+			testMapList(orderBooks);
+		}
+	}
+	
+	private void testMapList(OrderBooks books) {
+		List<Order> bidList = books.bidList();
+		List<Order> askList = books.askList();
+		Map<BigInteger, Order> bidMap = books.bidMap();
+		Map<BigInteger, Order> askMap = books.askMap();
+		assertEquals(bidList.size(), bidMap.size());
+		assertEquals(askList.size(), askMap.size());
+		Order o;
+		for (int i = 0; i < bidList.size(); i++) {
+			o = bidList.get(i);
+			assertTrue(bidMap.containsKey(o.ID()));
+			compareOrders(bidMap.get(o.ID()), o);
+		}
+		for (int i = 0; i < askList.size(); i++) {
+			o = askList.get(i);
+			assertTrue(askMap.containsKey(o.ID()));
+			compareOrders(askMap.get(o.ID()), o);
 		}
 	}
 	

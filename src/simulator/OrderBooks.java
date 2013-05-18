@@ -15,9 +15,9 @@ public class OrderBooks {
 	 * The bidList and askList will both be ordered by price/time
 	 */
 	private List<Order> bidList = new ArrayList<Order>();
-	private Map<Long, Order> bidMap = new HashMap<Long, Order>();
+	private Map<BigInteger, Order> bidMap = new HashMap<BigInteger, Order>();
 	private List<Order> askList = new ArrayList<Order>();
-	private Map<Long, Order> askMap = new HashMap<Long, Order>();
+	private Map<BigInteger, Order> askMap = new HashMap<BigInteger, Order>();
 
 	private String simulatedTime = "";
 
@@ -43,12 +43,6 @@ public class OrderBooks {
 		askList = new LinkedList<Order>();
 	}
 
-	/*
-	 * Inserts/processes a single order
-	 * 
-	 * Parameters:
-	 * o - The order which is to be processed
-	 */
 	public void processOrder(Order o) throws UnsupportedOperationException {
 
 		if ( o.recordType().equals("ENTER") ) {
@@ -101,6 +95,14 @@ public class OrderBooks {
 	public int askListSize() {
 		return askList.size();
 	}
+	
+	public Map<BigInteger, Order> bidMap () {
+		return this.bidMap;
+	}
+	
+	public Map<BigInteger, Order> askMap () {
+		return this.askMap;
+	}
 
 	// Returns a deep copy of the askList
 	public LinkedList<Order> askList() {
@@ -120,45 +122,34 @@ public class OrderBooks {
 		return clone;
 	}
 
-	/*
-	 * Delete an order from the order books
-	 * 
-	 * Paramaters:
-	 * o - The DELETE order to be processed
-	 * 
-	 * Returns:
-	 * true if a matching order was found and deleted from the order book
-	 * false otherwise
-	 */
 	public Order deleteOrder(Order o) throws UnsupportedOperationException {
 		Order toRemove = null;
 		if ( o.bidAsk().equals("B") ) {
-			toRemove =  findByID(bidList, o.ID());
+			toRemove =  findByID(bidMap, o.ID());
 			bidList.remove(toRemove);
+			bidMap.remove(o.ID());
 		} else if ( o.bidAsk().equals("A") ) {
-			toRemove = findByID(askList, o.ID());
+			toRemove = findByID(askMap, o.ID());
 			askList.remove(toRemove);
+			askMap.remove(o.ID());
 		} else {
 			throw new UnsupportedOperationException();
 		}
 		return toRemove;
 	}
 
-
-	/* Private Methods */
-
-
-
 	private void enterOrder(Order o) throws UnsupportedOperationException {
 		if (o.bidAsk().equals("B")) {
-			if (findByID(bidList, o.ID()) == null) {//TODO fix this
+			if (findByID(bidMap, o.ID()) == null) {//TODO fix this
+				bidMap.put(o.ID(), o);
 				insert(o, bidList);
 			}
 			
 		}
 		else if (o.bidAsk().equals("A")) {
-			if (findByID(askList, o.ID()) == null) {
-			insert(o, askList);
+			if (findByID(askMap, o.ID()) == null) {
+				askMap.put(o.ID(), o);
+				insert(o, askList);
 			}
 		} else {
 			throw new UnsupportedOperationException();
@@ -204,31 +195,31 @@ public class OrderBooks {
 	private void amendOrder(Order o) {
 		Order removed;
 		if ( o.bidAsk().equals("B") ) {
-			removed = findByID(bidList, o.ID());
+			removed = findByID(bidMap, o.ID());
 			if (removed != null) {
 				int indexOfRemoved = bidList.indexOf(removed);
 				if (removed != null && indexOfRemoved+1 < bidList.size() && o.price() <= bidList.get(indexOfRemoved+1).price() && o.volume() < removed.volume()) {
-					//removed.updateVolume(o.volume());
-					//removed.updatePrice(o.price());
 					deleteOrder(removed);
 					bidList.add(indexOfRemoved, o);
+					bidMap.put(o.ID(), o);
 				} else {
 					deleteOrder(removed);
 					insert(o, bidList);
+					bidMap.put(o.ID(), o);
 				}
 			}
 		} else if ( o.bidAsk().equals("A") ) {
-			removed = findByID(askList, o.ID());
+			removed = findByID(askMap, o.ID());
 			if (removed != null) {
 				int indexOfRemoved = askList.indexOf(removed);
 				if (removed != null && indexOfRemoved+1 < askList.size() && o.price() <= askList.get(indexOfRemoved+1).price() && o.volume() < removed.volume()) {
-					//removed.updateVolume(o.volume());
-					//removed.updatePrice(o.price());
 					deleteOrder(removed);
 					askList.add(indexOfRemoved, o);
+					askMap.put(o.ID(), o);
 				} else {
 					deleteOrder(removed);
 					insert(o, askList);
+					askMap.put(o.ID(), o);
 				}
 			}
 		} else {
@@ -236,25 +227,10 @@ public class OrderBooks {
 		}
 	}
 
-	/*
-	 * Returns the index of the first occurrence of the element in the list which has
-	 * a transaction ID equal to the given transaction ID
-	 * 
-	 * Parameters:
-	 * list - The list to be searched
-	 * transactionID - the transactionID of the order being searched for
-	 * 
-	 * Returns:
-	 * The index of the first occurrence of the element with a matching transaction ID
-	 * OR -1 if no matching order was found
-	 */
-	private Order findByID(List<Order> list, BigInteger transactionID) {
+
+	private Order findByID(Map<BigInteger, Order> map, BigInteger ID) {
 		Order o = null;
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).ID().equals(transactionID)) {
-				o = list.get(i);
-			}
-		}
+		o = map.get(ID);
 		return o;
 	}
 
