@@ -1,4 +1,7 @@
 package simulator;
+
+import java.math.BigInteger;
+
 public class Order {
 
 	public final static Order NO_ORDER = null;
@@ -8,7 +11,7 @@ public class Order {
 	private Double 			price;
 	private int 			volume;
 	private String 			qualifiers;
-	private long   			ID;
+	private BigInteger		ID;
 	private final String 	bidAsk;
 
 	public Order(
@@ -17,7 +20,7 @@ public class Order {
 			double price,
 			int volume,
 			String qualifiers,
-			long   ID,
+			BigInteger   ID,
 			String bidAsk) {
 
 		//this.instrument    = instrument;
@@ -64,7 +67,7 @@ public class Order {
 		return this.qualifiers;
 	}
 
-	public long ID() {
+	public BigInteger ID() {
 		return this.ID;
 	}
 
@@ -74,7 +77,7 @@ public class Order {
 						recordType                   + ", " +
 						Double.toString(price)       + ", " +
 						Double.toString(volume)      + ", " +
-						Long.toString(ID) 			 + ", " +
+						ID.toString() 			 + ", " +
 						bidAsk());
 	}
 

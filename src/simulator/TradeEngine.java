@@ -124,5 +124,22 @@ public class TradeEngine {
 	public double avg() {
 		return (double)(sum/tradeList.size());
 	}
+	
+	public void displayTradeList() {
+		for (Trade t:tradeList) {
+			displayTrade(t);
+		}
+	}
+	
+	private static void displayTrade(Trade t) {
+
+		System.out.print(t.ID() + "\t");
+		System.out.print(String.format("%019d", t.getBid().ID())+"\t");
+		System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
+		System.out.print(t.price()+"\t");
+		System.out.print(t.volume());
+
+		System.out.println();
+	}
 
 }
