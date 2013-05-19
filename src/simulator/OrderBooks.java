@@ -1,5 +1,4 @@
 package simulator;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -14,9 +13,9 @@ public class OrderBooks {
 	/*
 	 * The bidList and askList will both be ordered by price/time
 	 */
-	private List<Order> bidList = new ArrayList<Order>();
+	private List<Order> bidList = new LinkedList<Order>();
 	private Map<BigInteger, Order> bidMap = new HashMap<BigInteger, Order>();
-	private List<Order> askList = new ArrayList<Order>();
+	private List<Order> askList = new LinkedList<Order>();
 	private Map<BigInteger, Order> askMap = new HashMap<BigInteger, Order>();
 
 	private String simulatedTime = "";
@@ -31,11 +30,12 @@ public class OrderBooks {
 
 	public static int convertTimeToMilliseconds(String time) {
 		String[] timeSplit = time.split(":");
-		BigDecimal milliseconds;
-		milliseconds =  new BigDecimal(timeSplit[2]).multiply(new BigDecimal("1000"));
-		milliseconds = milliseconds.add(new BigDecimal(timeSplit[1]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")));
-		milliseconds = milliseconds.add(new BigDecimal(timeSplit[0]).multiply(new BigDecimal("1000")).multiply(new BigDecimal("60")).multiply(new BigDecimal("60")));
-		return milliseconds.intValue();
+
+		int millisecond = 0;
+		millisecond = Math.round((Float.valueOf(timeSplit[2]) * 1000));
+		millisecond += Integer.valueOf(timeSplit[1]) * 60 * 1000;
+		millisecond += Integer.valueOf(timeSplit[0]) * 60 * 60 * 1000;
+		return millisecond;
 	}
 
 	public void resetOrderBooks() {
@@ -105,21 +105,13 @@ public class OrderBooks {
 	}
 
 	// Returns a deep copy of the askList
-	public LinkedList<Order> askList() {
-		LinkedList<Order> clone = new LinkedList<Order>();
-		for (Order order: askList) { 
-			clone.add( new Order(order) );
-		}
-		return clone;
+	public List<Order> askList() {
+		return this.askList;
 	}
 
 	// Returns a deep copy of the bidList
-	public LinkedList<Order> bidList() {
-		LinkedList<Order> clone = new LinkedList<Order>();
-		for (Order order: bidList) { 
-			clone.add( new Order(order) );
-		}
-		return clone;
+	public List<Order> bidList() {
+		return this.bidList;
 	}
 
 	public Order deleteOrder(Order o) throws UnsupportedOperationException {
@@ -164,13 +156,9 @@ public class OrderBooks {
 				if (o.price() > book.get(i).price()) {
 					book.add(i, o);
 					return;
-					//TODO sort on time when prices are same
-					//TODO insert properly for sell book
 				}
 			}
-			//catches orders that are either meant to be added to the end
-			//of the list, or if the list was empty
-			//and there was nothing to compare to
+			//catches leftover orders
 			book.add(book.size(), o);
 		}
 		else if (o.bidAsk().equals("A"))  {
@@ -178,18 +166,13 @@ public class OrderBooks {
 				if (o.price() < book.get(i).price()) {
 					book.add(i, o);
 					return;
-					//TODO sort on time when prices are same
-					//TODO insert properly for sell book
 				}
 			}
-			//catches orders that are either meant to be added to the end
-			//of the list, or if the list was empty
-			//and there was nothing to compare to
+			//catches leftover orders
 			book.add(book.size(), o);
 		} else {
 			throw new UnsupportedOperationException();
 		}
-
 	}
 
 	private void amendOrder(Order o) {

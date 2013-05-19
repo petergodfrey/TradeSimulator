@@ -22,7 +22,7 @@ public abstract class AbstractStrategy implements Strategy {
 	
 	private BigInteger generateStrategyID() {
 		BigInteger returnInt = IDCounter;
-		IDCounter.add(BigInteger.ONE.negate());// -= 1
+		IDCounter = IDCounter.add(BigInteger.ONE.negate());// -= 1
 		return returnInt;
 	}
 	
