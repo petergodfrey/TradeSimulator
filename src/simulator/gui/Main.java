@@ -53,8 +53,8 @@ public class Main extends JFrame {
 	static JLabel lblPrice;
 	static JLabel lblVolume;
 	static JProgressBar progressPercent;
-	JComboBox<String> selectedStrategy;
-	JComboBox<String> selectedComparison;
+	JComboBox selectedStrategy;
+	JComboBox selectedComparison;
 	JButton runSimulation;
 	JButton btnComparison;
 	JButton resetSimulation;

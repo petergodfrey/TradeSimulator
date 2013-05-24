@@ -35,3 +35,4 @@ public class Trade extends Order {
 	}
 
 }
+]

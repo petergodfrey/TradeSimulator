@@ -101,7 +101,6 @@ public class Start {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-			displayProgress(CSV, orderBooks);
 
 			updateProgressBar(CSV);
 		}
@@ -164,7 +163,7 @@ public class Start {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-			displayProgress(CSV, orderBooks);
+			//displayProgress(CSV, orderBooks);
 
 
 		}
@@ -222,9 +221,9 @@ public class Start {
 	}
 
 	public static void displayProgress(Reader CSV, OrderBooks books) {
-		System.out.printf("\rsimulated time: %s | %.2f percent done",
-				books.getSimulatedTime(),
-				100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
+		//System.out.printf("\rsimulated time: %s | %.2f percent done",
+		//		books.getSimulatedTime(),
+		//		100*((float)CSV.getProgress()/(float)CSV.getFileSize()));
 	}
 
 	public static Integer getProgressPercent (Reader CSV) {
