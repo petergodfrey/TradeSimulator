@@ -1,5 +1,6 @@
 package simulator.strategy;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public abstract class AbstractStrategy implements Strategy {
 	
 	protected OrderBooks books;
 
-	private long IDCounter = -1;
+	private BigInteger IDCounter = BigInteger.ONE.negate();// == -1
 	
 	private List<Order> stratOrders = new ArrayList<Order>();
 	
@@ -19,8 +20,10 @@ public abstract class AbstractStrategy implements Strategy {
 		this.books = books;
 	}
 	
-	private Long generateStrategyID() {
-		return IDCounter--;
+	private BigInteger generateStrategyID() {
+		BigInteger returnInt = IDCounter;
+		IDCounter = IDCounter.add(BigInteger.ONE.negate());// -= 1
+		return returnInt;
 	}
 	
 	@Override

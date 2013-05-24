@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,22 +43,22 @@ public class TestOrder {
 		str12 = "CBA,19991231,00:00:12.000,DELETE,,,,,,,3,,B,,,,,";
 		str13 = "CBA,19991231,00:00:13.000,DELETE,,,,,,,,4,A,,,,,";
 
-		order0 = new Order("00:00:00.000", "ENTER", 8.30, 100, "", 1, "B");
-		order1 = new Order("00:00:01.000", "ENTER", 8.31, 50,  "", 2, "A");
-		order2 = new Order("00:00:02.000", "ENTER", 8.29, 50,  "", 3, "B");
-		order3 = new Order("00:00:03.000", "ENTER", 8.34, 100, "", 4, "A");
-		order4 = new Order("00:00:04.000", "ENTER", 8.31, 40,  "", 5, "A");
-		order5 = new Order("00:00:05.000", "ENTER", 8.31, 50,  "", 6, "B");
+		order0 = new Order("00:00:00.000", "ENTER", 8.30, 100, "", new BigInteger("1"), "B");
+		order1 = new Order("00:00:01.000", "ENTER", 8.31, 50,  "", new BigInteger("2"), "A");
+		order2 = new Order("00:00:02.000", "ENTER", 8.29, 50,  "", new BigInteger("3"), "B");
+		order3 = new Order("00:00:03.000", "ENTER", 8.34, 100, "", new BigInteger("4"), "A");
+		order4 = new Order("00:00:04.000", "ENTER", 8.31, 40,  "", new BigInteger("5"), "A");
+		order5 = new Order("00:00:05.000", "ENTER", 8.31, 50,  "", new BigInteger("6"), "B");
 		
-		order6 = new Order("00:00:06.000", "AMEND", 9.31, 150,  "", 1, "B");
-		order7 = new Order("00:00:07.000", "AMEND", 9.31, 200,  "", 2, "A");
-		order8 = new Order("00:00:08.000", "AMEND", 9.31, 250,  "", 3, "B");
-		order9 = new Order("00:00:09.000", "AMEND", 9.31, 30,   "", 4, "A");
+		order6 = new Order("00:00:06.000", "AMEND", 9.31, 150,  "", new BigInteger("1"), "B");
+		order7 = new Order("00:00:07.000", "AMEND", 9.31, 200,  "", new BigInteger("2"), "A");
+		order8 = new Order("00:00:08.000", "AMEND", 9.31, 250,  "", new BigInteger("3"), "B");
+		order9 = new Order("00:00:09.000", "AMEND", 9.31, 30,   "", new BigInteger("4"), "A");
 		
-		order10 = new Order("00:00:10.000", "DELETE", -1 , -1,  "", 1, "B");
-		order11 = new Order("00:00:11.000", "DELETE", -1 , -1,  "", 2, "A");
-		order12 = new Order("00:00:12.000", "DELETE", -1 , -1,  "", 3, "B");
-		order13 = new Order("00:00:13.000", "DELETE", -1 , -1,  "", 4, "A");
+		order10 = new Order("00:00:10.000", "DELETE", -1 , -1,  "", new BigInteger("1"), "B");
+		order11 = new Order("00:00:11.000", "DELETE", -1 , -1,  "", new BigInteger("2"), "A");
+		order12 = new Order("00:00:12.000", "DELETE", -1 , -1,  "", new BigInteger("3"), "B");
+		order13 = new Order("00:00:13.000", "DELETE", -1 , -1,  "", new BigInteger("4"), "A");
 
 	}
 	
@@ -103,7 +105,7 @@ public class TestOrder {
 		assertEquals(o1.ID(), o2.ID());
 		assertEquals(o1.bidAsk(), o2.bidAsk());
 	}
-
+	
 	@Test
 	public void testOrderGetters() {
 		assertEquals("00:00:00.000", order0.time());
@@ -111,7 +113,7 @@ public class TestOrder {
 		assertEquals((Double)(8.30), order0.price());
 		assertEquals(100, order0.volume());
 		assertEquals("", order0.qualifiers());
-		assertEquals(1, order0.ID());
+		assertEquals(new BigInteger("1"), order0.ID());
 		assertEquals("B", order0.bidAsk());	
 		
 		assertEquals("00:00:01.000", order1.time());
@@ -119,7 +121,7 @@ public class TestOrder {
 		assertEquals((Double)(8.31), order1.price());
 		assertEquals(50, order1.volume());
 		assertEquals("", order1.qualifiers());
-		assertEquals(2, order1.ID());
+		assertEquals(new BigInteger("2"), order1.ID());
 		assertEquals("A", order1.bidAsk());	
 		
 		assertEquals("00:00:02.000", order2.time());
@@ -127,7 +129,7 @@ public class TestOrder {
 		assertEquals((Double)(8.29), order2.price());
 		assertEquals(50, order2.volume());
 		assertEquals("", order2.qualifiers());
-		assertEquals(3, order2.ID());
+		assertEquals(new BigInteger("3"), order2.ID());
 		assertEquals("B", order2.bidAsk());	
 		
 		assertEquals("00:00:03.000", order3.time());
@@ -135,7 +137,7 @@ public class TestOrder {
 		assertEquals((Double)(8.34), order3.price());
 		assertEquals(100, order3.volume());
 		assertEquals("", order3.qualifiers());
-		assertEquals(4, order3.ID());
+		assertEquals(new BigInteger("4"), order3.ID());
 		assertEquals("A", order3.bidAsk());	
 		
 		assertEquals("00:00:04.000", order4.time());
@@ -143,7 +145,7 @@ public class TestOrder {
 		assertEquals((Double)(8.31), order4.price());
 		assertEquals(40, order4.volume());
 		assertEquals("", order4.qualifiers());
-		assertEquals(5, order4.ID());
+		assertEquals(new BigInteger("5"), order4.ID());
 		assertEquals("A", order4.bidAsk());	
 		
 		assertEquals("00:00:05.000", order5.time());
@@ -151,7 +153,7 @@ public class TestOrder {
 		assertEquals((Double)(8.31), order5.price());
 		assertEquals(50, order5.volume());
 		assertEquals("", order5.qualifiers());
-		assertEquals(6, order5.ID());
+		assertEquals(new BigInteger("6"), order5.ID());
 		assertEquals("B", order5.bidAsk());	
 	}
 

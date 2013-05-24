@@ -14,15 +14,14 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	
 	private Double mean; 
 	// if there's no my bid order, assigns false. otherwise, assigns true
-//<<<<<<< Updated upstream
 	private boolean myBidOrder1 = true; //false;
-	private TradeEngine tradeEngine;
+	//private TradeEngine tradeEngine;
 	
 	private int tradeSize = 0;
 	private double sum = 0;
-//=======
-	private boolean myBidOrder = true;
-//>>>>>>> Stashed changes
+
+	//private boolean myBidOrder = true;
+
 	
 	public MeanReversion(OrderBooks books, TradeEngine TE) {
 		super(books);

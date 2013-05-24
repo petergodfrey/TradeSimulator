@@ -2,6 +2,8 @@ package simulator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +32,7 @@ public class Factory {
 	private int ASK_ID;
 	private int BID_ASK;
 	
-	private long tradeID = 0;
+	private BigInteger tradeID = BigInteger.ZERO;
 
 	public OrderBooks makeOrderBooks() {
 		if (books == null) {
@@ -125,7 +127,7 @@ public class Factory {
 	//makes actual order object
 	public Order makeOrder(String time,
 			String recordType, double price, int volume,
-			String qualifiers, long   transactionID,
+			String qualifiers, BigInteger   transactionID,
 			String bidAsk) {
 
 		return new Order(time, recordType, price,
@@ -179,16 +181,11 @@ public class Factory {
 	}
 
 	// Parser which handles the case of an empty string
-	private long parseLong(String s) {
+	private BigInteger parseLong(String s) {
 		if ( s.equals("") ) {
-			return EMPTY_LONG_FIELD;
+			return new BigInteger("-1");
 		} else {
-			try {
-			return Long.parseLong(s);    
-			} catch (Exception e) {
-				//TODO current error, 2^63 < ID < 2^64
-				return Long.MAX_VALUE;
-			}
+			return new BigInteger(s);    
 		} 
 	}
 	
@@ -204,8 +201,12 @@ public class Factory {
 			double tradePrice, int volume, String qualifier,
 			String bidAsk, Order bid, Order ask) {
 
-		return new Trade(simulatedTime, recordType, tradePrice,
-				volume, qualifier, tradeID++, bidAsk, bid, ask);
+		Trade t = new Trade(simulatedTime, recordType, tradePrice,
+				volume, qualifier, tradeID, bidAsk, bid, ask);
+		
+		tradeID = tradeID.add(BigInteger.ONE);// incrementing
+		
+		return t;
 	}
 
 }

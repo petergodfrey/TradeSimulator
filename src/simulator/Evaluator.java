@@ -1,5 +1,6 @@
 package simulator;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Evaluator {
 	public List<Trade> evaluate() {
 		List<Trade> strategyTrades = new ArrayList<Trade>();
 		for (Trade t:tradeEngine.getTradeList()) {
-			if (t.getAsk().ID() < 0 || t.getBid().ID() < 0) {
+			if (t.getAsk().ID().compareTo(BigInteger.ZERO) < 0 || t.getBid().ID().compareTo(BigInteger.ZERO) < 0) {
 				strategyTrades.add(t);
 			}
 		}
@@ -34,10 +35,10 @@ public class Evaluator {
 		int profit = 0;
 
 		for (Trade t:strategyTrades) {
-			if (t.getAsk().ID() < 0) {
+			if (t.getAsk().ID().compareTo(BigInteger.ZERO) < 0) {
 				profit += t.volume() * t.price();
 			}
-			if (t.getBid().ID() < 0) {
+			if (t.getBid().ID().compareTo(BigInteger.ZERO) < 0) {
 				profit -= t.volume() * t.price();
 			}
 		}

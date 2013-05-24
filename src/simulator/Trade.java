@@ -1,5 +1,7 @@
 package simulator;
 
+import java.math.BigInteger;
+
 public class Trade extends Order {
 	
 	private final Order bid;
@@ -11,7 +13,7 @@ public class Trade extends Order {
 			double price,
 			int volume,
 			String qualifiers,
-			long ID,
+			BigInteger ID,
 			String bidAsk,
 			Order bid,
 			Order ask) {
