@@ -22,11 +22,11 @@ public class Start {
 	public static Reader getFilePath (String pathInput, Factory factory) {
 		Reader CSV = null;
 		try {
-			System.out.println(pathInput);
+			//System.out.println(pathInput);
 			CSV = factory.makeReader(pathInput);
 		} catch (Exception e) {
 			// change to appear popup window to alert invalid input.
-			System.out.println("Invalid filepath, enter the correct path.");
+			//System.out.println("Invalid filepath, enter the correct path.");
 		}
 		return CSV;
 	}
@@ -69,17 +69,17 @@ public class Start {
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
-			System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			//System.out.println("A CSV file has not been selected, cannot run simulation"); 
 			return profit;//exit function early
 		}
 
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = factory.makeReader(CSV.getFilePath());
-			System.out.println("Loading " + CSV.getFilePath());
+			//System.out.println("Loading " + CSV.getFilePath());
 			signalGenerator = new SignalGenerator(CSV, strat, factory);
 		} catch (IOException e) {
-			System.out.println("Error in reading CSV file, exiting simulation");
+			//System.out.println("Error in reading CSV file, exiting simulation");
 			return profit;
 		}
 
@@ -93,7 +93,7 @@ public class Start {
 		//reset any strategy attributes after each simulation
 		strat.reset();
 
-		System.out.println("Running simulation ");
+		//System.out.println("Running simulation ");
 
 		Order o;
 		
@@ -106,25 +106,25 @@ public class Start {
 		}
 		
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
-		System.out.println("\nFinished Simulation, now evaluating...\n");
+		//System.out.println("\nFinished Simulation, now evaluating...\n");
 		List<Trade> strategyTrades = eval.evaluate();
 		if (strategyTrades.size() == 0) {
-			System.out.println("STRATEGY CREATED NO TRADES");
+			//System.out.println("STRATEGY CREATED NO TRADES");
 			//return;
 		} else {
 			displayEvaluation(strategyTrades);
-			System.out.println("\nSumming up the buys and sells\n");
+			//System.out.println("\nSumming up the buys and sells\n");
 			profit = new Integer (eval.calculateProfit(strategyTrades));
-			System.out.println("Profit: $("+profit+")!");
+			//System.out.println("Profit: $("+profit+")!");
 			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
 		//Chart.drawChart(tradeEngine.getTradeList());
 		long finalTime = System.currentTimeMillis();
 		double millisTaken = (double)finalTime-(double)initTime;
-		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
+		//System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
 		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
 		
-		System.out.println("\n###########################################");
+		//System.out.println("\n###########################################");
 		return profit;
 	}
 	
@@ -132,17 +132,17 @@ public class Start {
 		int profit = 0;
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
-			System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			//System.out.println("A CSV file has not been selected, cannot run simulation"); 
 			return;//exit function early
 		}
 		
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = factory.makeReader(CSV.getFilePath());
-			System.out.println("Loading " + CSV.getFilePath());
+			//System.out.println("Loading " + CSV.getFilePath());
 			signalGenerator = new SignalGenerator(CSV, compare, factory);
 		} catch (IOException e) {
-			System.out.println("Error in reading CSV file, exiting simulation");
+			//System.out.println("Error in reading CSV file, exiting simulation");
 			return;
 		}
 
@@ -156,7 +156,7 @@ public class Start {
 		//reset any strategy attributes after each simulation
 		compare.reset();
 
-		System.out.println("Running simulation ");
+		//System.out.println("Running simulation ");
 
 		Order o;
 		while ((o = signalGenerator.advance()) != null) {
@@ -169,10 +169,10 @@ public class Start {
 		}
 		
 		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
-		System.out.println("\nFinished Simulation, now evaluating...\n");
+		//System.out.println("\nFinished Simulation, now evaluating...\n");
 		List<Trade> strategyTrades = eval.evaluate();
 		if (strategyTrades.size() == 0) {
-			System.out.println("STRATEGY CREATED NO TRADES");
+			//System.out.println("STRATEGY CREATED NO TRADES");
 			//return;
 		} else {
 			//displayEvaluation(strategyTrades);
@@ -180,32 +180,32 @@ public class Start {
 			profit = eval.calculateProfit(strategyTrades);
 			Main.lblCompareResult.setText("$ " + new Integer(profit).toString());
 			Main.lblCompareResult.update(Main.lblCompareResult.getGraphics());
-			System.out.print(compare.getStrategyName());
-			System.out.println(" Strategy's Profit: $("+profit+")!");
+			//System.out.print(compare.getStrategyName());
+			//System.out.println(" Strategy's Profit: $("+profit+")!");
 		}
 		int comparedProfit = 0;
 		String interpret;
 		
 		if (profit > result) {
 			comparedProfit = profit - result;			
-			System.out.print (compare.getStrategyName() );
-			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
+			//System.out.print (compare.getStrategyName() );
+			//System.out.format (" resulted in more profit by $%d%n", comparedProfit);
 			interpret = compare.getStrategyName() + " resulted in more profit by $ " + new Integer(comparedProfit).toString();
 		} else if (result > profit){
 			comparedProfit = result - profit;
-			System.out.print (strat.getStrategyName());
-			System.out.format (" resulted in more profit by $%d%n", comparedProfit);
+			//System.out.print (strat.getStrategyName());
+			//System.out.format (" resulted in more profit by $%d%n", comparedProfit);
 			interpret = strat.getStrategyName() + " resulted in more profit by $ " + new Integer(comparedProfit).toString();
 		} else {
-			System.out.print("Both ");
-			System.out.print(compare.getStrategyName());
-			System.out.print(" and");
-			System.out.print(strat.getStrategyName());
-			System.out.println(" are equal in profit");
+			//System.out.print("Both ");
+			//System.out.print(compare.getStrategyName());
+			//System.out.print(" and");
+			//System.out.print(strat.getStrategyName());
+			//System.out.println(" are equal in profit");
 			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
 		}
 		Main.lblDisplayResult.setText(interpret);
-		System.out.println("\n###########################################");
+		//System.out.println("\n###########################################");
 	
 	}
 	
@@ -216,7 +216,7 @@ public class Start {
 	}
 	
 	public static void exitProgram() {
-		System.out.println("Cya!");
+		//System.out.println("Cya!");
 		System.exit(0);
 	}
 
@@ -245,7 +245,7 @@ public class Start {
 	
 	public static void displayEvaluation(List<Trade> strategyTrades) {
 
-		System.out.println("Printing the trades generated by Strategy\n");
+		//System.out.println("Printing the trades generated by Strategy\n");
 		//displayBidAskHeader();
 		//for (Trade t:strategyTrades) {
 		//	displayBidAskofTrade(t);
@@ -280,43 +280,43 @@ public class Start {
 	}
 	
 	public static void displayTradeHeader() {
-		System.out.print("Bid ID\t\t\t");
-		System.out.print("Ask ID\t\t\t");
-		System.out.print("Price\t");
-		System.out.print("Volume");
-		System.out.println();
+		//System.out.print("Bid ID\t\t\t");
+		//System.out.print("Ask ID\t\t\t");
+		//System.out.print("Price\t");
+		//System.out.print("Volume");
+		//System.out.println();
 	}
 
 	public static void displayBidAskHeader() {
-		System.out.print("Bid ID\t\t\t");
-		System.out.print("Price\t");
-		System.out.print("Volume\t|");
+		//System.out.print("Bid ID\t\t\t");
+		//System.out.print("Price\t");
+		//System.out.print("Volume\t|");
 
-		System.out.print("Ask ID\t\t\t");
-		System.out.print("Price\t");
-		System.out.print("Volume");
-		System.out.println();
+		//System.out.print("Ask ID\t\t\t");
+		//System.out.print("Price\t");
+		//System.out.print("Volume");
+		//System.out.println();
 	}
 
 	public static void displayBidAskofTrade(Trade t) {
-		System.out.print(String.format("%019d", t.getBid().ID())+"\t");
-		System.out.print(t.getBid().price()+"\t");
-		System.out.print(t.getBid().volume() + "\t|");
+		//System.out.print(String.format("%019d", t.getBid().ID())+"\t");
+		//System.out.print(t.getBid().price()+"\t");
+		//System.out.print(t.getBid().volume() + "\t|");
 
-		System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
-		System.out.print(t.getAsk().price()+"\t");
-		System.out.print(t.getAsk().volume());
-		System.out.println();
+		//System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
+		//System.out.print(t.getAsk().price()+"\t");
+		//System.out.print(t.getAsk().volume());
+		//System.out.println();
 	}
 
 	public static void displayTrade(Trade t) {
 
-		System.out.print(String.format("%019d", t.getBid().ID())+"\t");
-		System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
-		System.out.print(t.price()+"\t");
-		System.out.print(t.volume());
+		//System.out.print(String.format("%019d", t.getBid().ID())+"\t");
+		//System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
+		//System.out.print(t.price()+"\t");
+		//System.out.print(t.volume());
 
-		System.out.println();
+		//System.out.println();
 	}
 
 }
