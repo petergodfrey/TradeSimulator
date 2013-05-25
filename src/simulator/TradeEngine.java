@@ -113,7 +113,7 @@ public class TradeEngine {
 
 		sum += tradePrice;
 
-		tradeList.add(f.makeTrade(orderBooks.getSimulatedTime(),
+		tradeList.add(0, f.makeTrade(orderBooks.getSimulatedTime(),
 				"TRADE",
 				tradePrice,
 				volume,

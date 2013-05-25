@@ -55,7 +55,8 @@ public abstract class AbstractStrategy implements Strategy {
 	
 	@Override
 	public void reset() {
-		
+		IDCounter = BigInteger.ONE.negate();
+		stratOrders = new ArrayList<Order>();
 	}
 
 }
