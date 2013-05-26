@@ -75,8 +75,9 @@ public class TestTradeEngine {
 		assertEquals(books.askListSize(), 2);
 		TE.trade();
 		assertEquals(TE.getTradeList().size(), 3);
+		compareTrade(TE.getTradeList().get(0), order2, order4, 8.34, 50, "00:00:02.000");
 		compareTrade(TE.getTradeList().get(1), order2, order3, 8.34, 50, "00:00:02.000");
-		compareTrade(TE.getTradeList().get(2), order2, order4, 8.34, 50, "00:00:02.000");
+		
 	}
 
 	@Test

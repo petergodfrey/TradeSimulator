@@ -471,8 +471,8 @@ public class TestSimulation {
 			//attempt to trade
 			tradeEngine.trade();
 			assertEquals(tradeEngine.getTradeList().size(),2);
-			compareTrades(tradeEngine.getTradeList().get(0),t0);
-			compareTrades(tradeEngine.getTradeList().get(1),t1);
+			compareTrades(tradeEngine.getTradeList().get(1),t0);
+			compareTrades(tradeEngine.getTradeList().get(0),t1);
 
 			assertEquals(orderBooks.bidList().size(), 1);
 			compareOrders(orderBooks.bidList().get(0), (o0));
