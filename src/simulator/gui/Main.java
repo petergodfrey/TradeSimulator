@@ -14,6 +14,7 @@ import java.awt.SystemColor;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.JMenuBar;
@@ -29,6 +30,10 @@ import java.awt.Font;
 import javax.swing.JOptionPane;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Main extends JFrame {
 
@@ -129,9 +134,8 @@ public class Main extends JFrame {
 		menuBar.add(mnFile);
 		
 		mntmExit = new JMenuItem("Exit");
-		mntmExit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				Start.exitProgram();
 			}
 		});
@@ -144,9 +148,23 @@ public class Main extends JFrame {
 		menuBar.add(mnHelp);
 		
 		mntmInstruction = new JMenuItem("Instruction");
+		mntmInstruction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/Instruction.png"));
+			    JOptionPane.showMessageDialog(null, lbl, "Instruction",JOptionPane.PLAIN_MESSAGE, null);
+			}
+		});
 		mnHelp.add(mntmInstruction);
 		
 		mntmAboutAlgorithmicTrading = new JMenuItem("About Algorithmic Trading System");
+		mntmAboutAlgorithmicTrading.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(new JFrame(),
+                        "<html>Algorithmic Trading System<br><br>Version: 1.0<br>Produced by: Yeri Chung, Jason Huang, Peter Godfrey, Sheryl Shi</html>",
+                        "About Algorithmic Trading System",
+                        JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		mnHelp.add(mntmAboutAlgorithmicTrading);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
