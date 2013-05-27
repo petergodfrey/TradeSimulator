@@ -104,13 +104,21 @@ public class Start {
 
 		Order o;
 		
+		int progressCounter = 0;
+		
+		int OnePercentLines = CSV.getFileSize()/100;
+		
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-
-			updateProgressBar(CSV);
+			if (progressCounter == OnePercentLines) {
+				updateProgressBar(CSV);
+				progressCounter = 0;
+			}
+			progressCounter++;
 		}
+		updateProgressBar(CSV);
 		
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		List<Trade> strategyTrades = eval.filterStrategyTrades();

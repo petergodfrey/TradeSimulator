@@ -14,6 +14,8 @@ public class RandomStrategy extends AbstractStrategy implements Strategy {
 	private int volumeLowerBound = 0, volumeUpperBound = 100;
 	
 	private double priceLowerBound = 0, priceUpperBound = 100;
+	
+	private Random rand = new Random();
 
 	public RandomStrategy(OrderBooks books) {
 		super(books);
@@ -27,7 +29,7 @@ public class RandomStrategy extends AbstractStrategy implements Strategy {
 
 	@Override
 	public Order strategise() {
-		Random rand = new Random();
+		
 		if (rand.nextDouble() > OrderGenerationFrequency) {
 			return null;
 		}
