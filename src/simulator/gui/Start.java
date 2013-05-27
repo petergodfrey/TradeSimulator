@@ -45,7 +45,7 @@ public class Start {
 		} else if (straInput == "Dumb") {
 			strat = factory.makeDumbStrategy();
 		} else if (straInput == "Random") {
-			strat = factory.makeNewStrategy();
+			strat = factory.makeRandomStrategy();
 		}
 		return strat;
 	}
@@ -61,7 +61,7 @@ public class Start {
 		} else if (straCompare == "Dumb") {
 			compare = factory.makeDumbStrategy();
 		} else if (straCompare == "Random") {
-			compare = factory.makeNewStrategy();
+			compare = factory.makeRandomStrategy();
 		}
 		return compare;
 	}
@@ -255,46 +255,6 @@ public class Start {
 	public static void showTrade(Trade t) {
 		
 		Main.lblBidID.revalidate();
-	}
-	
-	public static void displayTradeHeader() {
-		//System.out.print("Bid ID\t\t\t");
-		//System.out.print("Ask ID\t\t\t");
-		//System.out.print("Price\t");
-		//System.out.print("Volume");
-		//System.out.println();
-	}
-
-	public static void displayBidAskHeader() {
-		//System.out.print("Bid ID\t\t\t");
-		//System.out.print("Price\t");
-		//System.out.print("Volume\t|");
-
-		//System.out.print("Ask ID\t\t\t");
-		//System.out.print("Price\t");
-		//System.out.print("Volume");
-		//System.out.println();
-	}
-
-	public static void displayBidAskofTrade(Trade t) {
-		//System.out.print(String.format("%019d", t.getBid().ID())+"\t");
-		//System.out.print(t.getBid().price()+"\t");
-		//System.out.print(t.getBid().volume() + "\t|");
-
-		//System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
-		//System.out.print(t.getAsk().price()+"\t");
-		//System.out.print(t.getAsk().volume());
-		//System.out.println();
-	}
-
-	public static void displayTrade(Trade t) {
-
-		//System.out.print(String.format("%019d", t.getBid().ID())+"\t");
-		//System.out.print(String.format("%019d", t.getAsk().ID())+"\t");
-		//System.out.print(t.price()+"\t");
-		//System.out.print(t.volume());
-
-		//System.out.println();
 	}
 
 }

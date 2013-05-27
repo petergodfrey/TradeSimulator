@@ -57,8 +57,8 @@ public class Factory {
 		return new DumbStrategy(makeOrderBooks());
 	}
 	
-	public Strategy makeNewStrategy() {
-		return new NewStrategy(makeOrderBooks(), makeTradeEngine());
+	public Strategy makeRandomStrategy() {
+		return new RandomStrategy(makeOrderBooks());
 	}
 
 	public Strategy makeMeanReversionStrategy() {
