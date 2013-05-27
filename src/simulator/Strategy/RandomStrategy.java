@@ -4,7 +4,6 @@ import java.util.Random;
 
 import simulator.Order;
 import simulator.OrderBooks;
-import simulator.TradeEngine;
 
 public class RandomStrategy extends AbstractStrategy implements Strategy {
 	
@@ -23,7 +22,6 @@ public class RandomStrategy extends AbstractStrategy implements Strategy {
 
 	@Override
 	public String getStrategyName() {
-		// TODO Auto-generated method stub
 		return "Randomised";
 	}
 
@@ -33,18 +31,14 @@ public class RandomStrategy extends AbstractStrategy implements Strategy {
 		if (rand.nextDouble() > OrderGenerationFrequency) {
 			return null;
 		}
-		
 		String bidAsk = "";
 		if (rand.nextDouble() < bidToAskRatio) {
 			bidAsk = "B";
 		} else {
 			bidAsk = "A";
 		}
-		
 		int volume = rand.nextInt(volumeUpperBound - volumeLowerBound) + volumeLowerBound;
-		
 		double price = rand.nextDouble() + (double)(rand.nextInt((int) (priceUpperBound - priceLowerBound)) + priceLowerBound);
-		
 		return createOrder("ENTER", price, volume, null, bidAsk);
 	}
 

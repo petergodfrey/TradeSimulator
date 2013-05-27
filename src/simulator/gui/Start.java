@@ -121,8 +121,7 @@ public class Start {
 			profit = new Double (eval.getProfit());
 			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
-		//Chart.drawChart(tradeEngine.getTradeList());
-
+		Chart.drawChart(tradeEngine.getTradeList());
 		return profit;
 	}
 	
@@ -194,8 +193,7 @@ public class Start {
 			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
 		}
 		Main.lblDisplayResult.setText(interpret);
-
-	
+		Chart.drawChartCompare(tradeEngine.getTradeList());
 	}
 	
 	public static void updateProgressBar(Reader CSV) {

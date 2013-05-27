@@ -2,7 +2,6 @@ package simulator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ public class Factory {
 	private TradeEngine te = null;
 
 	private static final double EMPTY_DOUBLE_FIELD = -1;
-	private static final long   EMPTY_LONG_FIELD = -1;
 	private static final int   EMPTY_INTEGER_FIELD = -1;
 
 	/* The index positions of each data field in the csv file */

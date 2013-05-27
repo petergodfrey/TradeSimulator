@@ -40,7 +40,9 @@ public class OrderBooks {
 
 	public void resetOrderBooks() {
 		bidList = new LinkedList<Order>();
+		bidMap = new HashMap<BigInteger, Order>();
 		askList = new LinkedList<Order>();
+		askMap = new HashMap<BigInteger, Order>();
 	}
 
 	public void processOrder(Order o) throws UnsupportedOperationException {
