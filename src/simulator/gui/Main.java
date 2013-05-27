@@ -6,6 +6,7 @@ import simulator.Reader;
 import simulator.strategy.Strategy;
 
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.SystemColor;
@@ -28,6 +29,10 @@ import java.awt.Font;
 import javax.swing.JOptionPane;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Main extends JFrame {
 
@@ -192,8 +197,33 @@ public class Main extends JFrame {
 		lblStrategy.setBounds(10, 38, 61, 20);
 		panelSimulation.add(lblStrategy);
 		
-		String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random"};
+		final String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random"};
 		selectedStrategy = new JComboBox (strategyOptions);
+		selectedStrategy.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[2]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        int result = JOptionPane.showConfirmDialog(null, panel, "Parameter",
+			            JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        /*
+			        if (result == JOptionPane.OK_OPTION) {
+			        	// link to setLookBackPeriod(), setSignalThreshold(double signalThreshold), setPriceOffset(double priceOffset) 
+			        } else {
+			            //System.out.println("Cancelled");
+			        }*/
+				}
+			}
+		});
 		selectedStrategy.setBounds(124, 38, 176, 20);
 		panelSimulation.add(selectedStrategy);
 		selectedStrategy.setSelectedIndex(0);
