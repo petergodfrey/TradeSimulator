@@ -176,6 +176,23 @@ public class Start {
 		compare.reset();
 
 		Order o;
+		
+		int progressCounter = 0;
+		
+		int OnePercentLines = CSV.getFileSize()/100;
+		
+		while ((o = signalGenerator.advance()) != null) {
+			//one iteration equals one order being processed and traded
+			orderBooks.processOrder(o);
+			tradeEngine.trade();
+			if (progressCounter == OnePercentLines) {
+				updateProgressBar(CSV);
+				progressCounter = 0;
+			}
+			progressCounter++;
+		}
+		updateProgressBar(CSV);
+		
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
