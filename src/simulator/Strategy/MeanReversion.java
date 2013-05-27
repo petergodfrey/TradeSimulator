@@ -1,115 +1,154 @@
 package simulator.strategy;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import simulator.Order;
 import simulator.OrderBooks;
-import simulator.Reader;
 import simulator.Trade;
 import simulator.TradeEngine;
 
 public class MeanReversion extends AbstractStrategy implements Strategy {
-	
-	TradeEngine TE;
-	
-	private Double mean; 
-	// if there's no my bid order, assigns false. otherwise, assigns true
-	private boolean myBidOrder1 = true; //false;
-	//private TradeEngine tradeEngine;
-	
-	private int tradeSize = 0;
-	private double sum = 0;
 
-	//private boolean myBidOrder = true;
+	TradeEngine tradeEngine;
+	//private String previousOrderType;
 
+	private Trade tradeReturn;
+	private LinkedList<Double> returnsList = new LinkedList<Double>();
 	
-	public MeanReversion(OrderBooks books, TradeEngine TE) {
+	private final double nullReturn = 0;
+
+	//changeable parameters of the strategy
+	private int lookBackPeriod = 10;//how far to look back for computing avg returns
+	private double signalThreshold = 0.00;//avg returns threshold for generating orders
+	private double priceOffset = 0;//how much to offset generated order price by
+	
+	public MeanReversion(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
-		this.TE = TE;
+		this.tradeEngine   = tradeEngine;
+		//this.previousOrderType = "NO_ORDER";
+	}
+
+	public int getLookBackPeriod() {
+		return lookBackPeriod;
+	}
+
+	public void setLookBackPeriod(int lookBackPeriod) {
+		if (lookBackPeriod != 0) {
+			this.lookBackPeriod = lookBackPeriod;
+		}
+	}
+
+	public double getSignalThreshold() {
+		return signalThreshold;
+	}
+
+	public void setSignalThreshold(double signalThreshold) {
+		this.signalThreshold = signalThreshold;
+	}
+
+	public double getPriceOffset() {
+		return priceOffset;
+	}
+
+	public void setPriceOffset(double priceOffset) {
+		this.priceOffset = priceOffset;
 	}
 	
-	public void calculateMean() {
-			for (int i = 0; i < (TE.getTradeList().size()-tradeSize); i++) {
-				sum += TE.getTradeList().get(i).price();
-			}
-		
-		tradeSize = TE.getTradeList().size();
-		this.mean = sum/TE.getTradeList().size();
-		/*long sum = 0;
-		List<Trade> tradeList = TE.getTradeList();
-		for (Trade t:tradeList) {
-			sum += t.price();
+	private String getMostRecentStratOrderType() {
+		if (stratOrders.size() != 0) {
+			return stratOrders.get(0).bidAsk();
+		} else {
+			return "";
 		}
-		this.mean = (double) (sum / tradeList.size());
-		//this.mean = TE.avg();*/
-	}	
-	
+	}
+
 	@Override
 	public Order strategise() {
-		if (TE.getTradeList().size() > 0) {
-			calculateMean();
+
+		//for times when it is not appropriate to create an order,
+		//calcAvgReturns returns 0
+		double averageReturn = calcAvgReturns();
+
+		if (averageReturn > getSignalThreshold() && !getMostRecentStratOrderType().equals("A")) {
+			return createOrder("ENTER", books.bestAskPrice() + getPriceOffset(), books.bestBidOrder().volume(), null, "A");
+		} else if (averageReturn < -getSignalThreshold() && !getMostRecentStratOrderType().equals("B")) {
+			return createOrder("ENTER", books.bestBidPrice() - getPriceOffset(), books.bestAskOrder().volume(), null, "B");
+		} else {
+			return Order.NO_ORDER;
 		}
-		Order order = null;
-		// if the price is greater than mean, sell order
-		if (books.bidListSize() != 0 && myBidOrder1 == true) {
-			if (books.bestBidPrice() > this.mean ) { 
-				// && if (you have stock to sell)
-				Order bestBid = books.bestBidOrder();
-				if (books.askListSize() != 0) {
-					if (bestBid.price() < books.bestAskPrice()) {
-						// volume should depend on my volume, so need to change later
-						order = createOrder("ENTER", bestBid.price(), bestBid.volume(), null, "A");
-						myBidOrder1 = false;
-					} else {
-						if (books.bestAskPrice() - 0.01 > this.mean) {
-							// volume should depend on my volume, so need to change later
-							order = createOrder("ENTER", books.bestAskPrice() - 0.01, bestBid.volume(), null, "A");
-							myBidOrder1 = false;
-						}
-						// if bestAskPrice - 0.01 is lower than mean, don't sell anything
-						// because you'll sell the stock with lower price than mean
-					}
-				} else {
-					order = createOrder("ENTER", bestBid.price(), bestBid.volume(), null, "A");
-					myBidOrder1 = false;
-				}
-			}
-		}
-		
-		// if the price is lower than mean, buy order
-		if (books.askListSize() != 0 && myBidOrder1 == false && order == null) {			
-			Order bestAsk = books.bestAskOrder();
-			if (bestAsk.price() < this.mean) { // check whether the price is lower than mean
-				if (books.bidListSize() != 0) {
-					if (books.bestBidPrice() < bestAsk.price()) {
-						order = createOrder ("ENTER", bestAsk.price(), bestAsk.volume(), null, "B");
-						myBidOrder1 = true;
-					} else {
-						if (books.bestBidPrice() + 0.01 <= this.mean) {
-							order = createOrder ("ENTER", books.bestBidPrice() + 0.01, bestAsk.volume(), null, "B");
-							myBidOrder1 = true;
-						}
-						// if bestBidPrice + 0.01 is greater than mean, don't buy anything
-						// because you'll buy the stock with higher price than mean
-					}
-				} else {
-					order = createOrder ("ENTER", bestAsk.price(), bestAsk.volume(), null, "B");
-					myBidOrder1 = true;
-				}
-			}
-		}
-		
-		return order;
 	}
 
 	@Override
 	public String getStrategyName() {
-		return "Mean Reversion";
+		return "Mean reversion";
 	}
-	
+
+	//currently public function of testing
+	public double computeReturn() {
+
+		if (tradeEngine.getTradeList().size() == 0) {
+			//if Tradelist == 0, can't compute any returns
+			return nullReturn;
+		}
+		if (tradeReturn == null) {
+			//occurs once only, first trade only
+			tradeReturn = tradeEngine.getTradeList().get(0);
+			return nullReturn;
+		}
+		//make sure a new trade has occurred before getting the return
+		if (tradeEngine.getTradeList().get(0) == tradeReturn) {
+			return nullReturn;
+		}
+		{
+			double returns =
+					(tradeEngine.getTradeList().get(0).price() - tradeReturn.price())
+					/tradeReturn.price();
+
+			//rounds to 5 decimal places
+			returns = Math.round(returns*10000);
+			returns /= 10000;
+
+			tradeReturn = tradeEngine.getTradeList().get(0);//set current trade as the previous trade now
+			returnsList.add(0, returns);//add newly calculated return into list
+			return returns;
+		}
+	}
+
+	private double calcAvgReturns() {
+		double returns = avgReturns();
+		computeReturn();
+		return returns;
+	}
+
+	//currently public function for testing
+	public double avgReturns() {
+
+		if (returnsList.size() % this.getLookBackPeriod() != 0 || returnsList.size() == 0) {
+			//if there haven't been enough returns to calculate the next set of avgReturns
+			//or if there is nothing in the list
+			return 0;
+		}
+		{
+			double avgReturns = nullReturn;
+			for (int i = 0; i < lookBackPeriod; i++) {
+				avgReturns += returnsList.get(i);
+			}
+			avgReturns /= lookBackPeriod;
+
+			return avgReturns;
+		}
+	}
+
 	@Override
 	public void reset() {
-		this.mean = 0.0;
+		//this.mean = 0.0;
+		//myBidOrder1 = true; //false
+		//tradeSize = 0;
+		//sum = 0;
+		super.reset();
+		//previousOrderType = "NO_ORDER";
+		tradeReturn = null;
+		returnsList = new LinkedList<Double>();
 	}
 
 }

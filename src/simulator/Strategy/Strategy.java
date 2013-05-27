@@ -17,12 +17,4 @@ public interface Strategy {
     public List<Order> getOrderList();
     
     public void reset();
-
-	//public Order createOrder(String time, String recordType, Double price,
-		//	int volume,	String qualifer, String bidAsk);
-    
-
-    
-    
-    
 }

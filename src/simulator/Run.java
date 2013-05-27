@@ -7,18 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Run {
-	//fix tests structure
-	//make an evaluator
-	//only accepts enter right now
-	//TODO hashmap the orderbooks for speed
-	//TODO fix tradeEngine
-	//factory pattern orders object
-	//internally generate ID for trade orders
-	//extend Trade from Order, Trade holds the 2 orders that are traded
 	//TODO add qualifier features
-	//trading time range
-	//TODO insert on price works, need to insert on time
-
 	public static void main (String[] args) {
 
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
@@ -28,7 +17,7 @@ public class Run {
 		Reader CSV = null;
 		Strategy strat = f.makeNullStrategy();
 		Strategy compare = f.makeNullStrategy();
-		int result = 0;
+		double result = 0;
 		//one scanner that is to be passed throughout the menu when
 		//input is needed, prevents memory leak problems from too many scanners
 		Scanner s = new Scanner(System.in);
@@ -126,6 +115,7 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - Mean Reversion Strategy");
 		System.out.println("4 - Momentum Strategy");
+		System.out.println("5 - Random Strategy");
 
 		Strategy newStrat = null;
 
@@ -133,7 +123,7 @@ public class Run {
 			int choice = s.nextInt();
 
 
-			if (choice < 1 || choice > 4) {
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -149,20 +139,15 @@ public class Run {
 			case 4:
 				newStrat = f.makeMomentumStrategy();
 				break;
+			case 5:
+				newStrat = f.makeRandomStrategy();
+				break;
 			}
-
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");
 			newStrat = oldStrat;
 		}
 		return newStrat;
-	}
-
-	private static Double getMeanReversionArgs(Scanner s) {
-
-		System.out.println("Enter the mean value");
-		Double mean = (s.nextDouble());
-		return mean;
 	}
 
 
@@ -172,10 +157,11 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - Mean Reversion");
 		System.out.println("4 - Momentum Strategy");
+		System.out.println("5 - Random Strategy");
 		Strategy compare = null;
 		try {
 			int choice = s.nextInt();
-			if (choice < 1 || choice > 4) {
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -191,6 +177,9 @@ public class Run {
 			case 4:
 				compare = f.makeMomentumStrategy();
 				break;
+			case 5:
+				compare = f.makeRandomStrategy();
+				break;
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");
@@ -199,9 +188,9 @@ public class Run {
 	}
 
 
-	private static int runSimulation(Reader CSV, Strategy strat, Factory f) {
-		int profit = 0;
-		
+	private static double runSimulation(Reader CSV, Strategy strat, Factory f) {
+		double profit = 0;
+
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
@@ -225,14 +214,14 @@ public class Run {
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeEngine();
-		
+
 		//reset any strategy attributes after each simulation
 		strat.reset();
 
 		System.out.println("Running simulation ");
 
 		Order o;
-		
+
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
@@ -243,32 +232,37 @@ public class Run {
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
-		List<Trade> strategyTrades = eval.evaluate();
+		List<Trade> strategyTrades = eval.filterStrategyTrades();
 		if (strategyTrades.size() == 0) {
 			System.out.println("STRATEGY CREATED NO TRADES");
-			//return;
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
-			profit = eval.calculateProfit(strategyTrades);
+			System.out.println("TotalBuys");
+			System.out.println(eval.getTotalBuy());
+			System.out.println("TotalSells");
+			System.out.println(eval.getTotalSell());
+			System.out.println("Returns");
+			System.out.println((double)(eval.getTotalSell() - eval.getTotalBuy())/eval.getTotalBuy());
+			profit = eval.getProfit();
 			System.out.println("Profit: $("+profit+")!");
 		}
 		long finalTime = System.currentTimeMillis();
 		double millisTaken = (double)finalTime-(double)initTime;
 		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
-		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
+
 		System.out.println("\n###########################################");
 		return profit;
 	}
-	
-	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, int result) {
-		int profit = 0;
+
+	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, double result) {
+		double profit = 0;
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
 			return;//exit function early
 		}
-		
+
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = f.makeReader(CSV.getFilePath());
@@ -285,7 +279,7 @@ public class Run {
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeEngine();
-		
+
 		//reset any strategy attributes after each simulation
 		compare.reset();
 
@@ -300,21 +294,21 @@ public class Run {
 
 
 		}
-		
+
 		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
-		List<Trade> strategyTrades = eval.evaluate();
+		List<Trade> strategyTrades = eval.filterStrategyTrades();
 		if (strategyTrades.size() == 0) {
 			System.out.println("STRATEGY CREATED NO TRADES");
 			//return;
 		} else {
 			//displayEvaluation(strategyTrades);
 			//System.out.println("\nSumming up the buys and sells\n");
-			profit = eval.calculateProfit(strategyTrades);
+			profit = eval.getProfit();
 			System.out.print(compare.getStrategyName());
 			System.out.println(" Strategy's Profit: $("+profit+")!");
 		}
-		int comparedProfit = 0;
+		double comparedProfit = 0;
 		if (profit > result) {
 			comparedProfit = profit - result;			
 			System.out.print (compare.getStrategyName() );
@@ -331,10 +325,10 @@ public class Run {
 			System.out.println(" are equal in profit");
 		}
 		System.out.println("\n###########################################");
-	
+
 	}
-	
-	
+
+
 	private static void exitProgram(Scanner s) {
 		System.out.println("Cya!");
 		s.close();

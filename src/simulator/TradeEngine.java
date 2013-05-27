@@ -38,14 +38,6 @@ public class TradeEngine {
 		sum = 0;
 	}
 
-	/*
-	 * Matches orders and removes them from the order books.
-	 * When a match is found, a Trade is generated and added to the trade list.
-	 * 
-	 * Return Value:
-	 * Returns the number of trades that were generated
-	 */
-
 	public void trade() {
 		if (!timeToTrade(orderBooks.getSimulatedTime(), openTrading)) {
 
@@ -96,15 +88,6 @@ public class TradeEngine {
 		return tradeList;
 	}
 
-	/*
-	 * Creates a trade based on two orders and adds the trade to the tradeList
-	 * Assumes that the orders are the best bid and ask orders and that the spread
-	 * is <= 0
-	 * 
-	 * Parameters:
-	 * bid - The bid order to be traded
-	 * ask - the ask order to be traded
-	 */
 	private void addTrade(Order bid, Order ask) {
 
 		double tradePrice = ask.price();//always trades at ask price
