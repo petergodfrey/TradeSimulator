@@ -121,6 +121,10 @@ public class Start {
 			profit = new Double (eval.getProfit());
 			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
+		Main.lblDisplayTotalBuy.setText(eval.getTotalBuy().toString());
+		Main.lblDisplayTotalSell.setText(eval.getTotalSell().toString());
+		Double returns = ((eval.getTotalSell() - eval.getTotalBuy()) / eval.getTotalBuy()) * 100;
+		Main.lblDisplayRetuns.setText(returns.toString() + " %");
 		Chart.drawChart(tradeEngine.getTradeList());
 		return profit;
 	}
@@ -193,6 +197,10 @@ public class Start {
 			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
 		}
 		Main.lblDisplayResult.setText(interpret);
+		Main.lblDisplayTotalBuyCom.setText(eval.getTotalBuy().toString());
+		Main.lblDisplayTotalSellCom.setText(eval.getTotalSell().toString());
+		Double returns = ((eval.getTotalSell() - eval.getTotalBuy()) / eval.getTotalBuy()) * 100;
+		Main.lblDisplayReturnCom.setText(returns.toString() + " %");
 		Chart.drawChartCompare(tradeEngine.getTradeList());
 	}
 	

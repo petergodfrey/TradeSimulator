@@ -49,6 +49,18 @@ public class Main extends JFrame {
 	JLabel displayStrategy;
 	JLabel lblProfit;
 	JLabel lblTradesFromSelected;
+	JLabel lblTotalBuying;
+	JLabel lblTotalSelling;
+	JLabel lblReturns;
+	JLabel lblTotalBuyingToCompare;
+	JLabel lblTotalSellingToCompare;
+	JLabel lblReturnsToCompareT;
+	static JLabel lblDisplayTotalBuy;
+	static JLabel lblDisplayTotalSell;
+	static JLabel lblDisplayRetuns;
+	static JLabel lblDisplayTotalBuyCom;
+	static JLabel lblDisplayTotalSellCom;
+	static JLabel lblDisplayReturnCom;
 	static JLabel displayData;
 	static JLabel lbProfitResult;
 	static JLabel lblBidID;
@@ -106,7 +118,7 @@ public class Main extends JFrame {
 
 		setTitle("Algorithmic Trading System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 842, 688);
+		setBounds(100, 100, 876, 730);
 		
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -140,7 +152,7 @@ public class Main extends JFrame {
 		contentPane.setLayout(null);
 
 		panelSimulation = new JPanel();
-		panelSimulation.setBounds(0, 0, 825, 629);
+		panelSimulation.setBounds(0, 0, 860, 671);
 		contentPane.add(panelSimulation);
 		panelSimulation.setLayout(null);
 		
@@ -170,7 +182,7 @@ public class Main extends JFrame {
 		
 		
 		filePath = new JTextField();
-		filePath.setBounds(124, 11, 683, 20);
+		filePath.setBounds(124, 11, 713, 20);
 		panelSimulation.add(filePath);
 		filePath.setText("Enter the filepath of the selected CSV file");
 		filePath.setToolTipText("For example, \"C:\\User\\user\\Desktop\\sircaData.csv");
@@ -190,7 +202,7 @@ public class Main extends JFrame {
 		
 		progressPercent = new JProgressBar();
 		progressPercent.setForeground(SystemColor.textHighlight);
-		progressPercent.setBounds(124, 165, 691, 20);
+		progressPercent.setBounds(124, 165, 713, 20);
 		panelSimulation.add(progressPercent);
 		progressPercent.setStringPainted(true);
 				
@@ -203,35 +215,35 @@ public class Main extends JFrame {
 		panelSimulation.add(resetSimulation);
 		
 		lblProfit = new JLabel("Profit :");
-		lblProfit.setBounds(10, 258, 61, 20);
+		lblProfit.setBounds(10, 333, 61, 20);
 		panelSimulation.add(lblProfit);
 		
 		lbProfitResult = new JLabel("$");
-		lbProfitResult.setBounds(124, 258, 222, 20);
+		lbProfitResult.setBounds(124, 333, 222, 20);
 		panelSimulation.add(lbProfitResult);
 		
 		lblTradesFromSelected = new JLabel("Trade list :");
-		lblTradesFromSelected.setBounds(10, 289, 61, 20);
+		lblTradesFromSelected.setBounds(10, 364, 61, 20);
 		panelSimulation.add(lblTradesFromSelected);
 		
 		lblBidID = new JLabel("Bid ID");
 		lblBidID.setVerticalAlignment(SwingConstants.TOP);
-		lblBidID.setBounds(124, 292, 222, 251);
+		lblBidID.setBounds(124, 367, 222, 251);
 		panelSimulation.add(lblBidID);
 		
 		lblAskID = new JLabel("Ask ID");
 		lblAskID.setVerticalAlignment(SwingConstants.TOP);
-		lblAskID.setBounds(356, 292, 222, 251);
+		lblAskID.setBounds(356, 367, 222, 251);
 		panelSimulation.add(lblAskID);
 		
 		lblPrice = new JLabel("Price");
 		lblPrice.setVerticalAlignment(SwingConstants.TOP);
-		lblPrice.setBounds(604, 292, 74, 251);
+		lblPrice.setBounds(599, 367, 74, 251);
 		panelSimulation.add(lblPrice);
 		
 		lblVolume = new JLabel("Volume");
 		lblVolume.setVerticalAlignment(SwingConstants.TOP);
-		lblVolume.setBounds(696, 292, 74, 251);
+		lblVolume.setBounds(695, 367, 74, 251);
 		panelSimulation.add(lblVolume);
 		
 		lblStrategyToCompare = new JLabel("Strategy to compare :");
@@ -239,7 +251,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblStrategyToCompare);
 		
 		displayCompare = new JLabel("");
-		displayCompare.setBounds(520, 227, 257, 20);
+		displayCompare.setBounds(558, 227, 257, 20);
 		panelSimulation.add(displayCompare);
 		
 		label = new JLabel("Strategy :");
@@ -274,6 +286,7 @@ public class Main extends JFrame {
 				} else {
 					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
 						compared = Start.selectComparison(strat, factory);
+		   				displayCompare.setText("");
 						displayCompare.setText(strat);
 						displayCompare.update(displayCompare.getGraphics());
 						Start.runComparison(CSV, compared, selected, factory, result);
@@ -292,22 +305,70 @@ public class Main extends JFrame {
 		panelSimulation.add(btnComparison);
 		
 		lblProfitToCompare = new JLabel("Profit to compare :");
-		lblProfitToCompare.setBounds(390, 258, 103, 20);
+		lblProfitToCompare.setBounds(390, 333, 103, 20);
 		panelSimulation.add(lblProfitToCompare);
 		
 		lblCompareResult = new JLabel("$");
 		lblCompareResult.setToolTipText("");
-		lblCompareResult.setBounds(520, 259, 222, 18);
+		lblCompareResult.setBounds(520, 334, 222, 18);
 		panelSimulation.add(lblCompareResult);
 		
 		lblComparingResult = new JLabel("Comparing Result :");
-		lblComparingResult.setBounds(10, 576, 103, 20);
+		lblComparingResult.setBounds(10, 637, 103, 20);
 		panelSimulation.add(lblComparingResult);
 		
 		lblDisplayResult = new JLabel("");
 		lblDisplayResult.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
-		lblDisplayResult.setBounds(124, 576, 691, 20);
+		lblDisplayResult.setBounds(124, 637, 691, 20);
 		panelSimulation.add(lblDisplayResult);
+		
+		lblTotalBuying = new JLabel("Total Buying :");
+		lblTotalBuying.setBounds(10, 258, 103, 14);
+		panelSimulation.add(lblTotalBuying);
+		
+		lblTotalSelling = new JLabel("Total Selling :");
+		lblTotalSelling.setBounds(10, 283, 103, 14);
+		panelSimulation.add(lblTotalSelling);
+		
+		lblReturns = new JLabel("Returns :");
+		lblReturns.setBounds(10, 308, 46, 14);
+		panelSimulation.add(lblReturns);
+		
+		lblTotalBuyingToCompare = new JLabel("Total Buying to compare:");
+		lblTotalBuyingToCompare.setBounds(390, 258, 156, 14);
+		panelSimulation.add(lblTotalBuyingToCompare);
+		
+		lblTotalSellingToCompare = new JLabel("Total Selling to compare :");
+		lblTotalSellingToCompare.setBounds(390, 283, 156, 14);
+		panelSimulation.add(lblTotalSellingToCompare);
+		
+		lblReturnsToCompareT = new JLabel("Returns to compare :");
+		lblReturnsToCompareT.setBounds(390, 308, 120, 14);
+		panelSimulation.add(lblReturnsToCompareT);
+		
+		lblDisplayTotalBuy = new JLabel("");
+		lblDisplayTotalBuy.setBounds(124, 258, 222, 14);
+		panelSimulation.add(lblDisplayTotalBuy);
+		
+		lblDisplayTotalSell = new JLabel("");
+		lblDisplayTotalSell.setBounds(124, 283, 222, 14);
+		panelSimulation.add(lblDisplayTotalSell);
+		
+		lblDisplayRetuns = new JLabel("");
+		lblDisplayRetuns.setBounds(124, 308, 222, 14);
+		panelSimulation.add(lblDisplayRetuns);
+		
+		lblDisplayTotalBuyCom = new JLabel("");
+		lblDisplayTotalBuyCom.setBounds(558, 258, 257, 14);
+		panelSimulation.add(lblDisplayTotalBuyCom);
+		
+		lblDisplayTotalSellCom = new JLabel("");
+		lblDisplayTotalSellCom.setBounds(558, 283, 257, 14);
+		panelSimulation.add(lblDisplayTotalSellCom);
+		
+		lblDisplayReturnCom = new JLabel("");
+		lblDisplayReturnCom.setBounds(558, 309, 257, 14);
+		panelSimulation.add(lblDisplayReturnCom);
 		
 		resetSimulation.addMouseListener(new MouseAdapter() {
 			@Override
@@ -329,6 +390,12 @@ public class Main extends JFrame {
 				Main.lblVolume.setText("");
 				Main.lbProfitResult.setText("$ ");
 				Main.lblCompareResult.setText("$ ");
+				Main.lblDisplayTotalBuy.setText("");
+				Main.lblDisplayTotalSell.setText("");
+				Main.lblDisplayRetuns.setText("");
+				Main.lblDisplayTotalBuyCom.setText("");
+				Main.lblDisplayTotalSellCom.setText("");
+				Main.lblDisplayReturnCom.setText("");
 			}
 		});
 		

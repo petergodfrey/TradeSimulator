@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import simulator.gui.Main;
 import simulator.strategy.*;
 
 public class Evaluator {
@@ -48,15 +49,15 @@ public class Evaluator {
 		}
 	}
 	
-	public double getTotalBuy() {
+	public Double getTotalBuy() {
 		return this.totalBuy;
 	}
 	
-	public double getTotalSell() {
+	public Double getTotalSell() {
 		return this.totalSell;
 	}
 	
-	public double getProfit() {
+	public Double getProfit() {
 		return this.profit;
 	}
 
