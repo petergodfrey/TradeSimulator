@@ -1,0 +1,194 @@
+<class-diagram version="1.0.10" icons="false" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="simulator.Evaluator" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/Evaluator.java" binary="false">    
+    <position height="-1" width="-1" x="260" y="290"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="simulator.Order" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/Order.java" binary="false">    
+    <position height="-1" width="-1" x="127" y="502"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="simulator.OrderBooks" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/OrderBooks.java" binary="false">    
+    <position height="-1" width="-1" x="260" y="502"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="simulator.Reader" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/Reader.java" binary="false">    
+    <position height="-1" width="-1" x="501" y="79"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="simulator.SignalGenerator" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/SignalGenerator.java" binary="false">    
+    <position height="-1" width="-1" x="502" y="193"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="simulator.Trade" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/Trade.java" binary="false">    
+    <position height="-1" width="-1" x="127" y="378"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="simulator.TradeEngine" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/TradeEngine.java" binary="false">    
+    <position height="-1" width="-1" x="261" y="378"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="simulator.strategy.Strategy" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/strategy/Strategy.java" binary="false">    
+    <position height="-1" width="-1" x="260" y="193"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="simulator.gui.Main" project="TradeSimulator" 
+    file="/TradeSimulator/src/simulator/gui/Main.java" binary="false">    
+    <position height="-1" width="-1" x="259" y="79"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <association id="10">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="11" name="CSV"/>      
+      <multiplicity id="12" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="13">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="14" name="tradeEngine"/>      
+      <multiplicity id="15" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="16">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="17" name="strat"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="20" name="compared"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <bendpoint x="435" y="290"/>    
+    <bendpoint x="435" y="419"/>    
+    <bendpoint x="435" y="502"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="23" name="books"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="26" name="reader"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="29" name="bidMap"/>      
+      <multiplicity id="30" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="32" name="tradeList"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <dependency id="34">    
+    <bendpoint x="77" y="193"/>    
+    <bendpoint x="77" y="503"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="35">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="36" name="orderBooks"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="39" name="strategy"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <association id="41">    
+    <bendpoint x="128" y="539"/>    
+    <bendpoint x="77" y="539"/>    
+    <bendpoint x="77" y="502"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="42" name="NO_ORDER"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="true"/>  
+  </association>  
+  <generalization id="44">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+    visibility="false">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="true"/>
+</class-diagram>

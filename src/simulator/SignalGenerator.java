@@ -1,6 +1,9 @@
 package simulator;
 import java.io.*;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import simulator.strategy.Strategy;
 
 public class SignalGenerator {
@@ -31,7 +34,10 @@ public class SignalGenerator {
 			try {
 				o = CSVNext();
 			} catch (IOException e) {
-				System.out.println("Error in Reading File. Exiting");
+				JOptionPane.showMessageDialog(new JFrame(),
+						"Error in Reading File. Existing",
+	                    "advance error",
+	                    JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
 			}
 		}
