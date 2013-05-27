@@ -22,8 +22,6 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	private double signalThreshold = 0.00;//avg returns threshold for generating orders
 	private double priceOffset = 0;//how much to offset generated order price by
 	
-	private int buyVolume = 0;
-	
 	public MeanReversion(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
 		this.tradeEngine   = tradeEngine;
@@ -74,7 +72,6 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 		if (averageReturn > getSignalThreshold() && !getMostRecentStratOrderType().equals("A")) {
 			return createOrder("ENTER", books.bestAskPrice() + getPriceOffset(), books.bestBidOrder().volume(), null, "A");
 		} else if (averageReturn < -getSignalThreshold() && !getMostRecentStratOrderType().equals("B")) {
-			buyVolume = books.bestAskOrder().volume();
 			return createOrder("ENTER", books.bestBidPrice() - getPriceOffset(), books.bestAskOrder().volume(), null, "B");
 		} else {
 			return Order.NO_ORDER;

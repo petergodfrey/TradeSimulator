@@ -69,7 +69,7 @@ public class Main extends JFrame {
 	JLabel label;
 	JLabel lblProfitToCompare;
 	static JLabel lblCompareResult;
-	int result;
+	double result;
 	JLabel lblComparingResult;
 	static JLabel lblDisplayResult;
 		
