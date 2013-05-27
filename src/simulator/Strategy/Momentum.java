@@ -64,7 +64,7 @@ public class Momentum extends AbstractStrategy implements Strategy {
 		if (averageReturn > getSignalThreshold() && !previousOrderType.equals("B")) {
 			previousOrderType = "B";
 			return createOrder("ENTER", books.bestBidPrice() + getPriceOffset(), books.bestAskOrder().volume(), null, "B");
-		} else if (averageReturn < getSignalThreshold() && !previousOrderType.equals("A")) {
+		} else if (averageReturn < -getSignalThreshold() && !previousOrderType.equals("A")) {
 			previousOrderType = "A";
 			return createOrder("ENTER", books.bestAskPrice() - getPriceOffset(), books.bestBidOrder().volume(), null, "A");
 		} else {
