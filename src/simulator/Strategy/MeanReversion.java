@@ -110,6 +110,9 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 	@Override
 	public void reset() {
 		this.mean = 0.0;
+		myBidOrder1 = true; //false
+		tradeSize = 0;
+		sum = 0;
 	}
 
 }

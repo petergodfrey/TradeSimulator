@@ -27,6 +27,7 @@ import javax.swing.JScrollBar;
 import java.awt.Font;
 import javax.swing.JOptionPane;
 import javax.swing.JDialog;
+import javax.swing.JScrollPane;
 
 public class Main extends JFrame {
 
@@ -307,6 +308,7 @@ public class Main extends JFrame {
 		lblDisplayResult.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 20));
 		lblDisplayResult.setBounds(124, 576, 691, 20);
 		panelSimulation.add(lblDisplayResult);
+		
 		resetSimulation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -357,5 +359,4 @@ public class Main extends JFrame {
 		});
 		
 	}
-	
 }

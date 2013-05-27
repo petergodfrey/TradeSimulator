@@ -127,9 +127,9 @@ public class Start {
 			//System.out.println("Profit: $("+profit+")!");
 			Main.lbProfitResult.setText("$ " + profit.toString());
 		}
-		//Chart.drawChart(tradeEngine.getTradeList());
-		long finalTime = System.currentTimeMillis();
-		double millisTaken = (double)finalTime-(double)initTime;
+		Chart.drawChart(tradeEngine.getTradeList());
+		//long finalTime = System.currentTimeMillis();
+		//double millisTaken = (double)finalTime-(double)initTime;
 		//System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
 		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
 		
@@ -227,6 +227,7 @@ public class Start {
 			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
 		}
 		Main.lblDisplayResult.setText(interpret);
+		Chart.drawChartCompare(tradeEngine.getTradeList());
 		//System.out.println("\n###########################################");
 	
 	}
