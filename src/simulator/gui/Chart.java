@@ -3,6 +3,13 @@ package simulator.gui;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -69,7 +76,9 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			ChartUtilities.saveChartAsJPEG(new File("F:/SENG3011/Codes/TradeSimulator/chart.jpg"), chart, 500, 300);
+			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
+		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
+		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern", JOptionPane.PLAIN_MESSAGE, null);
 		} catch (IOException e) {
 			System.err.println(e);
 			System.err.println("Problem occurred creating chart.");
@@ -91,7 +100,9 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			ChartUtilities.saveChartAsJPEG(new File("F:/SENG3011/Codes/TradeSimulator/chart.jpg"), chart, 500, 300);
+			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
+		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
+		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern",JOptionPane.PLAIN_MESSAGE, null);
 		} catch (IOException e) {
 			System.err.println(e);
 			System.err.println("Problem occurred creating chart.");
