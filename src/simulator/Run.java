@@ -142,7 +142,6 @@ public class Run {
 			case 5:
 				newStrat = f.makeRandomStrategy();
 				break;
-
 			}
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");
@@ -158,10 +157,11 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - Mean Reversion");
 		System.out.println("4 - Momentum Strategy");
+		System.out.println("5 - Random Strategy");
 		Strategy compare = null;
 		try {
 			int choice = s.nextInt();
-			if (choice < 1 || choice > 4) {
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -176,6 +176,9 @@ public class Run {
 				break;
 			case 4:
 				compare = f.makeMomentumStrategy();
+				break;
+			case 5:
+				compare = f.makeRandomStrategy();
 				break;
 			}
 		} catch (InputMismatchException e) {
@@ -235,6 +238,12 @@ public class Run {
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
+			System.out.println("TotalBuys");
+			System.out.println(eval.getTotalBuy());
+			System.out.println("TotalSells");
+			System.out.println(eval.getTotalSell());
+			System.out.println("Returns");
+			System.out.println((double)(eval.getTotalSell() - eval.getTotalBuy())/eval.getTotalBuy());
 			profit = eval.getProfit();
 			System.out.println("Profit: $("+profit+")!");
 		}

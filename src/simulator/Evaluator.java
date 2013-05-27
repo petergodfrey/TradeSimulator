@@ -13,8 +13,8 @@ public class Evaluator {
 	private OrderBooks books;
 	
 	double profit = 0;
-	double totalBuy = 0;
-	double totalSell = 0;
+	int totalBuy = 0;
+	int totalSell = 0;
 
 	
 	public Evaluator(Strategy strat, TradeEngine tradeEngine, OrderBooks books) {
@@ -48,11 +48,11 @@ public class Evaluator {
 		}
 	}
 	
-	public double getTotalBuy() {
+	public int getTotalBuy() {
 		return this.totalBuy;
 	}
 	
-	public double getTotalSell() {
+	public int getTotalSell() {
 		return this.totalSell;
 	}
 	

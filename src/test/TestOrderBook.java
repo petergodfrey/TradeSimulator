@@ -2,9 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.Before;
@@ -13,7 +10,6 @@ import org.junit.Test;
 import simulator.Factory;
 import simulator.Order;
 import simulator.OrderBooks;
-import simulator.Reader;
 
 public class TestOrderBook {
 

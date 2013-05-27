@@ -3,23 +3,14 @@ package test;
 import static org.junit.Assert.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
-import org.junit.Test;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import simulator.Factory;
 import simulator.Order;
 import simulator.OrderBooks;
-import simulator.Reader;
-import simulator.SignalGenerator;
-import simulator.Trade;
 import simulator.TradeEngine;
 import simulator.strategy.Momentum;
-import simulator.strategy.Strategy;
 
 public class TestStrategy {
 	
@@ -49,7 +40,7 @@ public class TestStrategy {
 	}
 	
 	@Test
-	public void testMomentumStrategy() {
+	public void testReturnsCalculations() {
 		f = new Factory();
 		orderBooks = f.makeOrderBooks();
 		tradeEngine = f.makeTradeEngine();

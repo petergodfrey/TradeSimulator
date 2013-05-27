@@ -10,7 +10,6 @@ import simulator.TradeEngine;
 public class Momentum extends AbstractStrategy implements Strategy {
 
 	TradeEngine tradeEngine;
-	private String previousOrderType;
 
 	private Trade tradeReturn;
 	private LinkedList<Double> returnsList = new LinkedList<Double>();
@@ -25,7 +24,6 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	public Momentum(OrderBooks books, TradeEngine tradeEngine) {
 		super(books);
 		this.tradeEngine   = tradeEngine;
-		this.previousOrderType = "NO_ORDER";
 	}
 
 	public int getLookBackPeriod() {
@@ -53,6 +51,14 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	public void setPriceOffset(double priceOffset) {
 		this.priceOffset = priceOffset;
 	}
+	
+	private String getMostRecentStratOrderType() {
+		if (stratOrders.size() != 0) {
+			return stratOrders.get(0).bidAsk();
+		} else {
+			return "";
+		}
+	}
 
 	@Override
 	public Order strategise() {
@@ -61,11 +67,9 @@ public class Momentum extends AbstractStrategy implements Strategy {
 		//calcAvgReturns returns 0
 		double averageReturn = calcAvgReturns();
 
-		if (averageReturn > getSignalThreshold() && !previousOrderType.equals("B")) {
-			previousOrderType = "B";
+		if (averageReturn > getSignalThreshold() && !getMostRecentStratOrderType().equals("B")) {
 			return createOrder("ENTER", books.bestBidPrice() + getPriceOffset(), books.bestAskOrder().volume(), null, "B");
-		} else if (averageReturn < -getSignalThreshold() && !previousOrderType.equals("A")) {
-			previousOrderType = "A";
+		} else if (averageReturn < -getSignalThreshold() && !getMostRecentStratOrderType().equals("A")) {
 			return createOrder("ENTER", books.bestAskPrice() - getPriceOffset(), books.bestBidOrder().volume(), null, "A");
 		} else {
 			return Order.NO_ORDER;
@@ -81,7 +85,7 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	public double computeReturn() {
 
 		if (tradeEngine.getTradeList().size() == 0) {
-			//if Tradelist == 0, can't compute any returns
+			//if Trade list == 0, can't compute any returns
 			return nullReturn;
 		}
 		if (tradeReturn == null) {
@@ -136,7 +140,6 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	@Override
 	public void reset() {
 		super.reset();
-		previousOrderType = "NO_ORDER";
 		tradeReturn = null;
 		returnsList = new LinkedList<Double>();
 	}
