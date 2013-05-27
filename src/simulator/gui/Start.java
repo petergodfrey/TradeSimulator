@@ -104,13 +104,21 @@ public class Start {
 
 		Order o;
 		
+		int progressCounter = 0;
+		
+		int OnePercentLines = CSV.getFileSize()/100;
+		
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
 			tradeEngine.trade();
-
-			updateProgressBar(CSV);
+			if (progressCounter == OnePercentLines) {
+				updateProgressBar(CSV);
+				progressCounter = 0;
+			}
+			progressCounter++;
 		}
+		updateProgressBar(CSV);
 		
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		List<Trade> strategyTrades = eval.filterStrategyTrades();
@@ -123,7 +131,7 @@ public class Start {
 		}
 		Main.lblDisplayTotalBuy.setText(eval.getTotalBuy().toString());
 		Main.lblDisplayTotalSell.setText(eval.getTotalSell().toString());
-		Double returns = ((eval.getTotalSell() - eval.getTotalBuy()) / eval.getTotalBuy()) * 100;
+		Double returns = (((double) eval.getTotalSell() - (double) eval.getTotalBuy()) / (double) eval.getTotalBuy()) * 100;
 		Main.lblDisplayRetuns.setText(returns.toString() + " %");
 		Chart.drawChart(tradeEngine.getTradeList());
 		return profit;
@@ -199,7 +207,7 @@ public class Start {
 		Main.lblDisplayResult.setText(interpret);
 		Main.lblDisplayTotalBuyCom.setText(eval.getTotalBuy().toString());
 		Main.lblDisplayTotalSellCom.setText(eval.getTotalSell().toString());
-		Double returns = ((eval.getTotalSell() - eval.getTotalBuy()) / eval.getTotalBuy()) * 100;
+		Double returns = (((double)eval.getTotalSell() - (double)eval.getTotalBuy()) / (double)eval.getTotalBuy()) * 100;
 		Main.lblDisplayReturnCom.setText(returns.toString() + " %");
 		Chart.drawChartCompare(tradeEngine.getTradeList());
 	}
