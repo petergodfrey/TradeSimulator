@@ -56,7 +56,7 @@ public class Chart  {
 	private static void setCollection() {
 		dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
-		if (compareList != null) {
+		if (series2 != null) {
 			dataset.addSeries(series2);
 		}
 	}
@@ -76,6 +76,10 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
+			File file = new File(System.getProperty("user.dir") + "/chart.jpg");
+			if (file.exists()) {
+				file.delete();
+			}
 			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
 		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern", JOptionPane.PLAIN_MESSAGE, null);
@@ -100,8 +104,12 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
-		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
+			File file = new File(System.getProperty("user.dir") + "/chart1.jpg");
+			if (file.exists()) {
+				file.delete();
+			}
+			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart1.jpg"), chart, 500, 300);
+		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart1.jpg"));
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern",JOptionPane.PLAIN_MESSAGE, null);
 		} catch (IOException e) {
 			System.err.println(e);
