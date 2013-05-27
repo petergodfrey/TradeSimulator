@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -42,14 +40,12 @@ public class Chart  {
 	
 	private static void addAll() {
 		for(int i = 0; i < tradeList.size(); i++) {
-			// first parameter can't be parseDouble because string includes ":"
 			series.add(OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()), tradeList.get(i).price());		
 		}
 	}
 
 	private static void addAllCompare() {
 		for(int i = 0; i < compareList.size(); i++) {
-			// first parameter can't be parseDouble because string includes ":"
 			series2.add(OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()), compareList.get(i).price());		
 		}			
 	}

@@ -25,13 +25,8 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.JScrollBar;
 import java.awt.Font;
 import javax.swing.JOptionPane;
-import javax.swing.JDialog;
-import javax.swing.JScrollPane;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -257,7 +252,7 @@ public class Main extends JFrame {
 		
 		lblTradesFromSelected = new JLabel("Trade list :");
 		//lblTradesFromSelected.setBounds(10, 289, 120, 20);
-		lblTradesFromSelected.setBounds(10, 364, 61, 20);
+		lblTradesFromSelected.setBounds(10, 364, 120, 20);
 		panelSimulation.add(lblTradesFromSelected);
 		
 		lblBidID = new JLabel("Bid ID");
@@ -357,7 +352,7 @@ public class Main extends JFrame {
 		
 		lblProfitToCompare = new JLabel("Profit to compare :");
 		//lblProfitToCompare.setBounds(390, 258, 130, 20);
-		lblProfitToCompare.setBounds(390, 333, 103, 20);
+		lblProfitToCompare.setBounds(390, 333, 130, 20);
 		panelSimulation.add(lblProfitToCompare);
 		
 		lblCompareResult = new JLabel("$");
@@ -367,7 +362,7 @@ public class Main extends JFrame {
 		
 		lblComparingResult = new JLabel("Comparing Result :");
 		//lblComparingResult.setBounds(10, 576, 120, 20);
-		lblComparingResult.setBounds(10, 637, 103, 20);
+		lblComparingResult.setBounds(10, 637, 120, 20);
 		panelSimulation.add(lblComparingResult);
 		
 		lblDisplayResult = new JLabel("");
@@ -384,7 +379,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblTotalSelling);
 		
 		lblReturns = new JLabel("Returns :");
-		lblReturns.setBounds(10, 308, 46, 14);
+		lblReturns.setBounds(10, 308, 60, 14);
 		panelSimulation.add(lblReturns);
 		
 		lblTotalBuyingToCompare = new JLabel("Total Buying to compare:");
@@ -396,7 +391,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblTotalSellingToCompare);
 		
 		lblReturnsToCompareT = new JLabel("Returns to compare :");
-		lblReturnsToCompareT.setBounds(390, 308, 120, 14);
+		lblReturnsToCompareT.setBounds(390, 308, 130, 14);
 		panelSimulation.add(lblReturnsToCompareT);
 		
 		lblDisplayTotalBuy = new JLabel("");
@@ -429,11 +424,8 @@ public class Main extends JFrame {
 				filePath.setText("Enter the filepath of the selected CSV file");
 				selectedStrategy.setSelectedIndex(0);
 				displayData.setText("");
-				//displayData.update(displayData.getGraphics());
 				displayStrategy.setText("");
-				//displayStrategy.update(displayStrategy.getGraphics());
 				displayCompare.setText("");
-				//displayCompare.update(displayCompare.getGraphics());
 				lblDisplayResult.setText("");
 				progressPercent.setString("0 %");
 				progressPercent.setValue(0);
