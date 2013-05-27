@@ -24,13 +24,8 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.JScrollBar;
 import java.awt.Font;
 import javax.swing.JOptionPane;
-import javax.swing.JDialog;
-import javax.swing.JScrollPane;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -406,11 +401,8 @@ public class Main extends JFrame {
 				filePath.setText("Enter the filepath of the selected CSV file");
 				selectedStrategy.setSelectedIndex(0);
 				displayData.setText("");
-				//displayData.update(displayData.getGraphics());
 				displayStrategy.setText("");
-				//displayStrategy.update(displayStrategy.getGraphics());
 				displayCompare.setText("");
-				//displayCompare.update(displayCompare.getGraphics());
 				lblDisplayResult.setText("");
 				progressPercent.setString("0 %");
 				progressPercent.setValue(0);

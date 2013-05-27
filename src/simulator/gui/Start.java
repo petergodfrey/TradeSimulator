@@ -1,14 +1,9 @@
 package simulator.gui;
 
 import java.io.IOException;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import simulator.Evaluator;
 import simulator.Factory;
 import simulator.Order;
@@ -69,7 +64,6 @@ public class Start {
 	
 	public static double runSimulation(Reader CSV, Strategy strat, Factory factory) {
 		Double profit = 0.0;
-		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			JOptionPane.showMessageDialog(new JFrame(),
@@ -220,9 +214,6 @@ public class Start {
 	
 	public static void exitProgram() {
 		System.exit(0);
-	}
-
-	public static void displayProgress(Reader CSV, OrderBooks books) {
 	}
 
 	public static Integer getProgressPercent (Reader CSV) {

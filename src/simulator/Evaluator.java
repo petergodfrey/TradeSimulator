@@ -3,8 +3,6 @@ package simulator;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
-import simulator.gui.Main;
 import simulator.strategy.*;
 
 public class Evaluator {
