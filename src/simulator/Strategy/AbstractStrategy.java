@@ -14,10 +14,14 @@ public abstract class AbstractStrategy implements Strategy {
 
 	private BigInteger IDCounter = BigInteger.ONE.negate();// == -1
 
-	protected List<Order> stratOrders = new ArrayList<Order>();
 
+	protected List<Order> stratOrders = new ArrayList<Order>();
+	
+	private String previousOrderType;
+	
 	public AbstractStrategy(OrderBooks books) {
 		this.books = books;
+		this.previousOrderType = "";
 	}
 
 	private BigInteger generateStrategyID() {
@@ -29,6 +33,12 @@ public abstract class AbstractStrategy implements Strategy {
 	@Override
 	public Order submitOrder() {
 		Order o = strategise();
+		if (o != Order.NO_ORDER) {
+			if ( !o.bidAsk().equals(previousOrderType) || previousOrderType.equals("") ) {
+				addOrderToList(o);
+				previousOrderType = new String( o.bidAsk() );
+			}
+		}
 		addOrderToList(o);
 		return o;
 	}
