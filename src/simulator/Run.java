@@ -7,18 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Run {
-	//fix tests structure
-	//make an evaluator
-	//only accepts enter right now
-	//TODO hashmap the orderbooks for speed
-	//TODO fix tradeEngine
-	//factory pattern orders object
-	//internally generate ID for trade orders
-	//extend Trade from Order, Trade holds the 2 orders that are traded
 	//TODO add qualifier features
-	//trading time range
-	//TODO insert on price works, need to insert on time
-
 	public static void main (String[] args) {
 
 		System.out.println("#######--Welcome to the Trade Simulator!--#######");
@@ -28,7 +17,7 @@ public class Run {
 		Reader CSV = null;
 		Strategy strat = f.makeNullStrategy();
 		Strategy compare = f.makeNullStrategy();
-		int result = 0;
+		double result = 0;
 		//one scanner that is to be passed throughout the menu when
 		//input is needed, prevents memory leak problems from too many scanners
 		Scanner s = new Scanner(System.in);
@@ -158,13 +147,6 @@ public class Run {
 		return newStrat;
 	}
 
-	private static Double getMeanReversionArgs(Scanner s) {
-
-		System.out.println("Enter the mean value");
-		Double mean = (s.nextDouble());
-		return mean;
-	}
-
 
 	private static Strategy selectComparison(Scanner s, Factory f) {
 		System.out.println("Select a strategy to compare from the list");
@@ -199,8 +181,8 @@ public class Run {
 	}
 
 
-	private static int runSimulation(Reader CSV, Strategy strat, Factory f) {
-		int profit = 0;
+	private static double runSimulation(Reader CSV, Strategy strat, Factory f) {
+		double profit = 0;
 		
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
@@ -243,26 +225,25 @@ public class Run {
 		}
 		Evaluator eval = new Evaluator(strat, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
-		List<Trade> strategyTrades = eval.evaluate();
+		List<Trade> strategyTrades = eval.filterStrategyTrades();
 		if (strategyTrades.size() == 0) {
 			System.out.println("STRATEGY CREATED NO TRADES");
-			//return;
 		} else {
 			displayEvaluation(strategyTrades);
 			System.out.println("\nSumming up the buys and sells\n");
-			profit = eval.calculateProfit(strategyTrades);
+			profit = eval.getProfit();
 			System.out.println("Profit: $("+profit+")!");
 		}
 		long finalTime = System.currentTimeMillis();
 		double millisTaken = (double)finalTime-(double)initTime;
 		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
-		//System.out.println("Time Taken: "+(System.currentTimeMillis()-initTime)/1000+" seconds");
+		
 		System.out.println("\n###########################################");
 		return profit;
 	}
 	
-	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, int result) {
-		int profit = 0;
+	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, double result) {
+		double profit = 0;
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
@@ -303,18 +284,18 @@ public class Run {
 		
 		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
-		List<Trade> strategyTrades = eval.evaluate();
+		List<Trade> strategyTrades = eval.filterStrategyTrades();
 		if (strategyTrades.size() == 0) {
 			System.out.println("STRATEGY CREATED NO TRADES");
 			//return;
 		} else {
 			//displayEvaluation(strategyTrades);
 			//System.out.println("\nSumming up the buys and sells\n");
-			profit = eval.calculateProfit(strategyTrades);
+			profit = eval.getProfit();
 			System.out.print(compare.getStrategyName());
 			System.out.println(" Strategy's Profit: $("+profit+")!");
 		}
-		int comparedProfit = 0;
+		double comparedProfit = 0;
 		if (profit > result) {
 			comparedProfit = profit - result;			
 			System.out.print (compare.getStrategyName() );
