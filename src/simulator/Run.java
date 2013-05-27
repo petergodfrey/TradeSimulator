@@ -115,6 +115,7 @@ public class Run {
 		System.out.println("2 - Dumb Strategy");
 		System.out.println("3 - Mean Reversion Strategy");
 		System.out.println("4 - Momentum Strategy");
+		System.out.println("5 - Random Strategy");
 
 		Strategy newStrat = null;
 
@@ -122,7 +123,7 @@ public class Run {
 			int choice = s.nextInt();
 
 
-			if (choice < 1 || choice > 4) {
+			if (choice < 1 || choice > 5) {
 				throw new InputMismatchException();
 			}
 			switch (choice) {
@@ -138,8 +139,11 @@ public class Run {
 			case 4:
 				newStrat = f.makeMomentumStrategy();
 				break;
-			}
+			case 5:
+				newStrat = f.makeRandomStrategy();
+				break;
 
+			}
 		} catch (InputMismatchException e) {
 			System.out.println("Wrong input, returning to menu\n\n");
 			newStrat = oldStrat;
@@ -183,7 +187,7 @@ public class Run {
 
 	private static double runSimulation(Reader CSV, Strategy strat, Factory f) {
 		double profit = 0;
-		
+
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
@@ -207,14 +211,14 @@ public class Run {
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeEngine();
-		
+
 		//reset any strategy attributes after each simulation
 		strat.reset();
 
 		System.out.println("Running simulation ");
 
 		Order o;
-		
+
 		while ((o = signalGenerator.advance()) != null) {
 			//one iteration equals one order being processed and traded
 			orderBooks.processOrder(o);
@@ -237,11 +241,11 @@ public class Run {
 		long finalTime = System.currentTimeMillis();
 		double millisTaken = (double)finalTime-(double)initTime;
 		System.out.printf("\nTime Taken: %.2f seconds\n",millisTaken/1000);
-		
+
 		System.out.println("\n###########################################");
 		return profit;
 	}
-	
+
 	private static void runComparison(Reader CSV, Strategy compare, Strategy strat, Factory f, double result) {
 		double profit = 0;
 		//cannot run simulation if there is no CSV chosen
@@ -249,7 +253,7 @@ public class Run {
 			System.out.println("A CSV file has not been selected, cannot run simulation"); 
 			return;//exit function early
 		}
-		
+
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = f.makeReader(CSV.getFilePath());
@@ -266,7 +270,7 @@ public class Run {
 		//ensures successive simulations are unaffected
 		orderBooks.resetOrderBooks();
 		tradeEngine.resetTradeEngine();
-		
+
 		//reset any strategy attributes after each simulation
 		compare.reset();
 
@@ -281,7 +285,7 @@ public class Run {
 
 
 		}
-		
+
 		Evaluator eval = new Evaluator(compare, tradeEngine, orderBooks);
 		System.out.println("\nFinished Simulation, now evaluating...\n");
 		List<Trade> strategyTrades = eval.filterStrategyTrades();
@@ -312,10 +316,10 @@ public class Run {
 			System.out.println(" are equal in profit");
 		}
 		System.out.println("\n###########################################");
-	
+
 	}
-	
-	
+
+
 	private static void exitProgram(Scanner s) {
 		System.out.println("Cya!");
 		s.close();
