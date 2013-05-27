@@ -25,6 +25,8 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollBar;
 import java.awt.Font;
+import javax.swing.JOptionPane;
+import javax.swing.JDialog;
 
 public class Main extends JFrame {
 
@@ -70,8 +72,7 @@ public class Main extends JFrame {
 	int result;
 	JLabel lblComparingResult;
 	static JLabel lblDisplayResult;
-	
-	
+		
 	/**
 	 * Launch the application.
 	 */
@@ -101,6 +102,7 @@ public class Main extends JFrame {
 	}
 	
 	private void initMain() {
+
 		setTitle("Algorithmic Trading System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 842, 688);
@@ -255,19 +257,33 @@ public class Main extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String strat = (String) selectedComparison.getSelectedItem();
-				if ((String) selectedStrategy.getSelectedItem() == strat) {
-					System.err.println("Choose another strategy");
+				if ((String) selectedStrategy.getSelectedItem() == "Select one of strategies") {
+					JOptionPane.showMessageDialog(new JFrame(),
+                            "There's no result to compare, please run simulation first.",
+                            "Comparison error",
+                            JOptionPane.ERROR_MESSAGE);
+					displayStrategy.setText("");
+				} else if (strat == (String) selectedStrategy.getSelectedItem()) {
+	                   JOptionPane.showMessageDialog(new JFrame(),
+                               "Please choose different strategy for comparison.",
+                               "Comparison strategy error",
+                               JOptionPane.ERROR_MESSAGE);
+					displayStrategy.setText("");
+	   				displayCompare.setText("");
 				} else {
 					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
 						compared = Start.selectComparison(strat, factory);
+						displayCompare.setText(strat);
+						displayCompare.update(displayCompare.getGraphics());
+						Start.runComparison(CSV, compared, selected, factory, result);
 					} else {
-						System.err.println("Strategy is not selected");
-						//update later to clear filepath and strategy option
-						Start.exitProgram();
+		                   JOptionPane.showMessageDialog(new JFrame(),
+                                   "Strategy is not selected.",
+                                   "Comparison error",
+                                   JOptionPane.ERROR_MESSAGE);
+						displayStrategy.setText("");   
+		   				displayCompare.setText("");
 					}
-					displayCompare.setText(strat);
-					displayCompare.update(displayCompare.getGraphics());
-					Start.runComparison(CSV, compared, selected, factory, result);
 				}	
 			}
 		});
@@ -319,21 +335,27 @@ public class Main extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				factory = new Factory();
 				CSV = Start.getFilePath(filePath.getText(), factory);
-				String strat = (String) selectedStrategy.getSelectedItem();
-				if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
-					selected = Start.selectStrategy(strat, factory);
-				} else {
-					System.err.println("Strategy is not selected");
-					//update later to clear filepath and strategy option
-					Start.exitProgram();
+				if (CSV != null) {
+					String strat = (String) selectedStrategy.getSelectedItem();
+					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
+						selected = Start.selectStrategy(strat, factory);
+					} else {
+						JOptionPane.showMessageDialog(new JFrame(),
+	                            "Strategy is not selected",
+	                            "Strategy error",
+	                            JOptionPane.ERROR_MESSAGE);
+					}
+					if (strat != "Select one of strategies") {
+						displayData.setText(filePath.getText());
+						displayData.update(displayData.getGraphics());
+						displayStrategy.setText(strat);
+						displayStrategy.update(displayStrategy.getGraphics());
+						result = Start.runSimulation(CSV, selected, factory);
+					}
 				}
-				displayData.setText(filePath.getText());
-				displayData.update(displayData.getGraphics());
-				displayStrategy.setText(strat);
-				displayStrategy.update(displayStrategy.getGraphics());
-				result = Start.runSimulation(CSV, selected, factory);
 			}
 		});
 		
 	}
+	
 }

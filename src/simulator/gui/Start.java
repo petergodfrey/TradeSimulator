@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import simulator.Evaluator;
@@ -22,11 +24,12 @@ public class Start {
 	public static Reader getFilePath (String pathInput, Factory factory) {
 		Reader CSV = null;
 		try {
-			//System.out.println(pathInput);
 			CSV = factory.makeReader(pathInput);
 		} catch (Exception e) {
-			// change to appear popup window to alert invalid input.
-			//System.out.println("Invalid filepath, enter the correct path.");
+			JOptionPane.showMessageDialog(new JFrame(),
+                    "Invalid filepath, enter the correct path.",
+                    "getFilePath error",
+                    JOptionPane.ERROR_MESSAGE);
 		}
 		return CSV;
 	}
@@ -69,7 +72,10 @@ public class Start {
 		long initTime = System.currentTimeMillis();
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
-			//System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			JOptionPane.showMessageDialog(new JFrame(),
+                    "A CSV file has not been selected, cannot run simulation",
+                    "runSimulation error",
+                    JOptionPane.ERROR_MESSAGE);
 			return profit;//exit function early
 		}
 
@@ -79,7 +85,10 @@ public class Start {
 			//System.out.println("Loading " + CSV.getFilePath());
 			signalGenerator = new SignalGenerator(CSV, strat, factory);
 		} catch (IOException e) {
-			//System.out.println("Error in reading CSV file, exiting simulation");
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Error in reading CSV file, exiting simulation",
+                    "runSimulation error",
+                    JOptionPane.ERROR_MESSAGE);
 			return profit;
 		}
 
@@ -132,17 +141,30 @@ public class Start {
 		int profit = 0;
 		//cannot run simulation if there is no CSV chosen
 		if (CSV == null) {
-			//System.out.println("A CSV file has not been selected, cannot run simulation"); 
+			JOptionPane.showMessageDialog(new JFrame(),
+					"A CSV file has not been selected, cannot run simulation",
+                    "runComparison error",
+                    JOptionPane.ERROR_MESSAGE);
 			return;//exit function early
 		}
 		
+		if (strat == null) {
+			JOptionPane.showMessageDialog(new JFrame(),
+					"There's no source to compare, cannot run simulation",
+                    "runComparison error",
+                    JOptionPane.ERROR_MESSAGE);
+			return;//exit function early
+		}
 		SignalGenerator signalGenerator = null;
 		try {
 			CSV = factory.makeReader(CSV.getFilePath());
 			//System.out.println("Loading " + CSV.getFilePath());
 			signalGenerator = new SignalGenerator(CSV, compare, factory);
 		} catch (IOException e) {
-			//System.out.println("Error in reading CSV file, exiting simulation");
+			JOptionPane.showMessageDialog(new JFrame(),
+					"Error in reading CSV file, exiting simulation",
+                    "runComparison error",
+                    JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
