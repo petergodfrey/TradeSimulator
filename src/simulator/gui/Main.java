@@ -13,6 +13,7 @@ import java.awt.SystemColor;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -72,6 +73,7 @@ public class Main extends JFrame {
 	int result;
 	JLabel lblComparingResult;
 	static JLabel lblDisplayResult;
+	JPanel panel;
 		
 	/**
 	 * Launch the application.
@@ -148,7 +150,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblSelectedDateFile);
 		
 		lblSelectedStrategy = new JLabel("Selected Strategy :");
-		lblSelectedStrategy.setBounds(10, 227, 103, 20);
+		lblSelectedStrategy.setBounds(10, 227, 120, 20);
 		panelSimulation.add(lblSelectedStrategy);
 		
 		lblProgress = new JLabel("Progress :");
@@ -164,7 +166,7 @@ public class Main extends JFrame {
 		panelSimulation.add(displayStrategy);
 		
 		lblDataFile = new JLabel("Data File Path :");
-		lblDataFile.setBounds(10, 11, 74, 20);
+		lblDataFile.setBounds(10, 11, 120, 20);
 		panelSimulation.add(lblDataFile);
 		
 		
@@ -194,15 +196,15 @@ public class Main extends JFrame {
 		progressPercent.setStringPainted(true);
 				
 		runSimulation = new JButton("Run Simulation");
-		runSimulation.setBounds(436, 92, 120, 23);
+		runSimulation.setBounds(406, 92, 130, 23);
 		panelSimulation.add(runSimulation);
 		
 		resetSimulation = new JButton("Reset Simulation");
-		resetSimulation.setBounds(695, 92, 120, 23);
+		resetSimulation.setBounds(685, 92, 130, 23);
 		panelSimulation.add(resetSimulation);
 		
 		lblProfit = new JLabel("Profit :");
-		lblProfit.setBounds(10, 258, 61, 20);
+		lblProfit.setBounds(10, 258, 120, 20);
 		panelSimulation.add(lblProfit);
 		
 		lbProfitResult = new JLabel("$");
@@ -210,10 +212,26 @@ public class Main extends JFrame {
 		panelSimulation.add(lbProfitResult);
 		
 		lblTradesFromSelected = new JLabel("Trade list :");
-		lblTradesFromSelected.setBounds(10, 289, 61, 20);
+		lblTradesFromSelected.setBounds(10, 289, 120, 20);
 		panelSimulation.add(lblTradesFromSelected);
 		
 		lblBidID = new JLabel("Bid ID");
+		/*
+		JScrollPane scroller = new JScrollPane(lblBidID, 
+			      JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+			      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroller.setViewportView(lblBidID);
+		panel.add(lblBidID);
+		*/
+		//JScrollPane scrollPane = new JScrollPane ();
+		//scrollPane.getViewport().add(lblBidID);
+/*
+		JScrollPane scrollpane = new JScrollPane (JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollpane.setBounds(124,292,222,251);
+		scrollpane.add(lblBidID);
+		panel.add(scrollpane);
+		*/
 		lblBidID.setVerticalAlignment(SwingConstants.TOP);
 		lblBidID.setBounds(124, 292, 222, 251);
 		panelSimulation.add(lblBidID);
@@ -234,7 +252,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblVolume);
 		
 		lblStrategyToCompare = new JLabel("Strategy to compare :");
-		lblStrategyToCompare.setBounds(390, 227, 120, 20);
+		lblStrategyToCompare.setBounds(390, 227, 140, 20);
 		panelSimulation.add(lblStrategyToCompare);
 		
 		displayCompare = new JLabel("");
@@ -254,6 +272,7 @@ public class Main extends JFrame {
 		
 		btnComparison = new JButton("Run Comparison");
 		btnComparison.addMouseListener(new MouseAdapter() {
+	
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String strat = (String) selectedComparison.getSelectedItem();
@@ -287,11 +306,11 @@ public class Main extends JFrame {
 				}	
 			}
 		});
-		btnComparison.setBounds(566, 92, 120, 23);
+		btnComparison.setBounds(546, 92, 130, 23);
 		panelSimulation.add(btnComparison);
 		
 		lblProfitToCompare = new JLabel("Profit to compare :");
-		lblProfitToCompare.setBounds(390, 258, 103, 20);
+		lblProfitToCompare.setBounds(390, 258, 130, 20);
 		panelSimulation.add(lblProfitToCompare);
 		
 		lblCompareResult = new JLabel("$");
@@ -300,7 +319,7 @@ public class Main extends JFrame {
 		panelSimulation.add(lblCompareResult);
 		
 		lblComparingResult = new JLabel("Comparing Result :");
-		lblComparingResult.setBounds(10, 576, 103, 20);
+		lblComparingResult.setBounds(10, 576, 120, 20);
 		panelSimulation.add(lblComparingResult);
 		
 		lblDisplayResult = new JLabel("");

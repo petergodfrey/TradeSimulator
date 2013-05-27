@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import simulator.Evaluator;
@@ -279,13 +280,19 @@ public class Start {
 		String priceLine = "<html>price<br>";
 		String volumeLine = "<html>Volume<br>";
 
+		//JScrollPane scrollPane = new JScrollPane ();
+		//scrollPane.getViewport().add(Trade);
+		
 		for (Trade t:strategyTrades) {
 			displayTrade(t);
-			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
+ 			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
 			askLine += String.format("%019d", t.getAsk().ID())  + "<br>";
 			priceLine += t.price().toString()  + "<br>";
 			volumeLine += new Integer(t.volume()).toString() + "<br>";
+			
 		}
+		
+		
 		bidLine += "</html>";
 		askLine += "</html>";
 		priceLine += "</html>";
