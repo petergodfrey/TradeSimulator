@@ -40,7 +40,9 @@ public class Start {
 		if (straInput == "Mean Reversion") {
 			strat =  factory.makeMeanReversionStrategy();
 		} else if (straInput == "Momentum"){
+			//strat = factory.makeMomentumStrategy();
 			strat = factory.makeMomentumStrategy();
+			
 		} else if (straInput == "Dumb") {
 			strat = factory.makeDumbStrategy();
 		} else if (straInput == "Random") {

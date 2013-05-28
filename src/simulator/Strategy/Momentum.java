@@ -15,10 +15,18 @@ public class Momentum extends AbstractStrategy implements Strategy {
 	private LinkedList<Double> returnsList = new LinkedList<Double>();
 	
 	private final double nullReturn = 0;
+	
+	public Momentum(OrderBooks books, TradeEngine tradeEngine, int lookBack, double threshold, double priceOffset) {
+		super(books);
+		this.tradeEngine   = tradeEngine;
+		this.lookBackPeriod = lookBack;
+		this.signalThreshold = threshold;
+		this.priceOffset = priceOffset;
+	}
 
 	//changeable parameters of the strategy
 	private int lookBackPeriod = 10;//how far to look back for computing avg returns
-	private double signalThreshold = 0;//avg returns threshold for generating orders
+	private double signalThreshold = 0.0000;//avg returns threshold for generating orders
 	private double priceOffset = 0;//how much to offset generated order price by
 	
 	public Momentum(OrderBooks books, TradeEngine tradeEngine) {

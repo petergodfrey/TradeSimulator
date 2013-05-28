@@ -3,6 +3,7 @@ package simulator.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -40,13 +41,21 @@ public class Chart  {
 	
 	private static void addAll() {
 		for(int i = 0; i < tradeList.size(); i++) {
-			series.add(OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()), tradeList.get(i).price());		
+			if (OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()) >= 36000000) {
+				if (tradeList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || tradeList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
+					series.add(OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()), tradeList.get(i).price());		
+				}
+			}
 		}
 	}
 
 	private static void addAllCompare() {
 		for(int i = 0; i < compareList.size(); i++) {
-			series2.add(OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()), compareList.get(i).price());		
+			if (OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()) >= 36000000) {			
+				if (compareList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || compareList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
+					series2.add(OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()), compareList.get(i).price());
+				}
+			}
 		}			
 	}
 	
@@ -55,6 +64,17 @@ public class Chart  {
 		dataset.addSeries(series);
 		if (series2 != null) {
 			dataset.addSeries(series2);
+		}
+	}
+	
+	private static void deleteChart() {
+		File file = new File(System.getProperty("user.dir") + "/chart.jpg");
+		if (file.exists()) {
+			file.delete();
+		}
+		file = new File(System.getProperty("user.dir") + "/chart1.jpg");
+		if (file.exists()) {
+			file.delete();
 		}
 	}
 	
@@ -73,10 +93,7 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			File file = new File(System.getProperty("user.dir") + "/chart.jpg");
-			if (file.exists()) {
-				file.delete();
-			}
+			deleteChart();
 			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
 		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern", JOptionPane.PLAIN_MESSAGE, null);
@@ -101,10 +118,7 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			File file = new File(System.getProperty("user.dir") + "/chart1.jpg");
-			if (file.exists()) {
-				file.delete();
-			}
+			deleteChart();
 			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart1.jpg"), chart, 500, 300);
 		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart1.jpg"));
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern",JOptionPane.PLAIN_MESSAGE, null);

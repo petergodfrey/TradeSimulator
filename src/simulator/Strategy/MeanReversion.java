@@ -27,7 +27,16 @@ public class MeanReversion extends AbstractStrategy implements Strategy {
 		this.tradeEngine   = tradeEngine;
 		//this.previousOrderType = "NO_ORDER";
 	}
-
+	
+	public MeanReversion(OrderBooks books, TradeEngine tradeEngine, int lookBack, double threshold, double priceOffset) {
+		super(books);
+		this.tradeEngine   = tradeEngine;
+		this.lookBackPeriod = lookBack;
+		this.signalThreshold = threshold;
+		this.priceOffset = priceOffset;
+		//this.previousOrderType = "NO_ORDER";
+	}
+	
 	public int getLookBackPeriod() {
 		return lookBackPeriod;
 	}

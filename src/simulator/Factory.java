@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import simulator.gui.Main;
 import simulator.strategy.*;
 
 public class Factory {
@@ -60,11 +61,11 @@ public class Factory {
 	}
 
 	public Strategy makeMeanReversionStrategy() {
-		return new MeanReversion(makeOrderBooks(), makeTradeEngine());
+		return new MeanReversion(makeOrderBooks(), makeTradeEngine(), Integer.valueOf(Main.userLookBackPeriod), Double.valueOf(Main.userSignalThreshold), Double.valueOf(Main.userPriceOffset));
 	}
 	
 	public Strategy makeMomentumStrategy() {
-		return new Momentum( makeOrderBooks(), makeTradeEngine() );
+		return new Momentum( makeOrderBooks(), makeTradeEngine(), Integer.valueOf(Main.userLookBackPeriod), Double.valueOf(Main.userSignalThreshold), Double.valueOf(Main.userPriceOffset));
 	}
 	
 	public Reader makeReader(String filepath) throws FileNotFoundException, IOException {

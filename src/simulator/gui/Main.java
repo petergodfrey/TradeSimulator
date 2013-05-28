@@ -92,7 +92,14 @@ public class Main extends JFrame {
 	JLabel lblComparingResult;
 	static JLabel lblDisplayResult;
 	JPanel panel;
-		
+	
+    JTextField textLookBackPeriod ;
+    JTextField textSignalThreshold;
+    JTextField textPriceOffset;
+    public static String userLookBackPeriod;
+    public static String userSignalThreshold;
+    public static String userPriceOffset;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -228,18 +235,31 @@ public class Main extends JFrame {
 			        panel.add(new JLabel("Price Offset : "));
 			        panel.add(textPriceOffset);
 			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
-			        int result = JOptionPane.showConfirmDialog(null, panel, "Parameter",
-			            JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
-			        /*
-			        if (result == JOptionPane.OK_OPTION) {
-			        	// link to setLookBackPeriod(), setSignalThreshold(double signalThreshold), setPriceOffset(double priceOffset) 
-			        } else {
-			            //System.out.println("Cancelled");
-			        }*/
+			        JOptionPane.showConfirmDialog(null, panel, "Momentum Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
 				}
+				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[1]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "MeanReversion Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
+				}				
 			}
 		});
-		selectedStrategy.setBounds(124, 38, 176, 20);
+		selectedStrategy.setBounds(124, 38, 250, 20);
 		panelSimulation.add(selectedStrategy);
 		selectedStrategy.setSelectedIndex(0);
 		selectedStrategy.setToolTipText("Click the arrow and select one of strategies");
@@ -325,7 +345,45 @@ public class Main extends JFrame {
 		selectedComparison.setToolTipText("Click the arrow and select one of strategies");
 		selectedComparison.setSelectedIndex(0);
 		selectedComparison.setMaximumRowCount(5);
-		selectedComparison.setBounds(524, 38, 176, 20);
+		selectedComparison.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if ((String) selectedComparison.getSelectedItem() == strategyOptions[2]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "Momentum Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
+				}
+				if ((String) selectedComparison.getSelectedItem() == strategyOptions[1]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "MeanReversion Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
+				}				
+			}
+		});
+		selectedComparison.setBounds(524, 38, 250, 20);
 		panelSimulation.add(selectedComparison);
 		
 		btnComparison = new JButton("Run Comparison");
@@ -401,15 +459,15 @@ public class Main extends JFrame {
 		panelSimulation.add(lblReturns);
 		
 		lblTotalBuyingToCompare = new JLabel("Total Buying to compare:");
-		lblTotalBuyingToCompare.setBounds(390, 258, 156, 14);
+		lblTotalBuyingToCompare.setBounds(390, 258, 170, 14);
 		panelSimulation.add(lblTotalBuyingToCompare);
 		
 		lblTotalSellingToCompare = new JLabel("Total Selling to compare :");
-		lblTotalSellingToCompare.setBounds(390, 283, 156, 14);
+		lblTotalSellingToCompare.setBounds(390, 283, 170, 14);
 		panelSimulation.add(lblTotalSellingToCompare);
 		
 		lblReturnsToCompareT = new JLabel("Returns to compare :");
-		lblReturnsToCompareT.setBounds(390, 308, 130, 14);
+		lblReturnsToCompareT.setBounds(390, 308, 150, 14);
 		panelSimulation.add(lblReturnsToCompareT);
 		
 		lblDisplayTotalBuy = new JLabel("");
