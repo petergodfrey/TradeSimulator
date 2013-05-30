@@ -5,7 +5,6 @@ import simulator.Factory;
 import simulator.Reader;
 import simulator.strategy.Strategy;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -29,10 +28,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JOptionPane;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -220,7 +215,7 @@ public class Main extends JFrame {
 		lblStrategy.setBounds(10, 38, 61, 20);
 		panelSimulation.add(lblStrategy);
 		
-		final String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random"};
+		final String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random", "Null"};
 		selectedStrategy = new JComboBox (strategyOptions);
 		selectedStrategy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -293,7 +288,7 @@ public class Main extends JFrame {
 		panelSimulation.add(selectedStrategy);
 		selectedStrategy.setSelectedIndex(0);
 		selectedStrategy.setToolTipText("Click the arrow and select one of strategies");
-		selectedStrategy.setMaximumRowCount(5);
+		selectedStrategy.setMaximumRowCount(6);
 		
 		progressPercent = new JProgressBar();
 		progressPercent.setForeground(SystemColor.textHighlight);
@@ -415,7 +410,7 @@ public class Main extends JFrame {
 		});
 		selectedComparison.setToolTipText("Click the arrow and select one of strategies");
 		selectedComparison.setSelectedIndex(0);
-		selectedComparison.setMaximumRowCount(5);
+		selectedComparison.setMaximumRowCount(6);
 		selectedComparison.setBounds(524, 38, 250, 20);
 		panelSimulation.add(selectedComparison);
 		
@@ -439,7 +434,7 @@ public class Main extends JFrame {
 					displayStrategy.setText("");
 	   				displayCompare.setText("");
 				} else {
-					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
+					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random" || strat == "Null") {
 						compared = Start.selectComparison(strat, factory);
 		   				displayCompare.setText("");
 						displayCompare.setText(strat);
@@ -553,12 +548,12 @@ public class Main extends JFrame {
 		runSimulation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				clearTextField();
+				clear();
 				factory = new Factory();
 				CSV = Start.getFilePath(filePath.getText(), factory);
 				if (CSV != null) {
 					String strat = (String) selectedStrategy.getSelectedItem();
-					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random") {
+					if (strat == "Mean Reversion" || strat == "Momentum" || strat == "Dumb" || strat == "Random" || strat == "Null") {
 						selected = Start.selectStrategy(strat, factory);
 					} else {
 						JOptionPane.showMessageDialog(new JFrame(),
@@ -579,7 +574,7 @@ public class Main extends JFrame {
 		
 	}
 	
-	private void clearTextField () {
+	private void clear () {
 		displayData.setText("");
 		displayData.update(displayData.getGraphics());
 		displayStrategy.setText("");
@@ -597,5 +592,6 @@ public class Main extends JFrame {
 		Main.lblDisplayTotalBuyCom.setText("");
 		Main.lblDisplayTotalSellCom.setText("");
 		Main.lblDisplayReturnCom.setText("");
+		Chart.deleteChart();
 	}
 }

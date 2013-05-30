@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-
-
 import simulator.Evaluator;
 import simulator.Factory;
 import simulator.Order;
@@ -40,13 +36,13 @@ public class Start {
 		if (straInput == "Mean Reversion") {
 			strat =  factory.makeMeanReversionStrategy();
 		} else if (straInput == "Momentum"){
-			//strat = factory.makeMomentumStrategy();
 			strat = factory.makeMomentumStrategy();
-			
 		} else if (straInput == "Dumb") {
 			strat = factory.makeDumbStrategy();
 		} else if (straInput == "Random") {
 			strat = factory.makeRandomStrategy();
+		} else if (straInput == "Null") {
+			strat = factory.makeNullStrategy();
 		}
 		return strat;
 	}
@@ -63,6 +59,8 @@ public class Start {
 			compare = factory.makeDumbStrategy();
 		} else if (straCompare == "Random") {
 			compare = factory.makeRandomStrategy();
+		} else if (straCompare == "Null") {
+			compare = factory.makeNullStrategy();
 		}
 		return compare;
 	}

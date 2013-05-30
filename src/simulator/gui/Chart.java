@@ -28,6 +28,7 @@ public class Chart  {
 	private static XYSeriesCollection dataset;
 	private static ArrayList<Trade> tradeList;
 	private static ArrayList<Trade> compareList;
+	private static int chartIndex = 0;
 	
 	private static void initChart(ArrayList<Trade> list) {
 		tradeList = list;
@@ -67,15 +68,11 @@ public class Chart  {
 		}
 	}
 	
-	private static void deleteChart() {
-		File file = new File(System.getProperty("user.dir") + "/chart.jpg");
+	public static void deleteChart() {
+		File file = new File(System.getProperty("user.dir") + "/chart" + Integer.toString(chartIndex-1) + ".jpg");
 		if (file.exists()) {
 			file.delete();
-		}
-		file = new File(System.getProperty("user.dir") + "/chart1.jpg");
-		if (file.exists()) {
-			file.delete();
-		}
+		}	
 	}
 	
 	public static void drawChart(ArrayList<Trade> source) {
@@ -93,9 +90,10 @@ public class Chart  {
 			false // Configure chart to generate URLs?
 		);
 		try {
-			deleteChart();
-			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart.jpg"), chart, 500, 300);
-		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart.jpg"));
+		    deleteChart();
+			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart" + Integer.toString(chartIndex) + ".jpg"), chart, 500, 300);
+		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart" + Integer.toString(chartIndex++) + ".jpg"));
+		    
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern", JOptionPane.PLAIN_MESSAGE, null);
 		} catch (IOException e) {
 			System.err.println(e);
@@ -119,8 +117,8 @@ public class Chart  {
 		);
 		try {
 			deleteChart();
-			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart1.jpg"), chart, 500, 300);
-		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart1.jpg"));
+			ChartUtilities.saveChartAsJPEG(new File(System.getProperty("user.dir") + "/chart" + Integer.toString(chartIndex) + ".jpg"), chart, 500, 300);
+		    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/chart" + Integer.toString(chartIndex++) + ".jpg"));
 		    JOptionPane.showMessageDialog(null, lbl, "Trade Pattern",JOptionPane.PLAIN_MESSAGE, null);
 		} catch (IOException e) {
 			System.err.println(e);
