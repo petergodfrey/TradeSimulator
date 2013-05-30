@@ -37,7 +37,7 @@ public class OrderBooks {
 		millisecond += Integer.valueOf(timeSplit[0]) * 60 * 60 * 1000;
 		return millisecond;
 	}
-
+	
 	public void resetOrderBooks() {
 		bidList = new LinkedList<Order>();
 		bidMap = new HashMap<BigInteger, Order>();

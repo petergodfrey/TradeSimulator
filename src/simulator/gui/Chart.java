@@ -32,7 +32,7 @@ public class Chart  {
 	
 	private static void initChart(ArrayList<Trade> list) {
 		tradeList = list;
-		series = new XYSeries("Source");
+		series = new XYSeries("Selected");
 	}
 
 	private static void initChartCompare(ArrayList<Trade> list) {
@@ -43,8 +43,10 @@ public class Chart  {
 	private static void addAll() {
 		for(int i = 0; i < tradeList.size(); i++) {
 			if (OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()) >= 36000000) {
-				if (tradeList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || tradeList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
-					series.add(OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()), tradeList.get(i).price());		
+				if (tradeList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || 
+						tradeList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
+					series.add((double) OrderBooks.convertTimeToMilliseconds(tradeList.get(i).time()) / (60*60*1000), 
+							tradeList.get(i).price());		
 				}
 			}
 		}
@@ -53,8 +55,10 @@ public class Chart  {
 	private static void addAllCompare() {
 		for(int i = 0; i < compareList.size(); i++) {
 			if (OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()) >= 36000000) {			
-				if (compareList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || compareList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
-					series2.add(OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()), compareList.get(i).price());
+				if (compareList.get(i).getBid().ID().compareTo(BigInteger.valueOf(0)) == -1 || 
+						compareList.get(i).getAsk().ID().compareTo(BigInteger.valueOf(0)) == -1) {
+					series2.add((double) OrderBooks.convertTimeToMilliseconds(compareList.get(i).time()) / (60*60*1000), 
+							compareList.get(i).price());
 				}
 			}
 		}			
@@ -81,7 +85,7 @@ public class Chart  {
 		setCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(
 			"Trade Price Change", // Title
-			"Time (Ms)", // x-axis Label
+			"Time (Hour)", // x-axis Label
 			"Price($)", // y-axis Label
 			dataset, // Dataset
 			PlotOrientation.VERTICAL, // Plot Orientation
@@ -107,7 +111,7 @@ public class Chart  {
 		setCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart(
 			"Trade Price Change", // Title
-			"Time (Ms)", // x-axis Label
+			"Time (Hour)", // x-axis Label
 			"Price($)", // y-axis Label
 			dataset, // Dataset
 			PlotOrientation.VERTICAL, // Plot Orientation
