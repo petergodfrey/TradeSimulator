@@ -17,9 +17,14 @@ public class RandomStrategy extends AbstractStrategy implements Strategy {
 	
 	private Random rand = new Random();
 
-	public RandomStrategy(OrderBooks books) {
+	public RandomStrategy(OrderBooks books, double frequency, double ratio, int volumeLower, int volumeUpper, double priceLower, double priceUpper) {
 		super(books);
-
+		this.OrderGenerationFrequency = frequency;
+		this.bidToAskRatio = ratio;
+		this.volumeLowerBound = volumeLower; 
+		this.volumeUpperBound = volumeUpper;
+		this.priceLowerBound = priceLower;
+		this.priceUpperBound = priceUpper;
 	}
 
 	@Override

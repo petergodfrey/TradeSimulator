@@ -57,7 +57,8 @@ public class Factory {
 	}
 	
 	public Strategy makeRandomStrategy() {
-		return new RandomStrategy(makeOrderBooks());
+		return new RandomStrategy(makeOrderBooks(), Double.valueOf(Main.userFrequency), Double.valueOf(Main.userRatio), Integer.valueOf(Main.userVolumeLower),
+				Integer.valueOf(Main.userVolumeUpper), Double.valueOf(Main.userPriceLower), Double.valueOf(Main.userPriceUpper));
 	}
 
 	public Strategy makeMeanReversionStrategy() {

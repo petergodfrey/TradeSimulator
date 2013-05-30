@@ -91,15 +91,18 @@ public class Main extends JFrame {
 	double result;
 	JLabel lblComparingResult;
 	static JLabel lblDisplayResult;
-	JPanel panel;
-	
-    JTextField textLookBackPeriod ;
-    JTextField textSignalThreshold;
-    JTextField textPriceOffset;
+	JPanel panel;	
     public static String userLookBackPeriod;
     public static String userSignalThreshold;
     public static String userPriceOffset;
-	
+    public static String userFrequency;
+    public static String userRatio;
+    public static String userVolumeLower;
+    public static String userVolumeUpper;
+    public static String userPriceLower;
+    public static String userPriceUpper;
+
+    
 	/**
 	 * Launch the application.
 	 */
@@ -221,25 +224,8 @@ public class Main extends JFrame {
 		
 		final String[] strategyOptions = {"Select one of strategies", "Mean Reversion", "Momentum", "Dumb", "Random"};
 		selectedStrategy = new JComboBox (strategyOptions);
-		selectedStrategy.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[2]) {
-			        JTextField textLookBackPeriod = new JTextField("10");
-			        JTextField textSignalThreshold = new JTextField("0");
-			        JTextField textPriceOffset = new JTextField("0");
-			        JPanel panel = new JPanel(new GridLayout(0, 1));
-			        panel.add(new JLabel("Look Back Period :"));
-			        panel.add(textLookBackPeriod);
-			        panel.add(new JLabel("Signal Threshold :"));
-			        panel.add(textSignalThreshold);
-			        panel.add(new JLabel("Price Offset : "));
-			        panel.add(textPriceOffset);
-			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
-			        JOptionPane.showConfirmDialog(null, panel, "Momentum Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
-			        userLookBackPeriod = textLookBackPeriod.getText();
-			        userSignalThreshold = textSignalThreshold.getText();
-			        userPriceOffset = textPriceOffset.getText();
-				}
+		selectedStrategy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[1]) {
 			        JTextField textLookBackPeriod = new JTextField("10");
 			        JTextField textSignalThreshold = new JTextField("0");
@@ -257,6 +243,52 @@ public class Main extends JFrame {
 			        userSignalThreshold = textSignalThreshold.getText();
 			        userPriceOffset = textPriceOffset.getText();
 				}				
+				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[2]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "Momentum Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
+				}
+				if ((String) selectedStrategy.getSelectedItem() == strategyOptions[4]) {
+			        JTextField textFrequency = new JTextField("0.5");
+			        JTextField textRatio = new JTextField("0.1");
+			        JTextField textVolumeLower = new JTextField("0");
+			        JTextField textVolumeUpper = new JTextField("100");
+			        JTextField textPriceLower = new JTextField("0");
+			        JTextField textPriceUpper = new JTextField("100");			        
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Frequency of order generation :"));
+			        panel.add(textFrequency);
+			        panel.add(new JLabel("Ratio of bid and ask orders :"));
+			        panel.add(textRatio);
+			        panel.add(new JLabel("Volume lower bound : "));
+			        panel.add(textVolumeLower);
+			        panel.add(new JLabel("Volume upper bound :"));
+			        panel.add(textVolumeUpper);
+			        panel.add(new JLabel("Price lower bound : $ "));
+			        panel.add(textPriceLower);
+			        panel.add(new JLabel("Price upper bound : $ "));
+			        panel.add(textPriceUpper);			        
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "Random Parameter", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+			        userFrequency = textFrequency.getText();
+			        userRatio = textRatio.getText();
+			        userVolumeLower = textVolumeLower.getText();
+			        userVolumeUpper = textVolumeUpper.getText();
+			        userPriceLower = textPriceLower.getText();
+			        userPriceUpper = textPriceUpper.getText();
+				}
 			}
 		});
 		selectedStrategy.setBounds(124, 38, 250, 20);
@@ -342,11 +374,25 @@ public class Main extends JFrame {
 		panelSimulation.add(label);
 		
 		selectedComparison = new JComboBox(strategyOptions);
-		selectedComparison.setToolTipText("Click the arrow and select one of strategies");
-		selectedComparison.setSelectedIndex(0);
-		selectedComparison.setMaximumRowCount(5);
-		selectedComparison.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
+		selectedComparison.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ((String) selectedComparison.getSelectedItem() == strategyOptions[1]) {
+			        JTextField textLookBackPeriod = new JTextField("10");
+			        JTextField textSignalThreshold = new JTextField("0");
+			        JTextField textPriceOffset = new JTextField("0");
+			        JPanel panel = new JPanel(new GridLayout(0, 1));
+			        panel.add(new JLabel("Look Back Period :"));
+			        panel.add(textLookBackPeriod);
+			        panel.add(new JLabel("Signal Threshold :"));
+			        panel.add(textSignalThreshold);
+			        panel.add(new JLabel("Price Offset : "));
+			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
+			        JOptionPane.showConfirmDialog(null, panel, "MeanReversion Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
+			        userLookBackPeriod = textLookBackPeriod.getText();
+			        userSignalThreshold = textSignalThreshold.getText();
+			        userPriceOffset = textPriceOffset.getText();
+				}	
 				if ((String) selectedComparison.getSelectedItem() == strategyOptions[2]) {
 			        JTextField textLookBackPeriod = new JTextField("10");
 			        JTextField textSignalThreshold = new JTextField("0");
@@ -364,25 +410,40 @@ public class Main extends JFrame {
 			        userSignalThreshold = textSignalThreshold.getText();
 			        userPriceOffset = textPriceOffset.getText();
 				}
-				if ((String) selectedComparison.getSelectedItem() == strategyOptions[1]) {
-			        JTextField textLookBackPeriod = new JTextField("10");
-			        JTextField textSignalThreshold = new JTextField("0");
-			        JTextField textPriceOffset = new JTextField("0");
+				if ((String) selectedComparison.getSelectedItem() == strategyOptions[4]) {
+			        JTextField textFrequency = new JTextField("0.5");
+			        JTextField textRatio = new JTextField("0.1");
+			        JTextField textVolumeLower = new JTextField("0");
+			        JTextField textVolumeUpper = new JTextField("100");
+			        JTextField textPriceLower = new JTextField("0");
+			        JTextField textPriceUpper = new JTextField("100");			        
 			        JPanel panel = new JPanel(new GridLayout(0, 1));
-			        panel.add(new JLabel("Look Back Period :"));
-			        panel.add(textLookBackPeriod);
-			        panel.add(new JLabel("Signal Threshold :"));
-			        panel.add(textSignalThreshold);
-			        panel.add(new JLabel("Price Offset : "));
-			        panel.add(textPriceOffset);
+			        panel.add(new JLabel("Frequency of order generation :"));
+			        panel.add(textFrequency);
+			        panel.add(new JLabel("Ratio of bid and ask orders :"));
+			        panel.add(textRatio);
+			        panel.add(new JLabel("Volume lower bound : "));
+			        panel.add(textVolumeLower);
+			        panel.add(new JLabel("Volume upper bound :"));
+			        panel.add(textVolumeUpper);
+			        panel.add(new JLabel("Price lower bound : $"));
+			        panel.add(textPriceLower);
+			        panel.add(new JLabel("Price upper bound : $"));
+			        panel.add(textPriceUpper);			        
 			        panel.add(new JLabel("<html> <br>" + "If you don't type anything, default values will be used" + "<br> </html>"));
-			        JOptionPane.showConfirmDialog(null, panel, "MeanReversion Parameter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
-			        userLookBackPeriod = textLookBackPeriod.getText();
-			        userSignalThreshold = textSignalThreshold.getText();
-			        userPriceOffset = textPriceOffset.getText();
-				}				
+			        JOptionPane.showConfirmDialog(null, panel, "Random Parameter", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+			        userFrequency = textFrequency.getText();
+			        userRatio = textRatio.getText();
+			        userVolumeLower = textVolumeLower.getText();
+			        userVolumeUpper = textVolumeUpper.getText();
+			        userPriceLower = textPriceLower.getText();
+			        userPriceUpper = textPriceUpper.getText();
+				}
 			}
 		});
+		selectedComparison.setToolTipText("Click the arrow and select one of strategies");
+		selectedComparison.setSelectedIndex(0);
+		selectedComparison.setMaximumRowCount(5);
 		selectedComparison.setBounds(524, 38, 250, 20);
 		panelSimulation.add(selectedComparison);
 		
