@@ -5,6 +5,7 @@ import simulator.Factory;
 import simulator.Reader;
 import simulator.strategy.Strategy;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -326,40 +327,29 @@ public class Main extends JFrame {
 		panelSimulation.add(lblTradesFromSelected);
 		
 		lblBidID = new JLabel("Bid ID");
-		/*
-		JScrollPane scroller = new JScrollPane(lblBidID, 
-			      JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-			      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scroller.setViewportView(lblBidID);
-		panel.add(lblBidID);
-		*/
-		//JScrollPane scrollPane = new JScrollPane ();
-		//scrollPane.getViewport().add(lblBidID);
-/*
-		JScrollPane scrollpane = new JScrollPane (JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollpane.setBounds(124,292,222,251);
-		scrollpane.add(lblBidID);
-		panel.add(scrollpane);
-		*/
+	
+		JScrollPane scrollBidID = new JScrollPane(lblBidID, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollBidID.setBounds(124, 366, 222, 251);		
+		panelSimulation.add(scrollBidID);
 		lblBidID.setVerticalAlignment(SwingConstants.TOP);
-		lblBidID.setBounds(124, 367, 222, 251);
-		panelSimulation.add(lblBidID);
 		
 		lblAskID = new JLabel("Ask ID");
+		JScrollPane scrollAskID = new JScrollPane(lblAskID, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollAskID.setBounds(356, 367, 222, 251);		
+		panelSimulation.add(scrollAskID);
 		lblAskID.setVerticalAlignment(SwingConstants.TOP);
-		lblAskID.setBounds(356, 367, 222, 251);
-		panelSimulation.add(lblAskID);
 		
 		lblPrice = new JLabel("Price");
+		JScrollPane scrollPrice = new JScrollPane(lblPrice, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPrice.setBounds(599, 367, 74, 251);		
+		panelSimulation.add(scrollPrice);
 		lblPrice.setVerticalAlignment(SwingConstants.TOP);
-		lblPrice.setBounds(599, 367, 74, 251);
-		panelSimulation.add(lblPrice);
 		
 		lblVolume = new JLabel("Volume");
+		JScrollPane scrollVolume = new JScrollPane(lblVolume, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollVolume.setBounds(695, 367, 74, 251);		
+		panelSimulation.add(scrollVolume);
 		lblVolume.setVerticalAlignment(SwingConstants.TOP);
-		lblVolume.setBounds(695, 367, 74, 251);
-		panelSimulation.add(lblVolume);
 		
 		lblStrategyToCompare = new JLabel("Strategy to compare :");
 		lblStrategyToCompare.setBounds(390, 227, 140, 20);
@@ -554,7 +544,7 @@ public class Main extends JFrame {
 		lblDisplayReturnCom = new JLabel("");
 		lblDisplayReturnCom.setBounds(558, 309, 257, 14);
 		panelSimulation.add(lblDisplayReturnCom);
-		
+				
 		resetSimulation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

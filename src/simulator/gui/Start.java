@@ -270,7 +270,7 @@ public class Start {
 		for (Trade t:strategyTrades) {
 
 			//displayTrade(t);
- 			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
+ 			//bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
 
 			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
 
@@ -278,6 +278,7 @@ public class Start {
 			priceLine += t.price().toString()  + "<br>";
 			volumeLine += new Integer(t.volume()).toString() + "<br>";
 			
+			//bidLine += String.format("%019d", t.getBid().ID()) + "&nbsp;&nbsp;&nbsp;&nbsp;" + String.format("%019d", t.getAsk().ID()) + "&nbsp;&nbsp;&nbsp;&nbsp;" + t.price().toString() + "&nbsp;&nbsp;&nbsp;&nbsp;" + new Integer(t.volume()).toString() + "<br>";
 		}
 		
 		
