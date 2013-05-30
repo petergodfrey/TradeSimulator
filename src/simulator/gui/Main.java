@@ -70,10 +70,7 @@ public class Main extends JFrame {
 	static JLabel lblDisplayReturnCom;
 	static JLabel displayData;
 	static JLabel lbProfitResult;
-	static JLabel lblBidID;
-	static JLabel lblAskID;
-	static JLabel lblPrice;
-	static JLabel lblVolume;
+	static JLabel lblTradeList;
 	static JProgressBar progressPercent;
 	JComboBox selectedStrategy;
 	JComboBox selectedComparison;
@@ -326,31 +323,16 @@ public class Main extends JFrame {
 		lblTradesFromSelected.setBounds(10, 364, 120, 20);
 		panelSimulation.add(lblTradesFromSelected);
 		
-		lblBidID = new JLabel("Bid ID");
-	
-		JScrollPane scrollBidID = new JScrollPane(lblBidID, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollBidID.setBounds(124, 366, 222, 251);		
-		panelSimulation.add(scrollBidID);
-		lblBidID.setVerticalAlignment(SwingConstants.TOP);
+		lblTradeList = new JLabel("<html><table> <tr><td width= 200>Bid ID</td>" +
+				"<td width= 200>Ask ID</td>" +
+				"<td width= 150>Price ($)</td>" +
+				"<td width = 100>Volume</td></tr></table></html>");
 		
-		lblAskID = new JLabel("Ask ID");
-		JScrollPane scrollAskID = new JScrollPane(lblAskID, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollAskID.setBounds(356, 367, 222, 251);		
-		panelSimulation.add(scrollAskID);
-		lblAskID.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblPrice = new JLabel("Price");
-		JScrollPane scrollPrice = new JScrollPane(lblPrice, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPrice.setBounds(599, 367, 74, 251);		
-		panelSimulation.add(scrollPrice);
-		lblPrice.setVerticalAlignment(SwingConstants.TOP);
-		
-		lblVolume = new JLabel("Volume");
-		JScrollPane scrollVolume = new JScrollPane(lblVolume, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollVolume.setBounds(695, 367, 74, 251);		
-		panelSimulation.add(scrollVolume);
-		lblVolume.setVerticalAlignment(SwingConstants.TOP);
-		
+		JScrollPane scrollTradeList = new JScrollPane(lblTradeList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollTradeList.setBounds(124, 366, 695, 251);		
+		panelSimulation.add(scrollTradeList);
+		lblTradeList.setVerticalAlignment(SwingConstants.TOP);
+
 		lblStrategyToCompare = new JLabel("Strategy to compare :");
 		lblStrategyToCompare.setBounds(390, 227, 140, 20);
 		panelSimulation.add(lblStrategyToCompare);
@@ -556,10 +538,7 @@ public class Main extends JFrame {
 				lblDisplayResult.setText("");
 				progressPercent.setString("0 %");
 				progressPercent.setValue(0);
-				Main.lblBidID.setText("");
-				Main.lblAskID.setText("");
-				Main.lblPrice.setText("");
-				Main.lblVolume.setText("");
+				Main.lblTradeList.setText("");
 				Main.lbProfitResult.setText("$ ");
 				Main.lblCompareResult.setText("$ ");
 				Main.lblDisplayTotalBuy.setText("");
@@ -570,10 +549,11 @@ public class Main extends JFrame {
 				Main.lblDisplayReturnCom.setText("");
 			}
 		});
-		
+				
 		runSimulation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				clearTextField();
 				factory = new Factory();
 				CSV = Start.getFilePath(filePath.getText(), factory);
 				if (CSV != null) {
@@ -597,5 +577,25 @@ public class Main extends JFrame {
 			}
 		});
 		
+	}
+	
+	private void clearTextField () {
+		displayData.setText("");
+		displayData.update(displayData.getGraphics());
+		displayStrategy.setText("");
+		displayStrategy.update(displayStrategy.getGraphics());
+		displayCompare.setText("");
+		lblDisplayResult.setText("");
+		progressPercent.setString("0 %");
+		progressPercent.setValue(0);
+		Main.lblTradeList.setText("");
+		Main.lbProfitResult.setText("$ ");
+		Main.lblCompareResult.setText("$ ");
+		Main.lblDisplayTotalBuy.setText("");
+		Main.lblDisplayTotalSell.setText("");
+		Main.lblDisplayRetuns.setText("");
+		Main.lblDisplayTotalBuyCom.setText("");
+		Main.lblDisplayTotalSellCom.setText("");
+		Main.lblDisplayReturnCom.setText("");
 	}
 }

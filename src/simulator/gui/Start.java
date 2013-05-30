@@ -259,42 +259,27 @@ public class Start {
 	public static void displayEvaluation(List<Trade> strategyTrades) {
 
 		
-		String bidLine = "<html>Bid ID<br>";
-		String askLine = "<html>Ask ID<br>";
-		String priceLine = "<html>price<br>";
-		String volumeLine = "<html>Volume<br>";
-
-		//JScrollPane scrollPane = new JScrollPane ();
-		//scrollPane.getViewport().add(Trade);
+		String tradeList = "<html><table> <tr><td width= 200>Bid ID</td>" +
+				"<td width= 200>Ask ID</td>" +
+				"<td width= 150>Price ($)</td>" +
+				"<td width = 150>Volume</td></tr></table>"; 
 		
 		for (Trade t:strategyTrades) {
 
-			//displayTrade(t);
- 			//bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
-
-			bidLine += String.format("%019d", t.getBid().ID())  + "<br>";
-
-			askLine += String.format("%019d", t.getAsk().ID())  + "<br>";
-			priceLine += t.price().toString()  + "<br>";
-			volumeLine += new Integer(t.volume()).toString() + "<br>";
-			
-			//bidLine += String.format("%019d", t.getBid().ID()) + "&nbsp;&nbsp;&nbsp;&nbsp;" + String.format("%019d", t.getAsk().ID()) + "&nbsp;&nbsp;&nbsp;&nbsp;" + t.price().toString() + "&nbsp;&nbsp;&nbsp;&nbsp;" + new Integer(t.volume()).toString() + "<br>";
+			tradeList += "<table> <tr><td width= 200>" + String.format("%019d", t.getBid().ID()) + "</td>" + 
+					"<td width= 200>" + String.format("%019d", t.getAsk().ID()) + "</td>" +
+					"<td width= 150>" + t.price().toString() + "</td>" + 
+					"<td width = 100>" + new Integer(t.volume()).toString() + "</td></tr></table>";
 		}
 		
 		
-		bidLine += "</html>";
-		askLine += "</html>";
-		priceLine += "</html>";
-		volumeLine += "</html>";
-		Main.lblBidID.setText(bidLine);
-		Main.lblAskID.setText(askLine);
-		Main.lblPrice.setText(priceLine);
-		Main.lblVolume.setText(volumeLine);
+		tradeList += "</html>";
+		Main.lblTradeList.setText(tradeList);
 	}
 
 	public static void showTrade(Trade t) {
 		
-		Main.lblBidID.revalidate();
+		Main.lblTradeList.revalidate();
 	}
 
 }
