@@ -153,7 +153,9 @@ public class Main extends JFrame {
 		mntmInstruction = new JMenuItem("Instruction");
 		mntmInstruction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			    JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/Instruction.png"));
+				JLabel lbl = new JLabel(new ImageIcon(((new ImageIcon(getClass().getResource("/Instruction.png"))).getImage()).getScaledInstance(650, 650, java.awt.Image.SCALE_SMOOTH)));
+				//JLabel lbl = new JLabel(new ImageIcon(getClass().getResource("/Instruction.png")));
+				//JLabel lbl = new JLabel(new ImageIcon(System.getProperty("user.dir") + "/Instruction.png"));
 			    JOptionPane.showMessageDialog(null, lbl, "Instruction",JOptionPane.PLAIN_MESSAGE, null);
 			}
 		});
