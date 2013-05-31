@@ -125,12 +125,12 @@ public class Start {
 		} else {
 			displayEvaluation(strategyTrades);
 			profit = new Double (eval.getProfit());
-			Main.lbProfitResult.setText("$ " + profit.toString());
+			Main.lbProfitResult.setText("$ " + String.format("%.2f", profit));
 		}
 		Main.lblDisplayTotalBuy.setText(eval.getTotalBuy().toString());
 		Main.lblDisplayTotalSell.setText(eval.getTotalSell().toString());
 		Double returns = (((double) eval.getTotalSell() - (double) eval.getTotalBuy()) / (double) eval.getTotalBuy()) * 100;
-		Main.lblDisplayRetuns.setText(returns.toString() + " %");
+		Main.lblDisplayRetuns.setText(String.format("%.2f", returns) + " %");
 		Chart.drawChart(tradeEngine.getTradeList());
 		return profit;
 	}
@@ -204,7 +204,7 @@ public class Start {
 		if (strategyTrades.size() == 0) {
 		} else {
 			profit = eval.getProfit();
-			Main.lblCompareResult.setText("$ " + new Double(profit).toString());
+			Main.lblCompareResult.setText("$ " + String.format("%.2f", new Double(profit)));
 			Main.lblCompareResult.update(Main.lblCompareResult.getGraphics());
 		}
 		double comparedProfit = 0;
@@ -212,10 +212,10 @@ public class Start {
 		
 		if (profit > result) {
 			comparedProfit = profit - result;			
-			interpret = compare.getStrategyName() + " resulted in more profit by $ " + new Double(comparedProfit).toString();
+			interpret = compare.getStrategyName() + " resulted in more profit by $ " + String.format("%.2f", new Double(comparedProfit));
 		} else if (result > profit){
 			comparedProfit = result - profit;
-			interpret = strat.getStrategyName() + " resulted in more profit by $ " + new Double(comparedProfit).toString();
+			interpret = strat.getStrategyName() + " resulted in more profit by $ " + String.format("%.2f", new Double(comparedProfit));
 		} else {
 			interpret = "Both " + compare.getStrategyName() + " and " + strat.getStrategyName() + " are equal in profit";
 		}
@@ -223,7 +223,7 @@ public class Start {
 		Main.lblDisplayTotalBuyCom.setText(eval.getTotalBuy().toString());
 		Main.lblDisplayTotalSellCom.setText(eval.getTotalSell().toString());
 		Double returns = (((double)eval.getTotalSell() - (double)eval.getTotalBuy()) / (double)eval.getTotalBuy()) * 100;
-		Main.lblDisplayReturnCom.setText(returns.toString() + " %");
+		Main.lblDisplayReturnCom.setText(String.format("%.2f", returns) + " %");
 		Chart.drawChartCompare(tradeEngine.getTradeList());
 	}
 	
